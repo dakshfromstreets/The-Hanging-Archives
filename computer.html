@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>THE HANGING ARCHIVE · Quotes for the Soul</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Marcellus&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #160b0d;
+            --bg-surface: #1f1013;
+            --gold: #D8AE6C;
+            --gold-light: #F2D796;
+            --accent-a: #8E2438;
+            --accent-b: #2F4A6B;
+            --accent-c: #2C5C46;
+            --accent-d: #7A4EA0;
+            --text: #F6EEE2;
+            --text-secondary: #C7B49C;
+            --rod: #B8862F;
+            --glow: rgba(216, 174, 108, .38);
+            --amb-a: rgba(142, 36, 56, .20);
+            --amb-b: rgba(216, 174, 108, .09);
+            --nav-bg: rgba(22, 11, 13, .88);
+            --card-border: rgba(216, 174, 108, .32);
+            --display-font: 'Cinzel Decorative';
+            --card-shadow: rgba(0, 0, 0, .5);
+        }
+
+        [data-theme="jungle"] {
+            --bg-deep: #0a1a0a;
+            --bg-surface: #0f1f0f;
+            --gold: #A8D870;
+            --gold-light: #C5E896;
+            --accent-a: #4A7C35;
+            --accent-b: #6BAF4A;
+            --accent-c: #3D5C2E;
+            --accent-d: #8FBF5A;
+            --text: #E8F0DD;
+            --text-secondary: #B0C89E;
+            --rod: #5B7A45;
+            --glow: rgba(168, 216, 112, .35);
+            --amb-a: rgba(74, 124, 53, .25);
+            --amb-b: rgba(168, 216, 112, .12);
+            --nav-bg: rgba(10, 26, 10, .92);
+            --card-border: rgba(168, 216, 112, .35);
+            --display-font: 'Marcellus';
+            --card-shadow: rgba(0, 20, 0, .6);
+        }
+
+        [data-theme="daydream"] {
+            --bg-deep: #F5F0FF;
+            --bg-surface: #FFFFFF;
+            --gold: #B65C8C;
+            --gold-light: #D98CB3;
+            --accent-a: #C9B6E4;
+            --accent-b: #A7D9BE;
+            --accent-c: #F3C9A5;
+            --accent-d: #8FB8E8;
+            --text: #3B3A4A;
+            --text-secondary: #726F87;
+            --rod: #B65C8C;
+            --glow: rgba(182, 92, 140, .2);
+            --amb-a: rgba(201, 182, 228, .3);
+            --amb-b: rgba(167, 217, 190, .25);
+            --nav-bg: rgba(250, 248, 252, .88);
+            --card-border: rgba(182, 170, 214, .4);
+            --display-font: 'Playfair Display';
+            --card-shadow: rgba(139, 120, 172, .15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: default;
+            transition: background .7s ease, color .5s ease;
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255, 255, 255, .02) 30px, rgba(255, 255, 255, .02) 31px),
+                repeating-linear-gradient(-45deg, transparent, transparent 30px, rgba(255, 255, 255, .02) 30px, rgba(255, 255, 255, .02) 31px);
+        }
+
+        .bg-ambiance {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 10%, var(--amb-a) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 55%, var(--amb-b) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 90%, var(--amb-a) 0%, transparent 50%);
+            animation: ambianceDrift 20s ease-in-out infinite;
+            transition: background .7s ease;
+        }
+
+        @keyframes ambianceDrift {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            33% {
+                transform: translate(1.5%, -1%);
+            }
+
+            66% {
+                transform: translate(-1%, 1.5%);
+            }
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Dreamscape for daydream mode */
+        .dreamscape {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .9s ease;
+            overflow: hidden;
+        }
+
+        [data-theme="daydream"] .dreamscape {
+            opacity: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            opacity: .7;
+            filter: blur(.5px);
+        }
+
+        .beam {
+            position: absolute;
+            top: -15%;
+            width: 130px;
+            height: 150%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
+            transform: rotate(12deg);
+            opacity: .3;
+        }
+
+        .mote {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #fff;
+            opacity: .6;
+            animation: moteRise linear infinite;
+        }
+
+        @keyframes moteRise {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: .7;
+            }
+
+            90% {
+                opacity: .4;
+            }
+
+            100% {
+                transform: translateY(-260px) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes cloudDrift {
+            from {
+                transform: translateX(-120%);
+            }
+
+            to {
+                transform: translateX(120vw);
+            }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 0%, var(--accent-a) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .65) 0%, transparent 60%);
+            transition: background .7s ease;
+        }
+
+        [data-theme="daydream"] .hero {
+            background: radial-gradient(ellipse at 50% 0%, var(--accent-a) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, .5) 0%, transparent 60%);
+        }
+
+        .hero-arch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(640px, 92vw);
+            height: 300px;
+            border: 2px solid var(--card-border);
+            border-radius: 50% 50% 0 0/60% 60% 0 0;
+            border-bottom: none;
+            transition: border-color .6s;
+        }
+
+        .hero-arch::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 50% 50% 0 0/60% 60% 0 0;
+            border-bottom: none;
+        }
+
+        .hero-ornament {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: .6rem;
+            animation: float 3.2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .hero-eyebrow {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: clamp(.85rem, 2vw, 1.05rem);
+            color: var(--gold-light);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 1.1rem;
+        }
+
+        .hero-title {
+            font-family: var(--display-font), serif;
+            font-size: clamp(2.6rem, 8vw, 5rem);
+            color: var(--gold);
+            text-shadow: 0 0 40px var(--glow), 0 4px 20px rgba(0, 0, 0, .6);
+            line-height: 1.08;
+            letter-spacing: 1px;
+            transition: color .6s;
+        }
+
+        .hero-divider {
+            width: 190px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 1.6rem auto;
+        }
+
+        .hero-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            line-height: 1.5;
+        }
+
+        .hero-world {
+            margin-top: 2.2rem;
+            font-size: .72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--card-border);
+            padding: .55rem 1.4rem;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            backdrop-filter: blur(6px);
+            background: rgba(255, 255, 255, .03);
+        }
+
+        .mood-indicator {
+            margin-top: .8rem;
+            font-size: .85rem;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 1px;
+            opacity: .9;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-size: .72rem;
+            text-transform: uppercase;
+            animation: bounce 2.2s infinite;
+            opacity: .8;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(8px);
+            }
+        }
+
+        /* Nav */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: .9rem 1.5rem;
+            display: flex;
+            gap: .9rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            transition: background .6s, border-color .6s;
+        }
+
+        .world-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+            min-width: 190px;
+            text-align: right;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--card-border);
+            color: var(--gold);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .3s;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            background: var(--accent-a);
+            border-color: var(--gold-light);
+            transform: scale(1.07);
+            color: #fff;
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--gold-light);
+            outline-offset: 2px;
+        }
+
+        .nav-hint {
+            font-size: .68rem;
+            letter-spacing: 1.5px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            min-width: 150px;
+        }
+
+        .nav-mood {
+            font-size: .75rem;
+            font-family: 'Quicksand', sans-serif;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* Gallery */
+        .gallery-section {
+            max-width: 1500px;
+            margin: 4rem auto 6rem;
+            padding: 0 1.6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: var(--display-font), serif;
+            font-size: clamp(1.5rem, 4vw, 2.1rem);
+            color: var(--gold);
+            margin-bottom: .5rem;
+            letter-spacing: 1px;
+            transition: color .6s;
+        }
+
+        .section-line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto 1rem;
+        }
+
+        .section-hint {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2.2rem;
+        }
+
+        #gallery {
+            position: relative;
+            min-height: 400px;
+        }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .9);
+            z-index: 999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, .5);
+        }
+
+        /* ===== WORLD 1 — GILDED CARNIVAL (Empowerment/Strength) ===== */
+        .gallery--pennant {
+            padding-top: 14px;
+        }
+
+        .rod-container {
+            position: relative;
+            width: 100%;
+            border-top: 5px solid var(--rod);
+            border-radius: 5px;
+            box-shadow: 0 0 24px var(--glow);
+        }
+
+        .rod-container::before,
+        .rod-container::after {
+            content: '';
+            position: absolute;
+            top: -9px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--rod);
+        }
+
+        .rod-container::before {
+            left: -4px;
+        }
+
+        .rod-container::after {
+            right: -4px;
+        }
+
+        .hanging-mobile {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1.2rem 1rem;
+            padding: 1rem 0;
+        }
+
+        .pennant-photo-item {
+            position: relative;
+            transform-origin: top center;
+            opacity: 0;
+            animation: pendulum 3.6s ease-in-out infinite, riseIn .7s ease forwards;
+            width: var(--pw, 180px);
+            cursor: pointer;
+        }
+
+        .pennant-photo-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: var(--string-length, 46px);
+            background: var(--gold);
+            box-shadow: 0 0 6px var(--glow);
+            z-index: 2;
+        }
+
+        @keyframes pendulum {
+
+            0%,
+            100% {
+                transform: rotate(-2.8deg);
+            }
+
+            50% {
+                transform: rotate(2.8deg);
+            }
+        }
+
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(-14px) rotate(0);
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .pennant-photo-item .photo-card {
+            margin-top: var(--string-length, 46px);
+            width: 100%;
+            height: var(--ph, 200px);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .5);
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+
+        .pennant-photo-item .photo-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .7);
+        }
+
+        .pennant-photo-item .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .pennant-quote-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, .85));
+            padding: 1rem .8rem .6rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .3s ease;
+            pointer-events: none;
+        }
+
+        .pennant-photo-item:hover .pennant-quote-overlay {
+            opacity: 1;
+        }
+
+        .pennant-quote-overlay .pq-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: .85rem;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: .3rem;
+        }
+
+        .pennant-quote-overlay .pq-author {
+            font-size: .65rem;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tassel {
+            width: 8px;
+            height: 16px;
+            margin: -4px auto 0;
+            background: repeating-linear-gradient(90deg, var(--gold) 0 2px, transparent 2px 4px);
+            opacity: .85;
+        }
+
+        /* ===== WORLD 2 — VERDANT CANOPY (Success/Perseverance) ===== */
+        .canopy-quotes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1.4rem;
+        }
+
+        .quote-leaf {
+            position: relative;
+            opacity: 0;
+            animation: leafIn .8s ease forwards;
+            transform: rotate(var(--tilt, 0deg));
+            width: var(--cw, 30%);
+            flex-shrink: 0;
+            background: var(--bg-surface);
+            border-radius: 38% 6% 40% 8%/8% 38% 6% 42%;
+            border: 1.5px solid var(--card-border);
+            padding: 1.8rem 1.4rem 2rem;
+            box-shadow: 0 14px 30px var(--card-shadow);
+            transition: transform .3s ease, box-shadow .3s ease;
+        }
+
+        .quote-leaf:hover {
+            transform: rotate(var(--tilt, 0deg)) scale(1.03);
+            box-shadow: 0 18px 38px var(--card-shadow);
+        }
+
+        @keyframes leafIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px) rotate(var(--tilt, 0deg)) scale(.94);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1);
+            }
+        }
+
+        .quote-leaf .vine {
+            position: absolute;
+            top: -26px;
+            left: 20%;
+            width: 40px;
+            height: 26px;
+            z-index: 1;
+            opacity: .9;
+        }
+
+        .quote-leaf .leaf-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: .08;
+            background-image: radial-gradient(ellipse 14px 8px at 15% 20%, var(--accent-b) 40%, transparent 41%), radial-gradient(ellipse 14px 8px at 80% 15%, var(--accent-b) 40%, transparent 41%), radial-gradient(ellipse 14px 8px at 60% 80%, var(--accent-b) 40%, transparent 41%), radial-gradient(ellipse 14px 8px at 25% 75%, var(--accent-b) 40%, transparent 41%);
+        }
+
+        .quote-leaf .quote-mark {
+            font-size: 2rem;
+            color: var(--gold);
+            opacity: .55;
+            display: block;
+            margin-bottom: .3rem;
+        }
+
+        .quote-leaf .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: var(--text);
+            margin-bottom: .8rem;
+        }
+
+        .quote-leaf .quote-author {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: .7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .quote-leaf .quote-author::before {
+            content: '';
+            width: 16px;
+            height: 1px;
+            background: var(--gold-light);
+            display: inline-block;
+        }
+
+        /* ===== WORLD 3 — DAY DREAMING (Gratitude/Good Vibes) ===== */
+        .dream-quotes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .dream-card {
+            position: relative;
+            opacity: 0;
+            animation: floatIn .9s ease forwards;
+            animation-delay: var(--delay, 0s);
+            background: var(--bg-surface);
+            border-radius: 28px;
+            border: 1.5px solid var(--card-border);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 12px 28px var(--card-shadow);
+            transition: transform .3s ease, box-shadow .3s ease;
+            overflow: hidden;
+        }
+
+        .dream-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px var(--card-shadow);
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dream-card .watercolor {
+            position: absolute;
+            inset: 0;
+            opacity: .15;
+            border-radius: 28px;
+            background: radial-gradient(circle at 25% 30%, var(--wc-a, var(--accent-a)) 0%, transparent 50%), radial-gradient(circle at 75% 25%, var(--wc-b, var(--accent-c)) 0%, transparent 50%), radial-gradient(circle at 60% 75%, var(--wc-c, var(--accent-d)) 0%, transparent 55%), radial-gradient(circle at 20% 80%, var(--wc-d, var(--accent-b)) 0%, transparent 50%);
+            filter: blur(8px);
+            z-index: 0;
+            transition: opacity .3s ease;
+        }
+
+        .dream-card:hover .watercolor {
+            opacity: .25;
+        }
+
+        .dream-card .dream-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .dream-card .dream-glyph {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            opacity: .9;
+            transition: transform .3s ease;
+        }
+
+        .dream-card:hover .dream-glyph {
+            transform: scale(1.2);
+        }
+
+        .dream-card .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .dream-card .quote-author {
+            font-family: 'Quicksand', sans-serif;
+            font-size: .8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2.4rem;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            font-size: .75rem;
+            letter-spacing: 1.5px;
+            transition: border-color .6s;
+        }
+
+        @media (max-width: 768px) {
+            .dream-quotes {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .dream-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .quote-leaf {
+                width: 100% !important;
+                max-width: 400px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="gilded">
+    <div class="bg-ambiance"></div>
+    <div class="dreamscape" id="dreamscape"></div>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox"><img src="" alt="enlarged photo"></div>
+
+    <main class="main-wrapper">
+        <header class="hero">
+            <div class="hero-arch"></div>
+            <div class="hero-ornament" id="heroOrnament">✦</div>
+            <h1 class="hero-title">THE HANGING ARCHIVE</h1>
+            <div class="hero-divider"></div>
+            <p class="hero-tagline" id="heroTagline">Quotes worn as jewels for the soul that dares to rise</p>
+            <div class="hero-world" id="heroWorld">✦ &nbsp;The Gilded Carnival</div>
+            <div class="mood-indicator" id="moodIndicator">Mood: Empowerment & Strength</div>
+            <div class="scroll-hint">▼ enter the archive ▼</div>
+        </header>
+
+        <nav class="nav" id="mainNav">
+            <span class="nav-hint">Change the world</span>
+            <button class="theme-toggle" id="themeToggle" aria-label="Switch world"><span
+                    id="themeIcon">✦</span></button>
+            <span class="world-name" id="worldName">The Gilded Carnival</span>
+            <span class="nav-mood" id="navMood">· Empowerment</span>
+        </nav>
+
+        <section class="gallery-section">
+            <div class="section-header">
+                <h2 class="section-title" id="sectionTitle">RISE LIKE THE SUN</h2>
+                <div class="section-line"></div>
+                <p class="section-hint" id="sectionHint">Quotes to ignite your inner fire</p>
+            </div>
+            <div id="gallery"></div>
+        </section>
+    </main>
+
+    <footer>© 2026 THE HANGING ARCHIVE · Museum Edition — Find the mood that speaks to your soul</footer>
+
+    <script>
+        (function () {
+            // --- QUOTE COLLECTIONS BY MOOD ---
+            const successQuotes = [
+                { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+                { text: "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.", author: "Steve Jobs" },
+                { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+                { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
+                { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+                { text: "The secret of getting ahead is getting started. The secret of getting started is breaking your complex overwhelming tasks into small manageable tasks, and starting on the first one.", author: "Mark Twain" },
+                { text: "Perseverance is not a long race; it is many short races one after the other.", author: "Walter Elliot" },
+                { text: "There is no substitute for hard work. Never give up. Never stop believing. Never stop fighting.", author: "Hope Hicks" },
+                { text: "Through perseverance many people win success out of what seemed destined to be certain failure.", author: "Benjamin Disraeli" },
+                { text: "Success is stumbling from failure to failure with no loss of enthusiasm.", author: "Winston Churchill" },
+                { text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.", author: "Vince Lombardi" },
+                { text: "Don't be discouraged. It's often the last key in the bunch that opens the lock.", author: "Unknown" },
+                { text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+                { text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
+                { text: "Fall seven times and stand up eight.", author: "Japanese Proverb" },
+                { text: "Your hardest times often lead to the greatest moments of your life. Keep going. Tough situations build strong people in the end.", author: "Roy T. Bennett" },
+                { text: "Great things are done by a series of small things brought together.", author: "Vincent Van Gogh" },
+                { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+                { text: "Our greatest glory is not in never falling, but in rising every time we fall.", author: "Confucius" },
+                { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+                { text: "A river cuts through rock, not because of its power, but because of its persistence.", author: "James N. Watkins" },
+                { text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson" },
+                { text: "Don't limit your challenges. Challenge your limits.", author: "Unknown" },
+                { text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't.", author: "Rikki Rogers" },
+                { text: "The struggle you're in today is developing the strength you need for tomorrow.", author: "Robert Tew" }
+            ];
+
+            const gratitudeQuotes = [
+                { text: "Gratitude turns what we have into enough, and more. It turns denial into acceptance, chaos into order, confusion into clarity.", author: "Melody Beattie" },
+                { text: "Be thankful for what you have; you'll end up having more. If you concentrate on what you don't have, you will never, ever have enough.", author: "Oprah Winfrey" },
+                { text: "The more grateful I am, the more beauty I see.", author: "Mary Davis" },
+                { text: "Gratitude is the fairest blossom which springs from the soul.", author: "Henry Ward Beecher" },
+                { text: "Enjoy the little things, for one day you may look back and realize they were the big things.", author: "Robert Brault" },
+                { text: "When you arise in the morning, think of what a precious privilege it is to be alive – to breathe, to think, to enjoy, to love.", author: "Marcus Aurelius" },
+                { text: "Let us be grateful to the people who make us happy; they are the charming gardeners who make our souls blossom.", author: "Marcel Proust" },
+                { text: "The real gift of gratitude is that the more grateful you are, the more present you become.", author: "Robert Holden" },
+                { text: "Happiness comes in waves. It'll find you again.", author: "Unknown" },
+                { text: "Take a deep breath. Inhale peace. Exhale gratitude.", author: "Unknown" },
+                { text: "There is always, always, always something to be thankful for.", author: "Unknown" },
+                { text: "Kindness is free. Sprinkle that stuff everywhere.", author: "Unknown" },
+                { text: "The sun will rise and we will try again.", author: "Twenty One Pilots" },
+                { text: "A grateful heart is a magnet for miracles.", author: "Unknown" },
+                { text: "Every day may not be good, but there is something good in every day.", author: "Alice Morse Earle" },
+                { text: "The best way to pay for a lovely moment is to enjoy it.", author: "Richard Bach" },
+                { text: "Life is beautiful, and there's so much to smile about.", author: "Marilyn Monroe" },
+                { text: "What if you woke up today with only the things you thanked God for yesterday?", author: "Unknown" },
+                { text: "Gratitude is not only the greatest of virtues, but the parent of all others.", author: "Cicero" },
+                { text: "In the end, maybe it's wiser to surrender before the miraculous scope of human generosity and to just keep saying thank you, forever and sincerely.", author: "David Foster Wallace" },
+                { text: "Good vibes only. But also, let's be real: sometimes bad vibes sneak in. Thank them for visiting, and let them go.", author: "Unknown" },
+                { text: "May you find reasons to smile every single day.", author: "Unknown" },
+                { text: "Your vibe attracts your tribe. Stay grateful, stay kind.", author: "Unknown" },
+                { text: "The smallest act of kindness is worth more than the grandest intention.", author: "Oscar Wilde" },
+                { text: "It's not happiness that brings us gratitude. It's gratitude that brings us happiness.", author: "Unknown" }
+            ];
+
+            const empowermentQuotes = [
+                { text: "She believed she could, so she did.", author: "R.S. Grey" },
+                { text: "You are braver than you believe, stronger than you seem, and smarter than you think.", author: "A.A. Milne" },
+                { text: "No one can make you feel inferior without your consent.", author: "Eleanor Roosevelt" },
+                { text: "The most courageous act is still to think for yourself. Aloud.", author: "Coco Chanel" },
+                { text: "You have power over your mind — not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
+                { text: "I am not what happened to me. I am what I choose to become.", author: "Carl Jung" },
+                { text: "You may have to fight a battle more than once to win it.", author: "Margaret Thatcher" },
+                { text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
+                { text: "Courage doesn't always roar. Sometimes courage is the quiet voice at the end of the day saying, 'I will try again tomorrow.'", author: "Mary Anne Radmacher" },
+                { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+                { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
+                { text: "The only way out is through.", author: "Robert Frost" },
+                { text: "Rock bottom became the solid foundation on which I rebuilt my life.", author: "J.K. Rowling" },
+                { text: "You are the sky. Everything else — it's just the weather.", author: "Pema Chödrön" },
+                { text: "Sometimes you don't realize your own strength until you come face to face with your greatest weakness.", author: "Susan Gale" },
+                { text: "Rise above the storm and you will find the sunshine.", author: "Mario Fernández" },
+                { text: "The world breaks everyone, and afterward, some are strong at the broken places.", author: "Ernest Hemingway" },
+                { text: "You've survived 100% of your bad days. You're doing great.", author: "Unknown" },
+                { text: "Stars can't shine without darkness.", author: "Unknown" },
+                { text: "He who conquers himself is the mightiest warrior.", author: "Confucius" }
+            ];
+
+            // --- IMAGE URLS FOR GILDED CARNIVAL ---
+            const originalImageUrls = [
+                "https://th.bing.com/th/id/R.341a69e6922b56cb4e55d245a4f9891f?rik=faDjCJXVvHmzAQ&riu=http%3a%2f%2fwww.prettydesigns.com%2fwp-content%2fuploads%2f2015%2f04%2fMotivational-Quotes-7.jpg&ehk=P6rvqpjYNijkTErO0cQsvr1zj6fNKbV1rYkRYxoyTeQ%3d&risl=&pid=ImgRaw&r=0",
+                "https://harunmudak.com/wp-content/uploads/2020/12/life-is-short-quotes-2.png",
+                "https://i.pinimg.com/originals/2f/a8/19/2fa819c28fe01bca62381d6b058ce4b9.jpg",
+                "https://cdn.lifehack.org/wp-content/uploads/2016/04/28044328/dfcb4bb72f8a98b8613c9cd0868f4c58.jpg",
+                "https://funkylife.in/wp-content/uploads/2021/04/inspirational-quotes-in-english-funkylife_7.jpg",
+                "https://www.dailyfunnyquote.com/wp-content/uploads/2019/02/59-Best-Positive-Quotes-for-Success-Short-Inspirational-Quotes-55.jpg",
+                "https://www.blurmark.com/wp-content/uploads/2017/01/Motivational-quote-69.jpg",
+                "https://th.bing.com/th/id/OIP.OAQwvTWIJ0v62O2u7QskRwHaHa?pid=ImgDet&rs=1",
+                "https://th.bing.com/th/id/OIP.DMpcZ7bB47dXfrHSMmvyTAHaFF?pid=ImgDet&rs=1",
+                "https://1.bp.blogspot.com/-e4iVh_uSNx8/Vs2LZIgqkXI/AAAAAAAAABg/SW8hQEjyylg/s1600/Steve%2BJobs%2BQuote%2BAnd%2BSaying%2BSometimes%2BLife%2BHits%2BYou%2BIn%2BThe%2BHead%2BWith%2BA%2BBrick.jpg",
+                "https://explorepic.com/wp-content/uploads/2019/10/Most-Famous-Quotes-of-All-Time-inspirational-quotes-about-life-and-struggles-683x1024.jpg",
+                "https://th.bing.com/th/id/R.7ffb9c0fd347881c2508b4b87e7abc34?rik=CqnRg%2fl%2b5fyFeQ&riu=http%3a%2f%2f1.bp.blogspot.com%2f-RZxV6s_8ado%2fUiJDW_ipjzI%2fAAAAAAAAA08%2fYP4QjXArbPM%2fs1600%2fMotivational%2bQuotes%2bconfucius.jpg&ehk=C5%2fZw1EAv1rqLNXNo%2f36aGqfcvj1U9%2f1OSryEEidewk%3d&risl=&pid=ImgRaw&r=0",
+                "https://qph.fs.quoracdn.net/main-qimg-463af6d3b8c62ab0c1285dad07cc3ae5-c",
+                "https://thegoalchaser.com/wp-content/uploads/VERY-SHORT-QUOTES-14-1024x1024.jpg",
+                "https://quotefancy.com/media/wallpaper/3840x2160/6743-Ralph-Waldo-Emerson-Quote-Always-do-what-you-are-afraid-to-do.jpg",
+                "https://www.teahub.io/photos/full/348-3485626_motivational-quotes-for-student-success-motivational-regret-wallpapers.jpg",
+                "https://www.dreamsquote.com/wp-content/uploads/2019/07/Best-Life-Quotes.jpg",
+                "https://th.bing.com/th/id/R.d94484128d1e74bb061bce1b0e7a0a17?rik=%2bODphgTJFw19aQ&riu=http%3a%2f%2fwww.everythingmixed.com%2fwp-content%2fuploads%2finspirational-quotes-19.jpg&ehk=wbHKsTAk0GAVyG8R9xF3llKB8le1o3WmcJinDY7tozg%3d&risl=&pid=ImgRaw&r=0",
+                "https://www.barnorama.com/wp-content/uploads/2017/06/37-quotes_of_famous_people.jpg",
+                "https://i2.wp.com/www.dailyfunnyquote.com/wp-content/uploads/2019/02/59-Best-Positive-Quotes-for-Success-Short-Inspirational-Quotes-14.jpg?resize=735%2C1001&ssl=1",
+                "https://www.dailyfunnyquote.com/wp-content/uploads/2019/02/59-Best-Positive-Quotes-for-Success-Short-Inspirational-Quotes-58.jpg",
+                "https://funzumo.com/wp-content/uploads/2019/04/67-Short-Inspirational-Quotes-Top-Quotes-and-Sayings-15.jpg",
+                "https://i.pinimg.com/736x/93/53/e5/9353e5d353330b7bfcb761b5c6e52032.jpg",
+                "https://explorepic.com/wp-content/uploads/2019/06/31-Short-Inspirational-Quotes-11.jpg",
+                "https://th.bing.com/th/id/OIP.Sb6B9wam6mCS3XIgKB5whQHaIX?pid=ImgDet&w=849&h=959&rs=1",
+                "https://www.joshloe.com/wp-content/uploads/2018/11/100-short-inspirational-quotes-for-women-inspiring-famous-quotes.jpg",
+                "https://www.dreamsquote.com/wp-content/uploads/2019/01/38-Short-Inspirational-Quotes-About-Life-and-Sayings-4.jpg",
+                "https://liketogirls.com/uploads/2020060601/2020060612545125401.jpg",
+                "https://funzumo.com/wp-content/uploads/2019/04/31-Short-Inspirational-Quotes-And-Short-Inspirational-Sayings-3.jpg"
+            ];
+
+            // --- WORLD CONFIGURATIONS ---
+            const worlds = {
+                gilded: {
+                    icon: '✦',
+                    name: 'The Gilded Carnival',
+                    mood: 'Empowerment & Strength',
+                    section: 'RISE LIKE THE SUN',
+                    sectionHint: 'Quotes to ignite your inner fire',
+                    tagline: 'Quotes worn as jewels for the soul that dares to rise',
+                    render: renderPennantPhotos,
+                    quotes: empowermentQuotes
+                },
+                jungle: {
+                    icon: '❁',
+                    name: 'The Verdant Canopy',
+                    mood: 'Success & Perseverance',
+                    section: 'GROWTH IN THE UNDERGROWTH',
+                    sectionHint: 'Words to fuel your journey upward',
+                    tagline: 'Through the thicket, toward the light — success blooms for those who persist',
+                    render: renderCanopyQuotes,
+                    quotes: successQuotes
+                },
+                daydream: {
+                    icon: '☁',
+                    name: 'Day Dreaming',
+                    mood: 'Gratitude & Good Vibes',
+                    section: 'COZY THOUGHTS IN THE CLOUDS',
+                    sectionHint: 'Gentle reminders of life\'s sweetness',
+                    tagline: 'Soft words for tender hearts — finding light in the everyday',
+                    render: renderDreamQuotes,
+                    quotes: gratitudeQuotes
+                }
+            };
+
+            const gallery = document.getElementById('gallery');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = lightbox.querySelector('img');
+
+            lightbox.addEventListener('click', () => lightbox.style.display = 'none');
+
+            function openLightbox(url) {
+                lightboxImg.src = url;
+                lightbox.style.display = 'flex';
+            }
+
+            function clearGallery() { gallery.innerHTML = ''; gallery.className = ''; }
+
+            function renderPennantPhotos(quotes) {
+                clearGallery();
+                gallery.classList.add('gallery--pennant');
+                const rod = document.createElement('div');
+                rod.className = 'rod-container';
+                const mobile = document.createElement('div');
+                mobile.className = 'hanging-mobile';
+                rod.appendChild(mobile);
+                gallery.appendChild(rod);
+6
+                const shuffledQuotes = [...quotes].sort(() => Math.random() - 0.5);
+
+                originalImageUrls.forEach((url, index) => {
+                    const testImg = new Image();
+                    testImg.src = url;
+                    testImg.onload = () => {
+                        const stringLen = 30 + Math.round(20 * Math.abs(Math.sin(index * 1.7)));
+                        const width = 140 + Math.floor(Math.random() * 80);
+                        const height = 180 + Math.floor(Math.random() * 80);
+                        const quote = shuffledQuotes[index % shuffledQuotes.length];
+
+                        const item = document.createElement('div');
+                        item.className = 'pennant-photo-item';
+                        item.style.setProperty('--string-length', stringLen + 'px');
+                        item.style.setProperty('--pw', width + 'px');
+                        item.style.setProperty('--ph', height + 'px');
+                        item.style.animationDelay = (-(index % 7) * 0.5) + 's, ' + (index * 0.05) + 's';
+                        item.innerHTML = `
+                            <div class="photo-card" style="height:${height}px;">
+                                <img src="${url}" alt="photo" loading="lazy">
+                                <div class="pennant-quote-overlay">
+                                    <p class="pq-text">"${quote.text}"</p>c 6
+                                    <p class="pq-author">— ${quote.author}</p>
+                                </div>
+                            </div>
+                            <div class="tassel"></div>`;
+                        item.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openLightbox(url);
+                        });
+                        mobile.appendChild(item);
+                    };
+                    testImg.onerror = () => {};
+                    setTimeout(() => {
+                        if (!testImg.complete || testImg.naturalWidth === 0) {}
+                    }, 8000);
+                });
+            }
+
+            function renderCanopyQuotes(quotes) {
+                clearGallery();
+                gallery.classList.add('gallery--canopy');
+                const container = document.createElement('div');
+                container.className = 'canopy-quotes';
+                quotes.forEach((q, i) => {
+                    const tilt = (Math.sin(i * 2.3) * 6).toFixed(1);
+                    const widthPercent = 28 + Math.floor(Math.random() * 18);
+                    const item = document.createElement('div');
+                    item.className = 'quote-leaf';
+                    item.style.setProperty('--tilt', tilt + 'deg');
+                    item.style.setProperty('--cw', widthPercent + '%');
+                    item.style.animationDelay = (i * 0.06) + 's';
+                    item.innerHTML = `
+                        <svg class="vine" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 2 Q 20 2 20 14 Q 20 24 36 24" stroke="var(--accent-b)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                            <circle cx="2" cy="2" r="2.4" fill="var(--accent-b)"/>
+                            <circle cx="36" cy="24" r="2" fill="var(--gold)"/>
+                        </svg>
+                        <div class="leaf-pattern"></div>
+                        <span class="quote-mark">&ldquo;</span>
+                        <p class="quote-text">${q.text}</p>
+                        <div class="quote-author">${q.author}</div>`;
+                    container.appendChild(item);
+                });
+                gallery.appendChild(container);
+            }
+
+            /* ---- DAY DREAMING: Gratitude cards ---- */
+            const wcPairs = [
+                ['--accent-a', '--accent-c'],
+                ['--accent-b', '--accent-d'],
+                ['--accent-c', '--accent-a'],
+                ['--accent-d', '--accent-b']
+            ];
+            const glyphs = ['☁', '✿', '☾', '✦', '⋆', '🌸', '🕊️', '🍂', '🌙', '💫'];
+
+            function renderDreamQuotes(quotes) {
+                clearGallery();
+                gallery.classList.add('gallery--dream');
+                const container = document.createElement('div');
+                container.className = 'dream-quotes';
+                quotes.forEach((q, i) => {
+                    const pair = wcPairs[i % wcPairs.length];
+                    const glyph = glyphs[i % glyphs.length];
+                    const item = document.createElement('div');
+                    item.className = 'dream-card';
+                    item.style.setProperty('--delay', (i * 0.08) + 's');
+                    item.innerHTML = `
+                        <div class="watercolor" style="--wc-a:var(${pair[0]});--wc-b:var(${pair[1]});"></div>
+                        <div class="dream-content">
+                            <div class="dream-glyph">${glyph}</div>
+                            <p class="quote-text">"${q.text}"</p>
+                            <div class="quote-author">— ${q.author}</div>
+                        </div>`;
+                    container.appendChild(item);
+                });
+                gallery.appendChild(container);
+            }
+
+            /* ---- DREAMSCAPE (daydream only) ---- */
+            function cloudSVG(w, h, color) {
+                return `<svg viewBox="0 0 200 100" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+                    <ellipse cx="60" cy="60" rx="50" ry="30" fill="${color}"/>
+                    <ellipse cx="110" cy="45" rx="45" ry="35" fill="${color}"/>
+                    <ellipse cx="150" cy="65" rx="40" ry="26" fill="${color}"/>
+                    <ellipse cx="90" cy="75" rx="60" ry="24" fill="${color}"/>
+                </svg>`;
+            }
+
+            function buildDreamscape() {
+                const field = document.getElementById('dreamscape');
+                field.innerHTML = '';
+                for (let i = 0; i < 7; i++) {
+                    const c = document.createElement('div');
+                    c.className = 'cloud';
+                    const w = 140 + Math.random() * 160;
+                    c.innerHTML = cloudSVG(w, w * 0.5, '#ffffff');
+                    c.style.top = (5 + Math.random() * 70) + '%';
+                    c.style.left = '0';
+                    c.style.animation = `cloudDrift ${40 + Math.random() * 40}s linear infinite`;
+                    c.style.animationDelay = (-Math.random() * 40) + 's';
+                    field.appendChild(c);
+                }
+                for (let i = 0; i < 4; i++) {
+                    const b = document.createElement('div');
+                    b.className = 'beam';
+                    b.style.left = (10 + i * 24) + '%';
+                    field.appendChild(b);
+                    for (let m = 0; m < 8; m++) {
+                        const mote = document.createElement('div');
+                        mote.className = 'mote';
+                        mote.style.left = (10 + i * 24 + Math.random() * 6) + '%';
+                        mote.style.top = (30 + Math.random() * 50) + '%';
+                        mote.style.animationDuration = (6 + Math.random() * 5) + 's';
+                        mote.style.animationDelay = (Math.random() * 6) + 's';
+                        field.appendChild(mote);
+                    }
+                }
+            }
+            buildDreamscape();
+
+            function applyWorld(key) {
+                const w = worlds[key];
+                document.body.setAttribute('data-theme', key);
+                document.getElementById('themeIcon').textContent = w.icon;
+                document.getElementById('heroOrnament').textContent = w.icon;
+                document.getElementById('heroWorld').innerHTML = w.icon + ' &nbsp;' + w.name;
+                document.getElementById('worldName').textContent = w.name;
+                document.getElementById('sectionTitle').textContent = w.section;
+                document.getElementById('moodIndicator').textContent = 'Mood: ' + w.mood;
+                document.getElementById('navMood').textContent = '· ' + w.mood;
+                document.getElementById('heroTagline').textContent = w.tagline;
+                document.getElementById('sectionHint').textContent = w.sectionHint;
+                w.render(w.quotes);
+                localStorage.setItem('archiveWorld', key);
+            }
+
+            const order = ['gilded', 'daydream', 'jungle'];
+            let current = localStorage.getItem('archiveWorld');
+            if (!order.includes(current)) current = 'gilded';
+            applyWorld(current);
+
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const idx = order.indexOf(current);
+                current = order[(idx + 1) % order.length];
+                applyWorld(current);
+            });
+        })();
+    </script>
+</body>
+
+</html>
