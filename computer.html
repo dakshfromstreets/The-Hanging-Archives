@@ -531,16 +531,24 @@
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
 
+        /* Hover-only action strip — no quote text on the images */
         .pennant-actions-overlay {
-            position: absolute; inset: 0;
+            position: absolute;
+            inset: 0;
             background: linear-gradient(transparent 60%, rgba(0, 0, 0, .6) 100%);
-            display: flex; align-items: flex-end; justify-content: center;
-            padding-bottom: .7rem; opacity: 0; transition: opacity .3s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: .7rem;
+            opacity: 0;
+            transition: opacity .3s ease;
             pointer-events: none;
         }
 
         .pennant-photo-item:hover .pennant-actions-overlay,
-        .pennant-photo-item:focus-within .pennant-actions-overlay { opacity: 1; }
+        .pennant-photo-item:focus-within .pennant-actions-overlay {
+            opacity: 1;
+        }
 
         @media (hover: none) {
             .pennant-actions-overlay {
@@ -549,23 +557,35 @@
             }
         }
 
-        .pq-actions { display: flex; gap: .4rem; pointer-events: auto; }
+        .pq-actions {
+            display: flex;
+            gap: .4rem;
+            pointer-events: auto;
+        }
 
         .pq-btn {
-            width: 26px; height: 26px; padding: 0;
-            display: flex; align-items: center; justify-content: center;
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: rgba(255, 255, 255, .14);
             border: 1px solid rgba(255, 255, 255, .3);
-            border-radius: 50%; color: rgba(255, 255, 255, .95);
-            cursor: pointer; transition: all .25s ease;
+            border-radius: 50%;
+            color: rgba(255, 255, 255, .95);
+            cursor: pointer;
+            transition: all .25s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
         .pq-btn svg { width: 11px; height: 11px; display: block; }
 
         .pq-btn:hover, .pq-btn:focus-visible {
-            background: var(--gold); border-color: var(--gold-light);
-            color: #1a1408; transform: translateY(-1px) scale(1.1);
+            background: var(--gold);
+            border-color: var(--gold-light);
+            color: #1a1408;
+            transform: translateY(-1px) scale(1.1);
             outline: none;
         }
 
@@ -600,7 +620,8 @@
         }
 
         .quote-leaf:focus-visible {
-            outline: 2px solid var(--gold); outline-offset: 4px;
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
         }
 
         @keyframes leafIn {
@@ -659,7 +680,8 @@
             padding: 2.5rem 2rem; text-align: center;
             box-shadow: 0 12px 28px var(--card-shadow);
             transition: transform .3s ease, box-shadow .3s ease;
-            overflow: hidden; cursor: pointer;
+            overflow: hidden;
+            cursor: pointer;
         }
 
         .dream-card:hover {
@@ -668,7 +690,8 @@
         }
 
         .dream-card:focus-visible {
-            outline: 2px solid var(--gold); outline-offset: 4px;
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
         }
 
         @keyframes floatIn {
@@ -677,7 +700,8 @@
         }
 
         .dream-card .watercolor {
-            position: absolute; inset: 0; opacity: .15; border-radius: 28px;
+            position: absolute; inset: 0; opacity: .15;
+            border-radius: 28px;
             background: radial-gradient(circle at 25% 30%, var(--wc-a, var(--accent-a)) 0%, transparent 50%),
                         radial-gradient(circle at 75% 25%, var(--wc-b, var(--accent-c)) 0%, transparent 50%),
                         radial-gradient(circle at 60% 75%, var(--wc-c, var(--accent-d)) 0%, transparent 55%),
@@ -804,24 +828,36 @@
         }
 
         .journey-actions {
-            display: flex; gap: .55rem;
-            margin-top: -.7rem; padding-top: .1rem;
-            opacity: 0; pointer-events: none; transform: translateY(6px);
+            display: flex;
+            gap: .55rem;
+            margin-top: -.7rem;
+            padding-top: .1rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px);
             transition: opacity .45s cubic-bezier(.16, 1, .3, 1), transform .45s cubic-bezier(.16, 1, .3, 1);
         }
 
         .journey-quote.revealed:hover .journey-actions,
         .journey-quote.revealed:focus-within .journey-actions {
-            opacity: 1; pointer-events: auto; transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
         .quote-action {
-            width: 36px; height: 36px; padding: 0;
-            display: flex; align-items: center; justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: rgba(245, 200, 66, .04);
             border: 1px solid rgba(245, 200, 66, .28);
-            border-radius: 50%; color: rgba(245, 200, 66, .75);
-            cursor: pointer; transition: all .35s cubic-bezier(.16, 1, .3, 1);
+            border-radius: 50%;
+            color: rgba(245, 200, 66, .75);
+            cursor: pointer;
+            transition: all .35s cubic-bezier(.16, 1, .3, 1);
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -842,7 +878,9 @@
 
         @media (hover: none) {
             .journey-quote.revealed .journey-actions {
-                opacity: .8; pointer-events: auto; transform: translateY(0);
+                opacity: .8;
+                pointer-events: auto;
+                transform: translateY(0);
             }
             .journey-quote.revealed .journey-actions .quote-action {
                 background: rgba(245, 200, 66, .06);
@@ -1089,12 +1127,6 @@
         <nav class="nav" id="mainNav">
             <span class="nav-hint">Change the world</span>
             <button class="theme-toggle" id="themeToggle" aria-label="Switch world"><span id="themeIcon">✦</span></button>
-            
-            <!-- Notification Bell Button -->
-            <button class="theme-toggle" id="notifToggle" aria-label="Toggle daily reminders" title="Get a quote at 5 AM & 6:05 PM">
-                <span id="notifIcon">🔕</span>
-            </button>
-
             <span class="world-name" id="worldName">The Gilded Carnival</span>
             <span class="nav-mood" id="navMood">· Empowerment</span>
         </nav>
@@ -1301,7 +1333,6 @@
                 return out;
             }
             const arabianAllQuotes = interleaveQuotes(lifeQuotes, humanNatureQuotes);
-            const allQuotesPool = [...empowermentQuotes, ...successQuotes, ...gratitudeQuotes, ...lifeQuotes, ...humanNatureQuotes];
 
             const originalImageUrls = [
                 "https://th.bing.com/th/id/R.341a69e6922b56cb4e55d245a4f9891f?rik=faDjCJXVvHmzAQ&riu=http%3a%2f%2fwww.prettydesigns.com%2fwp-content%2fuploads%2f2015%2f04%2fMotivational-Quotes-7.jpg&ehk=P6rvqpjYNijkTErO0cQsvr1zj6fNKbV1rYkRYxoyTeQ%3d&risl=&pid=ImgRaw&r=0",
@@ -1397,8 +1428,7 @@
                 copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
                 whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
                 error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
-                loading: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>',
-                bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
+                loading: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>'
             };
 
             let toastTimer = null;
@@ -1616,8 +1646,10 @@
                     return;
                 }
 
+                // JPEG for file share (small)
                 const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
 
+                // 1) Native share sheet — image only, no text
                 try {
                     const file = new File([jpegBlob], 'hanging-archive.jpg', { type: 'image/jpeg' });
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -1631,6 +1663,7 @@
                     }
                 } catch (e) {}
 
+                // 2) Clipboard image + open bare WhatsApp Web
                 if (navigator.clipboard && window.ClipboardItem) {
                     try {
                         const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -1641,6 +1674,7 @@
                     } catch (err) {}
                 }
 
+                // 3) Download card + open bare WhatsApp Web
                 try {
                     const url = URL.createObjectURL(jpegBlob);
                     const a = document.createElement('a');
@@ -1734,7 +1768,7 @@
                         item.style.setProperty('--pw', width + 'px');
                         item.style.setProperty('--ph', height + 'px');
                         item.style.animationDelay = (-(index % 7) * 0.5) + 's, ' + (index * 0.05) + 's';
-                        
+                        // images only — no quote text on the hanging cards
                         item.innerHTML = `
                             <div class="photo-card" style="height:${height}px;">
                                 <img src="${url}" alt="photo" loading="lazy">
@@ -2024,118 +2058,6 @@
                 current = order[(idx + 1) % order.length];
                 applyWorld(current);
             });
-
-            /* ================= NOTIFICATIONS FEATURE ================= */
-            const notifToggle = document.getElementById('notifToggle');
-            const notifIcon = document.getElementById('notifIcon');
-            let notificationsEnabled = localStorage.getItem('notifEnabled') === 'true';
-            let notifTimeout = null;
-
-            function updateNotifUI() {
-                if (notificationsEnabled) {
-                    notifIcon.textContent = '🔔';
-                    notifToggle.style.color = 'var(--gold)';
-                    notifToggle.style.borderColor = 'var(--gold)';
-                    notifToggle.style.background = 'rgba(255,255,255,0.05)';
-                } else {
-                    notifIcon.textContent = '🔕';
-                    notifToggle.style.color = '';
-                    notifToggle.style.borderColor = '';
-                    notifToggle.style.background = '';
-                }
-            }
-
-            function triggerNotification(type) {
-                const q = allQuotesPool[Math.floor(Math.random() * allQuotesPool.length)];
-                const title = type === 'morning' ? "Good Morning · A Quote for You" : "Evening Reflection · A Quote for You";
-                new Notification(title, {
-                    body: `"${q.text}"\n— ${q.author}`,
-                    icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
-                });
-            }
-
-            function scheduleNextNotification() {
-                if (notifTimeout) clearTimeout(notifTimeout);
-                if (!notificationsEnabled || Notification.permission !== 'granted') return;
-
-                const now = new Date();
-                const morningTarget = new Date(now);
-                morningTarget.setHours(5, 0, 0, 0); // 5:00 AM
-                const eveningTarget = new Date(now);
-                eveningTarget.setHours(18, 5, 0, 0); // 6:05 PM (TEST TIME)
-
-                let nextTarget;
-                let type;
-
-                if (now < morningTarget) {
-                    nextTarget = morningTarget;
-                    type = 'morning';
-                } else if (now < eveningTarget) {
-                    nextTarget = eveningTarget;
-                    type = 'evening';
-                } else {
-                    // Next day morning
-                    nextTarget = new Date(morningTarget);
-                    nextTarget.setDate(nextTarget.getDate() + 1);
-                    type = 'morning';
-                }
-
-                const delay = nextTarget.getTime() - now.getTime();
-
-                notifTimeout = setTimeout(() => {
-                    triggerNotification(type);
-                    scheduleNextNotification(); // Schedule the next one
-                }, delay);
-            }
-
-            notifToggle.addEventListener('click', async () => {
-                if (notificationsEnabled) {
-                    // Turn OFF
-                    notificationsEnabled = false;
-                    localStorage.setItem('notifEnabled', 'false');
-                    updateNotifUI();
-                    showToast('Daily reminders turned off', 'copy');
-                    if (notifTimeout) clearTimeout(notifTimeout);
-                } else {
-                    // Turn ON
-                    if (!('Notification' in window)) {
-                        showToast('Notifications not supported on this browser', 'error');
-                        return;
-                    }
-
-                    let permission = Notification.permission;
-                    if (permission !== 'granted') {
-                        permission = await Notification.requestPermission();
-                    }
-
-                    if (permission === 'granted') {
-                        notificationsEnabled = true;
-                        localStorage.setItem('notifEnabled', 'true');
-                        updateNotifUI();
-                        showToast('Daily reminders on · 5 AM & 6:05 PM', 'bell');
-                        scheduleNextNotification();
-
-                        // Send test notification after 5 seconds
-                        showToast('Sending test notification in 5s...', 'bell');
-                        setTimeout(() => {
-                            new Notification("Test Reminder", {
-                                body: "This is a test. You will receive quotes at 5:00 AM and 6:05 PM.",
-                                icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
-                            });
-                        }, 5000);
-
-                    } else {
-                        showToast('Notification permission denied', 'error');
-                    }
-                }
-            });
-
-            // Init notifications state on load
-            updateNotifUI();
-            if (notificationsEnabled && Notification.permission === 'granted') {
-                scheduleNextNotification();
-            }
-
         })();
     </script>
 </body>
