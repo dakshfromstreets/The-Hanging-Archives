@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Marcellus&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Marcellus&family=Italiana&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
@@ -74,15 +74,29 @@
             --card-shadow: rgba(139, 120, 172, .15);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        [data-theme="arabian"] {
+            --bg-deep: #17120a;
+            --bg-surface: #1d1710;
+            --gold: #F5C842;
+            --gold-light: #FFE9A8;
+            --accent-a: #C77B2E;
+            --accent-b: #B8973A;
+            --accent-c: #A85B22;
+            --accent-d: #E8A33D;
+            --text: #FBF3DC;
+            --text-secondary: #C4B494;
+            --rod: #D4A22E;
+            --glow: rgba(245, 200, 66, .42);
+            --amb-a: rgba(199, 123, 46, .20);
+            --amb-b: rgba(245, 200, 66, .12);
+            --nav-bg: rgba(23, 18, 10, .94);
+            --card-border: rgba(245, 200, 66, .26);
+            --display-font: 'Italiana';
+            --card-shadow: rgba(0, 0, 0, .6);
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -94,10 +108,7 @@
             line-height: 1.6;
         }
 
-        ::selection {
-            background: var(--gold);
-            color: #fff;
-        }
+        ::selection { background: var(--gold); color: #1a1408; }
 
         body::before {
             content: '';
@@ -124,123 +135,155 @@
         }
 
         @keyframes ambianceDrift {
-
-            0%,
-            100% {
-                transform: translate(0, 0);
-            }
-
-            33% {
-                transform: translate(1.5%, -1%);
-            }
-
-            66% {
-                transform: translate(-1%, 1.5%);
-            }
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(1.5%, -1%); }
+            66% { transform: translate(-1%, 1.5%); }
         }
 
-        .main-wrapper {
-            position: relative;
-            z-index: 1;
-        }
+        .main-wrapper { position: relative; z-index: 1; }
 
-        /* Dreamscape for daydream mode */
         .dreamscape {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity .9s ease;
-            overflow: hidden;
+            position: fixed; inset: 0; z-index: 0;
+            pointer-events: none; opacity: 0;
+            transition: opacity .9s ease; overflow: hidden;
         }
 
-        [data-theme="daydream"] .dreamscape {
-            opacity: 1;
-        }
+        [data-theme="daydream"] .dreamscape { opacity: 1; }
 
-        .cloud {
-            position: absolute;
-            opacity: .7;
-            filter: blur(.5px);
-        }
+        .cloud { position: absolute; opacity: .7; filter: blur(.5px); }
 
         .beam {
-            position: absolute;
-            top: -15%;
-            width: 130px;
-            height: 150%;
+            position: absolute; top: -15%; width: 130px; height: 150%;
             background: linear-gradient(180deg, rgba(255, 255, 255, .45), rgba(255, 255, 255, 0));
-            transform: rotate(12deg);
-            opacity: .3;
+            transform: rotate(12deg); opacity: .3;
         }
 
         .mote {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: #fff;
-            opacity: .6;
-            animation: moteRise linear infinite;
+            position: absolute; width: 3px; height: 3px; border-radius: 50%;
+            background: #fff; opacity: .6; animation: moteRise linear infinite;
         }
 
         @keyframes moteRise {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: .7;
-            }
-
-            90% {
-                opacity: .4;
-            }
-
-            100% {
-                transform: translateY(-260px) translateX(20px);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: .7; }
+            90% { opacity: .4; }
+            100% { transform: translateY(-260px) translateX(20px); opacity: 0; }
         }
 
         @keyframes cloudDrift {
-            from {
-                transform: translateX(-120%);
-            }
-
-            to {
-                transform: translateX(120vw);
-            }
+            from { transform: translateX(-120%); }
+            to { transform: translateX(120vw); }
         }
 
-        /* Hero */
+        .arabian-night {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            opacity: 0; transition: opacity 1.4s ease; overflow: hidden;
+        }
+
+        [data-theme="arabian"] .arabian-night { opacity: 1; }
+
+        .arabian-night::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 50% -8%, rgba(245, 200, 66, .22) 0%, transparent 52%),
+                radial-gradient(ellipse at 12% 62%, rgba(199, 123, 46, .16) 0%, transparent 55%),
+                radial-gradient(ellipse at 88% 48%, rgba(232, 163, 61, .13) 0%, transparent 52%),
+                linear-gradient(180deg, #1a1408 0%, #14100a 50%, #100c06 100%);
+        }
+
+        .arabian-pattern {
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23F5C842' stroke-width='1'%3E%3Cpath d='M60 15 L75 45 L105 60 L75 75 L60 105 L45 75 L15 60 L45 45 Z'/%3E%3Ccircle cx='60' cy='60' r='5'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 120px; opacity: .04;
+            mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 82%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 40%, black 0%, transparent 82%);
+        }
+
+        .arabian-crescent {
+            position: absolute; top: 6%; right: 8%;
+            width: 104px; height: 104px;
+            filter: drop-shadow(0 0 40px rgba(245, 200, 66, .5));
+            opacity: .95;
+            animation: crescentGlow 9s ease-in-out infinite;
+        }
+
+        @keyframes crescentGlow {
+            0%, 100% { filter: drop-shadow(0 0 28px rgba(245, 200, 66, .32)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 55px rgba(245, 200, 66, .58)); transform: scale(1.02); }
+        }
+
+        .star {
+            position: absolute; border-radius: 50%;
+            background: #FFF6C9;
+            box-shadow: 0 0 8px rgba(245, 200, 66, .75);
+            opacity: 0;
+            animation: starTwinkle 5s ease-in-out infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% { opacity: .1; transform: scale(.85); }
+            50% { opacity: .9; transform: scale(1.15); }
+        }
+
+        .arabian-ember {
+            position: absolute; width: 3px; height: 3px; border-radius: 50%;
+            background: #F5C842;
+            box-shadow: 0 0 8px rgba(245, 200, 66, .9), 0 0 20px rgba(245, 200, 66, .45);
+            pointer-events: none;
+            animation: emberDrift linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes emberDrift {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: .85; }
+            50% { opacity: .5; }
+            92% { opacity: .08; }
+            100% { transform: translate(35px, -110vh) scale(.5); opacity: 0; }
+        }
+
         .hero {
-            min-height: 92vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            padding: 2rem;
-            overflow: hidden;
-            background: radial-gradient(ellipse at 50% 0%, var(--accent-a) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .65) 0%, transparent 60%);
+            min-height: 92vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            position: relative; padding: 2rem; overflow: hidden;
+            background: radial-gradient(ellipse at 50% 0%, var(--accent-a) 0%, transparent 70%),
+                        radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .65) 0%, transparent 60%);
             transition: background .7s ease;
         }
 
         [data-theme="daydream"] .hero {
-            background: radial-gradient(ellipse at 50% 0%, var(--accent-a) 0%, transparent 70%), radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, .5) 0%, transparent 60%);
+            background: radial-gradient(ellipse at 50% 0%, var(--accent-a) 0%, transparent 70%),
+                        radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, .5) 0%, transparent 60%);
+        }
+
+        [data-theme="arabian"] .hero {
+            background:
+                radial-gradient(ellipse at 50% 14%, rgba(245, 200, 66, .22) 0%, transparent 60%),
+                radial-gradient(circle at 88% 22%, rgba(255, 233, 168, .16) 0%, transparent 46%),
+                radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .78) 0%, transparent 68%);
+        }
+
+        [data-theme="arabian"] .hero-title {
+            font-family: 'Italiana', serif;
+            font-weight: 400;
+            letter-spacing: .14em;
+            font-size: clamp(2.4rem, 7vw, 4.6rem);
+            color: var(--gold-light);
+            text-shadow: 0 0 40px rgba(245, 200, 66, .55), 0 0 100px rgba(245, 200, 66, .22), 0 4px 20px rgba(0, 0, 0, .7);
+        }
+
+        [data-theme="arabian"] .hero-tagline { font-size: 1.32rem; color: #e8dab0; }
+
+        [data-theme="arabian"] .hero-divider {
+            background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+            box-shadow: 0 0 22px rgba(245, 200, 66, .5);
         }
 
         .hero-arch {
-            position: absolute;
-            top: 0;
-            left: 50%;
+            position: absolute; top: 0; left: 50%;
             transform: translateX(-50%);
-            width: min(640px, 92vw);
-            height: 300px;
+            width: min(640px, 92vw); height: 300px;
             border: 2px solid var(--card-border);
             border-radius: 50% 50% 0 0/60% 60% 0 0;
             border-bottom: none;
@@ -248,44 +291,20 @@
         }
 
         .hero-arch::before {
-            content: '';
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            right: 16px;
-            height: 100%;
+            content: ''; position: absolute; top: 16px; left: 16px; right: 16px; height: 100%;
             border: 1px solid rgba(255, 255, 255, .1);
             border-radius: 50% 50% 0 0/60% 60% 0 0;
             border-bottom: none;
         }
 
         .hero-ornament {
-            font-size: 2.5rem;
-            color: var(--gold);
-            margin-bottom: .6rem;
+            font-size: 2.5rem; color: var(--gold); margin-bottom: .6rem;
             animation: float 3.2s ease-in-out infinite;
         }
 
         @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-
-        .hero-eyebrow {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: clamp(.85rem, 2vw, 1.05rem);
-            color: var(--gold-light);
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin-bottom: 1.1rem;
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         .hero-title {
@@ -293,570 +312,747 @@
             font-size: clamp(2.6rem, 8vw, 5rem);
             color: var(--gold);
             text-shadow: 0 0 40px var(--glow), 0 4px 20px rgba(0, 0, 0, .6);
-            line-height: 1.08;
-            letter-spacing: 1px;
+            line-height: 1.08; letter-spacing: 1px;
             transition: color .6s;
         }
 
         .hero-divider {
-            width: 190px;
-            height: 2px;
+            width: 190px; height: 2px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
             margin: 1.6rem auto;
         }
 
         .hero-tagline {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 560px;
-            line-height: 1.5;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 1.25rem; color: var(--text-secondary);
+            max-width: 560px; line-height: 1.5;
         }
 
         .hero-world {
             margin-top: 2.2rem;
-            font-size: .72rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            font-size: .72rem; letter-spacing: 3px; text-transform: uppercase;
             color: var(--gold);
             border: 1px solid var(--card-border);
-            padding: .55rem 1.4rem;
-            border-radius: 40px;
-            display: inline-flex;
-            align-items: center;
-            gap: .5rem;
+            padding: .55rem 1.4rem; border-radius: 40px;
+            display: inline-flex; align-items: center; gap: .5rem;
             backdrop-filter: blur(6px);
             background: rgba(255, 255, 255, .03);
         }
 
         .mood-indicator {
-            margin-top: .8rem;
-            font-size: .85rem;
+            margin-top: .8rem; font-size: .85rem;
             font-family: 'Quicksand', sans-serif;
-            color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 1px;
-            opacity: .9;
+            color: var(--text-secondary); font-weight: 500;
+            letter-spacing: 1px; opacity: .9;
         }
 
         .scroll-hint {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
+            position: absolute; bottom: 2rem; left: 50%;
             transform: translateX(-50%);
-            color: var(--gold);
-            letter-spacing: 2px;
-            font-size: .72rem;
-            text-transform: uppercase;
-            animation: bounce 2.2s infinite;
-            opacity: .8;
+            color: var(--gold); letter-spacing: 2px;
+            font-size: .72rem; text-transform: uppercase;
+            animation: bounce 2.2s infinite; opacity: .8;
         }
 
         @keyframes bounce {
-
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-            }
-
-            50% {
-                transform: translateX(-50%) translateY(8px);
-            }
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
         }
 
-        /* Nav */
         .nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
             background: var(--nav-bg);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--card-border);
             padding: .9rem 1.5rem;
-            display: flex;
-            gap: .9rem;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
+            display: flex; gap: .9rem; justify-content: center;
+            align-items: center; flex-wrap: wrap;
             transition: background .6s, border-color .6s;
         }
 
         .world-name {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1rem;
-            color: var(--gold-light);
-            letter-spacing: 1px;
-            min-width: 190px;
-            text-align: right;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 1rem; color: var(--gold-light);
+            letter-spacing: 1px; min-width: 190px; text-align: right;
+        }
+
+        [data-theme="arabian"] .world-name {
+            font-family: 'Italiana', serif; font-style: normal;
+            letter-spacing: 2px; text-transform: uppercase; font-size: .9rem;
         }
 
         .theme-toggle {
-            background: none;
-            border: 1px solid var(--card-border);
-            color: var(--gold);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: none; border: 1px solid var(--card-border);
+            color: var(--gold); width: 44px; height: 44px;
+            border-radius: 50%; font-size: 1.2rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
             transition: all .3s;
         }
 
-        .theme-toggle:hover,
-        .theme-toggle:focus-visible {
-            background: var(--accent-a);
-            border-color: var(--gold-light);
-            transform: scale(1.07);
-            color: #fff;
+        .theme-toggle:hover, .theme-toggle:focus-visible {
+            background: var(--accent-a); border-color: var(--gold-light);
+            transform: scale(1.07); color: #fff;
         }
 
-        .theme-toggle:focus-visible {
-            outline: 2px solid var(--gold-light);
-            outline-offset: 2px;
-        }
+        .theme-toggle:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
 
         .nav-hint {
-            font-size: .68rem;
-            letter-spacing: 1.5px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            min-width: 150px;
+            font-size: .68rem; letter-spacing: 1.5px;
+            color: var(--text-secondary); text-transform: uppercase; min-width: 150px;
         }
 
         .nav-mood {
-            font-size: .75rem;
-            font-family: 'Quicksand', sans-serif;
-            color: var(--gold);
-            font-weight: 500;
+            font-size: .75rem; font-family: 'Quicksand', sans-serif;
+            color: var(--gold); font-weight: 500;
         }
 
-        /* Gallery */
         .gallery-section {
-            max-width: 1500px;
-            margin: 4rem auto 6rem;
-            padding: 0 1.6rem;
-            position: relative;
-            z-index: 1;
+            max-width: 1500px; margin: 4rem auto 6rem;
+            padding: 0 1.6rem; position: relative; z-index: 1;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
+        .section-header { text-align: center; margin-bottom: 1rem; }
 
         .section-title {
             font-family: var(--display-font), serif;
             font-size: clamp(1.5rem, 4vw, 2.1rem);
-            color: var(--gold);
-            margin-bottom: .5rem;
-            letter-spacing: 1px;
-            transition: color .6s;
+            color: var(--gold); margin-bottom: .5rem;
+            letter-spacing: 1px; transition: color .6s;
+        }
+
+        [data-theme="arabian"] .section-title {
+            font-family: 'Italiana', serif; font-weight: 400;
+            font-size: clamp(1.9rem, 4.8vw, 3rem);
+            letter-spacing: .24em; text-transform: uppercase;
+            color: var(--gold-light);
+            text-shadow: 0 0 50px rgba(245, 200, 66, .48);
+            margin-bottom: .7rem;
         }
 
         .section-line {
-            width: 80px;
-            height: 2px;
+            width: 80px; height: 2px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
             margin: 0 auto 1rem;
         }
 
+        [data-theme="arabian"] .section-line {
+            width: 130px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            box-shadow: 0 0 16px rgba(245, 200, 66, .45);
+            margin: 1.1rem auto 1.6rem;
+        }
+
         .section-hint {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            margin-bottom: 2.2rem;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.2rem;
         }
 
-        #gallery {
-            position: relative;
-            min-height: 400px;
+        [data-theme="arabian"] .section-hint {
+            font-size: 1.2rem; max-width: 600px;
+            margin-left: auto; margin-right: auto;
+            color: var(--text-secondary); letter-spacing: .02em;
         }
 
-        /* Lightbox */
+        #gallery { position: relative; min-height: 400px; }
+
         .lightbox-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .9);
-            z-index: 999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+            position: fixed; inset: 0; background: rgba(0, 0, 0, .9);
+            z-index: 999; display: none; justify-content: center;
+            align-items: center; cursor: pointer;
         }
 
         .lightbox-overlay img {
-            max-width: 90vw;
-            max-height: 90vh;
-            border-radius: 12px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, .5);
+            max-width: 90vw; max-height: 90vh;
+            border-radius: 12px; box-shadow: 0 0 40px rgba(0, 0, 0, .5);
         }
 
-        /* ===== WORLD 1 — GILDED CARNIVAL (Empowerment/Strength) ===== */
-        .gallery--pennant {
-            padding-top: 14px;
-        }
+        /* ===== WORLD 1 — GILDED ===== */
+        .gallery--pennant { padding-top: 14px; }
 
         .rod-container {
-            position: relative;
-            width: 100%;
+            position: relative; width: 100%;
             border-top: 5px solid var(--rod);
-            border-radius: 5px;
-            box-shadow: 0 0 24px var(--glow);
+            border-radius: 5px; box-shadow: 0 0 24px var(--glow);
         }
 
-        .rod-container::before,
-        .rod-container::after {
-            content: '';
-            position: absolute;
-            top: -9px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
+        .rod-container::before, .rod-container::after {
+            content: ''; position: absolute; top: -9px;
+            width: 16px; height: 16px; border-radius: 50%;
             background: var(--rod);
         }
 
-        .rod-container::before {
-            left: -4px;
-        }
-
-        .rod-container::after {
-            right: -4px;
-        }
+        .rod-container::before { left: -4px; }
+        .rod-container::after { right: -4px; }
 
         .hanging-mobile {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 1.2rem 1rem;
-            padding: 1rem 0;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            align-items: flex-start; gap: 1.2rem 1rem; padding: 1rem 0;
         }
 
         .pennant-photo-item {
-            position: relative;
-            transform-origin: top center;
-            opacity: 0;
+            position: relative; transform-origin: top center; opacity: 0;
             animation: pendulum 3.6s ease-in-out infinite, riseIn .7s ease forwards;
-            width: var(--pw, 180px);
-            cursor: pointer;
+            width: var(--pw, 180px); cursor: pointer;
         }
 
         .pennant-photo-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
+            content: ''; position: absolute; top: 0; left: 50%;
+            transform: translateX(-50%); width: 2px;
             height: var(--string-length, 46px);
-            background: var(--gold);
-            box-shadow: 0 0 6px var(--glow);
+            background: var(--gold); box-shadow: 0 0 6px var(--glow);
             z-index: 2;
         }
 
         @keyframes pendulum {
-
-            0%,
-            100% {
-                transform: rotate(-2.8deg);
-            }
-
-            50% {
-                transform: rotate(2.8deg);
-            }
+            0%, 100% { transform: rotate(-2.8deg); }
+            50% { transform: rotate(2.8deg); }
         }
 
         @keyframes riseIn {
-            from {
-                opacity: 0;
-                transform: translateY(-14px) rotate(0);
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; transform: translateY(-14px) rotate(0); }
+            to { opacity: 1; }
         }
 
         .pennant-photo-item .photo-card {
             margin-top: var(--string-length, 46px);
-            width: 100%;
-            height: var(--ph, 200px);
-            border-radius: 4px;
-            overflow: hidden;
+            width: 100%; height: var(--ph, 200px);
+            border-radius: 4px; overflow: hidden;
             box-shadow: 0 10px 20px rgba(0, 0, 0, .5);
             transition: transform .3s ease, box-shadow .3s ease;
+            position: relative;
         }
 
         .pennant-photo-item .photo-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, .7);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .7), 0 0 0 1px var(--gold-light);
         }
 
         .pennant-photo-item .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+            width: 100%; height: 100%; object-fit: cover; display: block;
         }
 
         .pennant-quote-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, .85));
-            padding: 1rem .8rem .6rem;
-            text-align: center;
-            opacity: 0;
-            transition: opacity .3s ease;
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, .55) 22%, rgba(0, 0, 0, .92) 62%);
+            padding: 1.6rem .7rem .65rem; text-align: center;
+            opacity: 1;
+            transition: background .3s ease;
             pointer-events: none;
         }
 
         .pennant-photo-item:hover .pennant-quote-overlay {
-            opacity: 1;
+            background: linear-gradient(transparent, rgba(0, 0, 0, .65) 22%, rgba(0, 0, 0, .96) 62%);
         }
 
         .pennant-quote-overlay .pq-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: .85rem;
-            color: #fff;
-            line-height: 1.3;
-            margin-bottom: .3rem;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: .8rem; color: #fff; line-height: 1.35; margin-bottom: .3rem;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, .95), 0 0 10px rgba(0, 0, 0, .8);
         }
 
         .pennant-quote-overlay .pq-author {
-            font-size: .65rem;
-            color: var(--gold-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: .6rem; color: var(--gold-light);
+            text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, .95);
+            margin-bottom: .35rem;
+        }
+
+        .pq-actions {
+            display: flex;
+            gap: .4rem;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        .pq-btn {
+            width: 26px;
+            height: 26px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .12);
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, .92);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all .25s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .pq-btn svg { width: 11px; height: 11px; display: block; }
+
+        .pq-btn:hover, .pq-btn:focus-visible {
+            background: var(--gold);
+            border-color: var(--gold-light);
+            color: #1a1408;
+            transform: translateY(-1px) scale(1.1);
+            outline: none;
         }
 
         .tassel {
-            width: 8px;
-            height: 16px;
-            margin: -4px auto 0;
+            width: 8px; height: 16px; margin: -4px auto 0;
             background: repeating-linear-gradient(90deg, var(--gold) 0 2px, transparent 2px 4px);
             opacity: .85;
         }
 
-        /* ===== WORLD 2 — VERDANT CANOPY (Success/Perseverance) ===== */
+        /* ===== WORLD 2 — VERDANT ===== */
         .canopy-quotes {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 1.4rem;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            align-items: flex-start; gap: 1.4rem;
         }
 
         .quote-leaf {
-            position: relative;
-            opacity: 0;
-            animation: leafIn .8s ease forwards;
+            position: relative; opacity: 0; animation: leafIn .8s ease forwards;
             transform: rotate(var(--tilt, 0deg));
-            width: var(--cw, 30%);
-            flex-shrink: 0;
+            width: var(--cw, 30%); flex-shrink: 0;
             background: var(--bg-surface);
             border-radius: 38% 6% 40% 8%/8% 38% 6% 42%;
             border: 1.5px solid var(--card-border);
             padding: 1.8rem 1.4rem 2rem;
             box-shadow: 0 14px 30px var(--card-shadow);
             transition: transform .3s ease, box-shadow .3s ease;
+            cursor: pointer;
         }
 
         .quote-leaf:hover {
-            transform: rotate(var(--tilt, 0deg)) scale(1.03);
-            box-shadow: 0 18px 38px var(--card-shadow);
+            transform: rotate(var(--tilt, 0deg)) scale(1.04);
+            box-shadow: 0 22px 44px var(--card-shadow), 0 0 30px rgba(168, 216, 112, .15);
+        }
+
+        .quote-leaf:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
         }
 
         @keyframes leafIn {
-            from {
-                opacity: 0;
-                transform: translateY(16px) rotate(var(--tilt, 0deg)) scale(.94);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1);
-            }
+            from { opacity: 0; transform: translateY(16px) rotate(var(--tilt, 0deg)) scale(.94); }
+            to { opacity: 1; transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1); }
         }
 
         .quote-leaf .vine {
-            position: absolute;
-            top: -26px;
-            left: 20%;
-            width: 40px;
-            height: 26px;
-            z-index: 1;
-            opacity: .9;
+            position: absolute; top: -26px; left: 20%;
+            width: 40px; height: 26px; z-index: 1; opacity: .9;
         }
 
         .quote-leaf .leaf-pattern {
-            position: absolute;
-            inset: 0;
-            opacity: .08;
-            background-image: radial-gradient(ellipse 14px 8px at 15% 20%, var(--accent-b) 40%, transparent 41%), radial-gradient(ellipse 14px 8px at 80% 15%, var(--accent-b) 40%, transparent 41%), radial-gradient(ellipse 14px 8px at 60% 80%, var(--accent-b) 40%, transparent 41%), radial-gradient(ellipse 14px 8px at 25% 75%, var(--accent-b) 40%, transparent 41%);
+            position: absolute; inset: 0; opacity: .08; border-radius: inherit;
+            background-image: radial-gradient(ellipse 14px 8px at 15% 20%, var(--accent-b) 40%, transparent 41%),
+                              radial-gradient(ellipse 14px 8px at 80% 15%, var(--accent-b) 40%, transparent 41%),
+                              radial-gradient(ellipse 14px 8px at 60% 80%, var(--accent-b) 40%, transparent 41%),
+                              radial-gradient(ellipse 14px 8px at 25% 75%, var(--accent-b) 40%, transparent 41%);
         }
 
         .quote-leaf .quote-mark {
-            font-size: 2rem;
-            color: var(--gold);
-            opacity: .55;
-            display: block;
-            margin-bottom: .3rem;
+            font-size: 2rem; color: var(--gold); opacity: .55;
+            display: block; margin-bottom: .3rem;
         }
 
         .quote-leaf .quote-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 500;
-            font-size: 1.05rem;
-            line-height: 1.5;
-            color: var(--text);
-            margin-bottom: .8rem;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-weight: 500; font-size: 1.05rem; line-height: 1.5;
+            color: var(--text); margin-bottom: .8rem;
         }
 
         .quote-leaf .quote-author {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gold-light);
-            display: flex;
-            align-items: center;
-            gap: .5rem;
+            font-size: .7rem; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--gold-light);
+            display: flex; align-items: center; gap: .5rem;
         }
 
         .quote-leaf .quote-author::before {
-            content: '';
-            width: 16px;
-            height: 1px;
-            background: var(--gold-light);
-            display: inline-block;
+            content: ''; width: 16px; height: 1px;
+            background: var(--gold-light); display: inline-block;
         }
 
-        /* ===== WORLD 3 — DAY DREAMING (Gratitude/Good Vibes) ===== */
+        /* ===== WORLD 3 — DAY DREAMING ===== */
         .dream-quotes {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            padding: 1rem 0;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem; padding: 1rem 0;
         }
 
         .dream-card {
-            position: relative;
-            opacity: 0;
+            position: relative; opacity: 0;
             animation: floatIn .9s ease forwards;
             animation-delay: var(--delay, 0s);
             background: var(--bg-surface);
-            border-radius: 28px;
-            border: 1.5px solid var(--card-border);
-            padding: 2.5rem 2rem;
-            text-align: center;
+            border-radius: 28px; border: 1.5px solid var(--card-border);
+            padding: 2.5rem 2rem; text-align: center;
             box-shadow: 0 12px 28px var(--card-shadow);
             transition: transform .3s ease, box-shadow .3s ease;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .dream-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px var(--card-shadow);
+            box-shadow: 0 20px 40px var(--card-shadow), 0 0 26px rgba(182, 92, 140, .14);
+        }
+
+        .dream-card:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
         }
 
         @keyframes floatIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .dream-card .watercolor {
-            position: absolute;
-            inset: 0;
-            opacity: .15;
+            position: absolute; inset: 0; opacity: .15;
             border-radius: 28px;
-            background: radial-gradient(circle at 25% 30%, var(--wc-a, var(--accent-a)) 0%, transparent 50%), radial-gradient(circle at 75% 25%, var(--wc-b, var(--accent-c)) 0%, transparent 50%), radial-gradient(circle at 60% 75%, var(--wc-c, var(--accent-d)) 0%, transparent 55%), radial-gradient(circle at 20% 80%, var(--wc-d, var(--accent-b)) 0%, transparent 50%);
-            filter: blur(8px);
-            z-index: 0;
-            transition: opacity .3s ease;
+            background: radial-gradient(circle at 25% 30%, var(--wc-a, var(--accent-a)) 0%, transparent 50%),
+                        radial-gradient(circle at 75% 25%, var(--wc-b, var(--accent-c)) 0%, transparent 50%),
+                        radial-gradient(circle at 60% 75%, var(--wc-c, var(--accent-d)) 0%, transparent 55%),
+                        radial-gradient(circle at 20% 80%, var(--wc-d, var(--accent-b)) 0%, transparent 50%);
+            filter: blur(8px); z-index: 0; transition: opacity .3s ease;
         }
 
-        .dream-card:hover .watercolor {
-            opacity: .25;
-        }
+        .dream-card:hover .watercolor { opacity: .25; }
 
-        .dream-card .dream-content {
-            position: relative;
-            z-index: 1;
-        }
+        .dream-card .dream-content { position: relative; z-index: 1; }
 
         .dream-card .dream-glyph {
-            font-size: 2.5rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            opacity: .9;
-            transition: transform .3s ease;
+            font-size: 2.5rem; color: var(--gold); margin-bottom: 1rem;
+            opacity: .9; transition: transform .3s ease;
         }
 
-        .dream-card:hover .dream-glyph {
-            transform: scale(1.2);
-        }
+        .dream-card:hover .dream-glyph { transform: scale(1.2); }
 
         .dream-card .quote-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.3rem;
-            line-height: 1.6;
-            color: var(--text);
-            margin-bottom: 1.2rem;
-            font-weight: 500;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 1.3rem; line-height: 1.6; color: var(--text);
+            margin-bottom: 1.2rem; font-weight: 500;
         }
 
         .dream-card .quote-author {
             font-family: 'Quicksand', sans-serif;
-            font-size: .8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gold-light);
+            font-size: .8rem; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--gold-light);
             font-weight: 500;
         }
 
-        /* Footer */
-        footer {
+        /* ================= WORLD 4 — THE ARABIAN NIGHT ================= */
+        .gallery--arabian { padding: 0; }
+
+        .arabian-journey {
+            position: relative; max-width: 1080px;
+            margin: 0 auto; padding: 4rem 2rem 6rem;
+        }
+
+        .journey-intro, .journey-closer {
+            display: flex; flex-direction: column;
+            align-items: center; text-align: center; gap: 1.4rem;
+            max-width: 540px; margin: 0 auto;
+            padding: 2.5rem 1rem 8rem;
+        }
+
+        .journey-closer { padding: 7rem 1rem 2rem; }
+
+        .journey-intro-ornament {
+            font-size: 1.6rem; color: var(--gold); opacity: .8;
+            filter: drop-shadow(0 0 14px rgba(245, 200, 66, .5));
+            animation: ornamentPulse 5s ease-in-out infinite;
+        }
+
+        @keyframes ornamentPulse {
+            0%, 100% { opacity: .55; transform: scale(1); }
+            50% { opacity: .95; transform: scale(1.08); }
+        }
+
+        .journey-intro-text {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 1.3rem; line-height: 1.7;
+            color: var(--text-secondary); letter-spacing: .04em;
+        }
+
+        .journey-quote {
+            position: relative; display: flex; flex-direction: column;
+            gap: 1.55rem; max-width: 780px; padding: 6rem 1rem;
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 1.4s cubic-bezier(.16, 1, .3, 1), transform 1.4s cubic-bezier(.16, 1, .3, 1);
+            transition-delay: var(--reveal-delay, 0s);
+        }
+
+        .journey-quote.revealed { opacity: 1; transform: translateY(0); }
+
+        .journey-quote[data-align="left"] {
+            margin-left: 0; margin-right: auto;
+            text-align: left; align-items: flex-start;
+        }
+
+        .journey-quote[data-align="right"] {
+            margin-left: auto; margin-right: 0;
+            text-align: right; align-items: flex-end;
+        }
+
+        .journey-quote[data-align="center"] {
+            margin-left: auto; margin-right: auto;
+            text-align: center; align-items: center; max-width: 680px;
+        }
+
+        .journey-flourish {
+            font-size: 1.15rem; letter-spacing: .4em;
+            color: var(--gold); opacity: .7;
+            filter: drop-shadow(0 0 12px rgba(245, 200, 66, .45));
+            transition: all .5s ease;
+        }
+
+        .journey-quote.revealed:hover .journey-flourish {
+            opacity: 1;
+            filter: drop-shadow(0 0 20px rgba(245, 200, 66, .75));
+        }
+
+        .journey-text {
+            margin: 0; padding: 0; border: 0;
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-weight: 500;
+            font-size: clamp(1.55rem, 3.4vw, 2.3rem);
+            line-height: 1.72; letter-spacing: .005em; word-spacing: .02em;
+            color: var(--text);
+            text-shadow: 0 0 60px rgba(245, 200, 66, .07);
+            transition: text-shadow .6s ease, color .4s ease;
+        }
+
+        .journey-quote.revealed:hover .journey-text {
+            text-shadow: 0 0 90px rgba(245, 200, 66, .18);
+            color: #fffcf2;
+        }
+
+        .journey-source {
+            font-family: 'Marcellus', serif;
+            font-size: .8rem; letter-spacing: .32em;
+            text-transform: uppercase; color: var(--gold);
+            opacity: .88; padding-top: .3rem;
+        }
+
+        .journey-actions {
+            display: flex;
+            gap: .55rem;
+            margin-top: -.7rem;
+            padding-top: .1rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px);
+            transition: opacity .45s cubic-bezier(.16, 1, .3, 1), transform .45s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .journey-quote.revealed:hover .journey-actions,
+        .journey-quote.revealed:focus-within .journey-actions {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .quote-action {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(245, 200, 66, .04);
+            border: 1px solid rgba(245, 200, 66, .28);
+            border-radius: 50%;
+            color: rgba(245, 200, 66, .75);
+            cursor: pointer;
+            transition: all .35s cubic-bezier(.16, 1, .3, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .quote-action svg { width: 14px; height: 14px; display: block; }
+
+        .quote-action:hover,
+        .quote-action:focus-visible {
+            color: var(--gold-light);
+            border-color: rgba(245, 200, 66, .7);
+            background: rgba(245, 200, 66, .12);
+            transform: translateY(-2px) scale(1.08);
+            box-shadow: 0 0 22px rgba(245, 200, 66, .28);
+            outline: none;
+        }
+
+        .quote-action:active { transform: translateY(0) scale(.96); }
+        .quote-action:focus-visible { outline: 2px solid rgba(245, 200, 66, .55); outline-offset: 2px; }
+
+        @media (hover: none) {
+            .journey-quote.revealed .journey-actions {
+                opacity: .8;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+            .journey-quote.revealed .journey-actions .quote-action {
+                background: rgba(245, 200, 66, .06);
+            }
+        }
+
+        /* ---- SHARED QUOTE MODAL ---- */
+        .quote-modal {
+            position: fixed; inset: 0; z-index: 1500;
+            display: flex; justify-content: center; align-items: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, .78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            opacity: 0; visibility: hidden;
+            transition: opacity .4s ease, visibility .4s ease;
+        }
+
+        .quote-modal.active { opacity: 1; visibility: visible; }
+
+        .quote-modal-inner {
+            position: relative; max-width: 720px; width: 100%;
+            max-height: 88vh; overflow-y: auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 3.2rem 2.4rem 2.6rem;
+            transform: scale(.92) translateY(20px);
+            transition: transform .55s cubic-bezier(.16, 1, .3, 1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .55), 0 0 50px var(--glow);
+        }
+
+        .quote-modal.active .quote-modal-inner { transform: scale(1) translateY(0); }
+
+        .quote-modal-close {
+            position: absolute; top: 1.1rem; right: 1.1rem;
+            width: 38px; height: 38px; border-radius: 50%;
+            background: transparent; border: 1px solid var(--card-border);
+            color: var(--gold); cursor: pointer; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .3s ease;
+        }
+
+        .quote-modal-close:hover {
+            background: var(--accent-a); color: #fff;
+            border-color: var(--gold); transform: rotate(90deg);
+        }
+
+        .quote-modal-text {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-weight: 500;
+            font-size: clamp(1.4rem, 2.8vw, 1.95rem);
+            line-height: 1.65; color: var(--text);
+            text-align: center; margin: 1rem 0 1.6rem;
+        }
+
+        .quote-modal-divider {
+            width: 68px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto 1.4rem;
+        }
+
+        .quote-modal-author {
+            font-family: 'Marcellus', serif;
+            font-size: .78rem; letter-spacing: 2.8px;
+            text-transform: uppercase; color: var(--gold-light);
             text-align: center;
-            padding: 2.4rem;
+        }
+
+        .quote-modal-actions {
+            display: flex; gap: .8rem; justify-content: center;
+            margin-top: 2.4rem; flex-wrap: wrap;
+        }
+
+        .quote-modal-btn {
+            display: inline-flex; align-items: center; gap: .55rem;
+            padding: .75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--card-border);
+            border-radius: 40px;
+            color: var(--gold);
+            font-family: 'Marcellus', serif;
+            font-size: .72rem; letter-spacing: 1.8px;
+            text-transform: uppercase; cursor: pointer;
+            transition: all .3s cubic-bezier(.16, 1, .3, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .quote-modal-btn:hover,
+        .quote-modal-btn:focus-visible {
+            background: var(--gold);
+            border-color: var(--gold-light);
+            color: var(--bg-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--glow);
+            outline: none;
+        }
+
+        [data-theme="daydream"] .quote-modal-btn:hover,
+        [data-theme="daydream"] .quote-modal-btn:focus-visible { color: #fff; }
+
+        .quote-modal-btn svg { width: 14px; height: 14px; display: block; }
+
+        /* ---- TOAST ---- */
+        .quote-toast {
+            position: fixed;
+            bottom: 2.4rem; left: 50%;
+            transform: translateX(-50%) translateY(22px);
+            display: flex; align-items: center; gap: .7rem;
+            padding: .85rem 1.5rem .85rem 1.15rem;
+            background: rgba(23, 18, 10, .95);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(245, 200, 66, .4);
+            border-radius: 999px;
+            color: var(--gold-light);
+            font-family: 'Marcellus', serif;
+            font-size: .78rem; letter-spacing: .14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, .55), 0 0 34px rgba(245, 200, 66, .2);
+            opacity: 0; visibility: hidden; pointer-events: none;
+            z-index: 2000;
+            transition: opacity .45s cubic-bezier(.16, 1, .3, 1),
+                        transform .45s cubic-bezier(.16, 1, .3, 1),
+                        visibility 0s linear .45s;
+        }
+
+        .quote-toast.show {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            transition: opacity .45s cubic-bezier(.16, 1, .3, 1),
+                        transform .45s cubic-bezier(.16, 1, .3, 1),
+                        visibility 0s;
+        }
+
+        .quote-toast-icon {
+            display: flex; align-items: center; justify-content: center;
+            width: 18px; height: 18px;
+            color: var(--gold);
+            filter: drop-shadow(0 0 6px rgba(245, 200, 66, .55));
+        }
+
+        .quote-toast-icon svg { width: 15px; height: 15px; display: block; }
+        .quote-toast-text { padding-left: .15rem; }
+
+        footer {
+            text-align: center; padding: 2.4rem;
             border-top: 1px solid var(--card-border);
             color: var(--text-secondary);
-            font-size: .75rem;
-            letter-spacing: 1.5px;
+            font-size: .75rem; letter-spacing: 1.5px;
             transition: border-color .6s;
         }
 
         @media (max-width: 768px) {
-            .dream-quotes {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .dream-card {
-                padding: 2rem 1.5rem;
-            }
-
-            .quote-leaf {
-                width: 100% !important;
-                max-width: 400px;
-            }
+            .dream-quotes { grid-template-columns: 1fr; gap: 1.5rem; }
+            .dream-card { padding: 2rem 1.5rem; }
+            .quote-leaf { width: 100% !important; max-width: 400px; }
+            .arabian-crescent { width: 72px; height: 72px; right: 7%; top: 5%; }
+            .arabian-journey { padding: 2rem 1.4rem 4rem; }
+            .journey-quote { padding: 4.5rem .5rem; }
+            .journey-intro, .journey-closer { padding: 2rem .8rem 5rem; }
+            .journey-closer { padding: 5rem .8rem 1rem; }
+            .journey-text { font-size: 1.3rem; }
+            .journey-source { font-size: .72rem; letter-spacing: .28em; }
+            [data-theme="arabian"] .section-title { font-size: 1.8rem; letter-spacing: .2em; }
+            .quote-toast { bottom: 1.4rem; font-size: .72rem; padding: .75rem 1.2rem .75rem .95rem; }
+            .quote-modal { padding: .9rem; }
+            .quote-modal-inner { padding: 2.6rem 1.5rem 2rem; border-radius: 20px; }
+            .quote-modal-btn { padding: .7rem 1.1rem; font-size: .68rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -873,8 +1069,50 @@
     <div class="bg-ambiance"></div>
     <div class="dreamscape" id="dreamscape"></div>
 
-    <!-- Lightbox -->
+    <div class="arabian-night" id="arabianNight">
+        <div class="arabian-pattern"></div>
+        <svg class="arabian-crescent" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+                <radialGradient id="crescentGrad" cx="38%" cy="35%" r="72%">
+                    <stop offset="0%" stop-color="#FFFCEC" />
+                    <stop offset="55%" stop-color="#F5C842" />
+                    <stop offset="100%" stop-color="#C99A2E" />
+                </radialGradient>
+            </defs>
+            <path d="M 50 8 A 42 42 0 1 0 50 92 A 34 34 0 1 1 50 8 Z" fill="url(#crescentGrad)" />
+        </svg>
+    </div>
+
     <div class="lightbox-overlay" id="lightbox"><img src="" alt="enlarged photo"></div>
+
+    <div class="quote-modal" id="quoteModal" aria-hidden="true">
+        <div class="quote-modal-inner" role="dialog" aria-modal="true" aria-label="Quote detail">
+            <button class="quote-modal-close" id="quoteModalClose" aria-label="Close">✕</button>
+            <p class="quote-modal-text" id="quoteModalText"></p>
+            <div class="quote-modal-divider"></div>
+            <p class="quote-modal-author" id="quoteModalAuthor"></p>
+            <div class="quote-modal-actions">
+                <button class="quote-modal-btn" id="quoteModalCopy" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    Copy
+                </button>
+                <button class="quote-modal-btn" id="quoteModalWhatsapp" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                    </svg>
+                    WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="quote-toast" id="quoteToast" role="status" aria-live="polite">
+        <span class="quote-toast-icon"></span>
+        <span class="quote-toast-text"></span>
+    </div>
 
     <main class="main-wrapper">
         <header class="hero">
@@ -890,8 +1128,7 @@
 
         <nav class="nav" id="mainNav">
             <span class="nav-hint">Change the world</span>
-            <button class="theme-toggle" id="themeToggle" aria-label="Switch world"><span
-                    id="themeIcon">✦</span></button>
+            <button class="theme-toggle" id="themeToggle" aria-label="Switch world"><span id="themeIcon">✦</span></button>
             <span class="world-name" id="worldName">The Gilded Carnival</span>
             <span class="nav-mood" id="navMood">· Empowerment</span>
         </nav>
@@ -910,31 +1147,53 @@
 
     <script>
         (function () {
-            // --- QUOTE COLLECTIONS BY MOOD ---
             const successQuotes = [
                 { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+                { text: "The reason it’s important to push hardest when you want to quit the most is because it helps you callous your mind.", author: "David Goggins" },
                 { text: "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.", author: "Steve Jobs" },
+                { text: "Pain doesn’t tell you when you ought to stop. Pain is the little voice in your head that tries to hold you back because it knows if you continue you will change.", author: "Kobe Bryant" },
                 { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+                { text: "People underestimate how much brute force you have to use to will your goals into existence.", author: "Alex Hormozi" },
                 { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
+                { text: "There can be no great victories in your life unless you overcome adversity. You can’t be a great competitor unless you overcome adversity. That’s mental.", author: "Nick Saban" },
                 { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+                { text: "Talent without working hard is nothing.", author: "Cristiano Ronaldo" },
                 { text: "The secret of getting ahead is getting started. The secret of getting started is breaking your complex overwhelming tasks into small manageable tasks, and starting on the first one.", author: "Mark Twain" },
+                { text: "You are in danger of living a life so comfortable and soft, that you will die without ever realizing your true potential.", author: "David Goggins" },
                 { text: "Perseverance is not a long race; it is many short races one after the other.", author: "Walter Elliot" },
+                { text: "Don’t count on motivation; count on discipline.", author: "Jocko Willink" },
                 { text: "There is no substitute for hard work. Never give up. Never stop believing. Never stop fighting.", author: "Hope Hicks" },
+                { text: "There are a lot of days where you can rest and recover, today ain’t one of them.", author: "Kobe Bryant" },
                 { text: "Through perseverance many people win success out of what seemed destined to be certain failure.", author: "Benjamin Disraeli" },
+                { text: "You get up every day—you’re entitled to nothing. Nobody owes you nothing. You could have talent, but if you don’t have discipline, and you don’t execute, you don’t focus… What do you get? Nothing. So nothing is acceptable but your best.", author: "Sahil Bloom" },
                 { text: "Success is stumbling from failure to failure with no loss of enthusiasm.", author: "Winston Churchill" },
+                { text: "The real race is always the same: it’s me against my goals.", author: "Katie Ledecky" },
                 { text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.", author: "Vince Lombardi" },
+                { text: "Passing one obstacle simply says you’re worthy of more. The world seems to keep throwing them at you once it knows you can take it. Which is good, because we get better with every attempt.", author: "Ryan Holiday" },
                 { text: "Don't be discouraged. It's often the last key in the bunch that opens the lock.", author: "Unknown" },
+                { text: "We don’t want to tell our dreams. We want to show them. No long speeches. No excuses. Just results.", author: "Cristiano Ronaldo" },
                 { text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
+                { text: "The moment you give up, is the moment you let someone else win.", author: "Kobe Bryant" },
                 { text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
+                { text: "The thing about grit is real. It’s about competing, pushing yourself, striving to be your best — and what’s really exciting is nobody controls this, but you.", author: "Pete Carroll" },
                 { text: "Fall seven times and stand up eight.", author: "Japanese Proverb" },
+                { text: "Pressure never stops. But the real pain doesn’t come from pressure, it comes from regret — from doubting the power that’s inside of only you.", author: "Jamie Kern Lima" },
                 { text: "Your hardest times often lead to the greatest moments of your life. Keep going. Tough situations build strong people in the end.", author: "Roy T. Bennett" },
+                { text: "You can shoot for the moon and land on the stars, or you can shoot for the moon and land on the moon. The goal is to run faster.", author: "Masai Russell" },
                 { text: "Great things are done by a series of small things brought together.", author: "Vincent Van Gogh" },
+                { text: "If they beat you before, they won’t get you again.", author: "Melissa Jefferson-Wooden" },
                 { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
+                { text: "The only failure is not giving 100 per cent.", author: "Hamish Kerr" },
                 { text: "Our greatest glory is not in never falling, but in rising every time we fall.", author: "Confucius" },
+                { text: "Sometimes, being young and unknown is your advantage.", author: "Katie Ledecky" },
                 { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+                { text: "If you’re willing to die for something, then you’ll certainly be willing to work really hard for a long time for it. It’s not discipline — it’s purpose. Some things are important enough they’re worth suffering for.", author: "Alex Hormozi" },
                 { text: "A river cuts through rock, not because of its power, but because of its persistence.", author: "James N. Watkins" },
+                { text: "The things that you say will come to fruition. Even if you technically don’t get all the way there, you can come very close.", author: "Masai Russell" },
                 { text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson" },
+                { text: "If you’re like me, you didn’t come this far to be impressive. You came this far to be impactful.", author: "Jamie Kern Lima" },
                 { text: "Don't limit your challenges. Challenge your limits.", author: "Unknown" },
+                { text: "The test of whether you have work ethic is whether you can work when you’re tired.", author: "Alex Hormozi" },
                 { text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't.", author: "Rikki Rogers" },
                 { text: "The struggle you're in today is developing the strength you need for tomorrow.", author: "Robert Tew" }
             ];
@@ -990,7 +1249,93 @@
                 { text: "He who conquers himself is the mightiest warrior.", author: "Confucius" }
             ];
 
-            // --- IMAGE URLS FOR GILDED CARNIVAL ---
+            const lifeQuotes = [
+                { text: "Life is not a problem to be solved, but a reality to be experienced.", author: "Søren Kierkegaard" },
+                { text: "We do not remember days, we remember moments.", author: "Cesare Pavese" },
+                { text: "In solitude the mind gains strength and learns to lean upon itself.", author: "Laurence Sterne" },
+                { text: "Cultivate the habit of being grateful for every good thing that comes to you, and to give thanks continuously.", author: "Ralph Waldo Emerson" },
+                { text: "To live is the rarest thing in the world. Most people exist, that is all.", author: "Oscar Wilde" },
+                { text: "Nothing is ever really lost to us as long as we remember it.", author: "L.M. Montgomery" },
+                { text: "I never found a companion that was so companionable as solitude.", author: "Henry David Thoreau" },
+                { text: "Wear gratitude like a cloak and it will feed every corner of your life.", author: "Rumi" },
+                { text: "In three words I can sum up everything I've learned about life: it goes on.", author: "Robert Frost" },
+                { text: "Memory is the treasury and guardian of all things.", author: "Cicero" },
+                { text: "Solitude is not the absence of company, but the moment when our soul is free to speak to us and help us decide what to do with our life.", author: "Paulo Coelho" },
+                { text: "Be grateful for your life, every detail of it, and your face will come to shine like a sun.", author: "Rumi" },
+                { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+                { text: "Yesterday is but today's memory, and tomorrow is today's dream.", author: "Khalil Gibran" },
+                { text: "The more powerful and original a mind, the more it will incline towards the religion of solitude.", author: "Aldous Huxley" },
+                { text: "The heart that gives thanks is a happy one; for we cannot help feeling joyful when we are thankful.", author: "Dale Carnegie" },
+                { text: "Life isn't about finding yourself. Life is about creating yourself.", author: "George Bernard Shaw" },
+                { text: "The heart's memory eliminates the bad and magnifies the good.", author: "Gabriel García Márquez" },
+                { text: "Solitude is a silent storm that breaks down all our dead branches; yet it sends our living roots deeper into the living heart of the living earth.", author: "Khalil Gibran" },
+                { text: "Gratitude is a powerful catalyst for happiness. It's the spark that lights a fire of joy in your soul.", author: "Amy Collette" },
+                { text: "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate — to have it make some difference that you have lived and lived well.", author: "Ralph Waldo Emerson" },
+                { text: "Our memories are the only paradise from which we can never be expelled.", author: "Jean Paul" },
+                { text: "I live in that solitude which is painful in youth, but delicious in the years of maturity.", author: "Albert Einstein" },
+                { text: "The roots of all goodness lie in the soil of appreciation for goodness.", author: "Dalai Lama" },
+                { text: "Life shrinks or expands in proportion to one's courage.", author: "Anaïs Nin" },
+                { text: "Some memories are realities, and are better than anything that can ever happen to one again.", author: "Willa Cather" },
+                { text: "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.", author: "Ralph Waldo Emerson" },
+                { text: "When we give thanks for what we have, the universe opens its hands to give us more.", author: "Unknown" },
+                { text: "It is not length of life, but depth of life.", author: "Ralph Waldo Emerson" },
+                { text: "The things we truly love stay with us always, locked in our hearts as long as life remains.", author: "Josephine Baker" },
+                { text: "In solitude is wisdom born.", author: "Unknown" },
+                { text: "Gratitude is the single most important ingredient for living a successful and fulfilling life.", author: "Unknown" },
+                { text: "Your time is limited, so don't waste it living someone else's life.", author: "Steve Jobs" },
+                { text: "Memory is a way of holding on to the things you love, the things you are, the things you never want to lose.", author: "Kevin Arnold" },
+                { text: "Alone, we are given space to hear our own voice — and learn to trust it.", author: "Unknown" },
+                { text: "There is no joy without gratitude, and no gratitude without a heart that has learned to see.", author: "Unknown" },
+                { text: "The two most important days in your life are the day you are born and the day you find out why.", author: "Mark Twain" },
+                { text: "The past beats inside me like a second heart.", author: "John Banville" },
+                { text: "Sometimes you need to be alone to remember who you are when no one is watching.", author: "Unknown" },
+                { text: "Let gratitude be the pillow upon which you kneel to say your nightly prayer.", author: "Maya Angelou" },
+                { text: "Life is really simple, but we insist on making it complicated.", author: "Confucius" },
+                { text: "Memory is the seamstress of identity — it stitches the past into who we are.", author: "Unknown" },
+                { text: "Solitude is where the soul goes to breathe.", author: "Unknown" },
+                { text: "Gratitude makes sense of our past, brings peace for today, and creates a vision for tomorrow.", author: "Melody Beattie" },
+                { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+                { text: "We are what we remember, and we become what we choose to remember.", author: "Unknown" },
+                { text: "Life is a series of natural and spontaneous changes. Don't resist them; that only creates sorrow.", author: "Lao Tzu" },
+                { text: "The unexamined life is not worth living.", author: "Socrates" }
+            ];
+
+            const humanNatureQuotes = [
+                { text: "Man is the only creature who refuses to be what he is.", author: "Albert Camus" },
+                { text: "We are all broken — that's how the light gets in.", author: "Ernest Hemingway" },
+                { text: "The line dividing good and evil cuts through the heart of every human being.", author: "Aleksandr Solzhenitsyn" },
+                { text: "Man is condemned to be free; because once thrown into the world, he is responsible for everything he does.", author: "Jean-Paul Sartre" },
+                { text: "Everyone you meet is fighting a battle you know nothing about. Be kind. Always.", author: "Ian Maclaren" },
+                { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Will Durant" },
+                { text: "Man's main task in life is to give birth to himself, to become what he potentially is.", author: "Erich Fromm" },
+                { text: "Every man has his secret sorrows which the world knows not; and often times we call a man cold when he is only sad.", author: "Henry Wadsworth Longfellow" },
+                { text: "We are all born mad. Some remain so.", author: "Samuel Beckett" },
+                { text: "Humans are the only animals that blush, and the only animals that need to.", author: "Mark Twain" },
+                { text: "People will forget what you said, people will forget what you did, but people will never forget how you made them feel.", author: "Maya Angelou" },
+                { text: "The true test of character is not how much we know how to do, but how we behave when we don't know what to do.", author: "John Holt" },
+                { text: "We are drawn to the flaws in others because they remind us of our own.", author: "Unknown" },
+                { text: "Behind every mask there is a face, and behind that a story.", author: "Marty Rubin" },
+                { text: "The human heart is a strange and complex thing. It can hold both great love and great darkness at the same time.", author: "Unknown" },
+                { text: "We judge ourselves by what we feel capable of doing, while others judge us by what we have already done.", author: "Henry Wadsworth Longfellow" },
+                { text: "It is not in the stars to hold our destiny but in ourselves.", author: "William Shakespeare" },
+                { text: "Every human being is a puzzle, and the pieces don't always fit the way we think they should.", author: "Unknown" },
+                { text: "The greatest trick the devil ever pulled was convincing the world he didn't exist.", author: "Charles Baudelaire" },
+                { text: "There is no such thing as a true self; we are all just echoes of the people we've met.", author: "Unknown" },
+                { text: "Man will always be a mystery to himself, and that is what makes him beautiful.", author: "Unknown" },
+                { text: "The more I see of the world, the more am I dissatisfied with it.", author: "Jane Austen" }
+            ];
+
+            function interleaveQuotes(a, b) {
+                const out = [];
+                const len = Math.max(a.length, b.length);
+                for (let i = 0; i < len; i++) {
+                    if (i < a.length) out.push(a[i]);
+                    if (i < b.length) out.push(b[i]);
+                }
+                return out;
+            }
+            const arabianAllQuotes = interleaveQuotes(lifeQuotes, humanNatureQuotes);
+
             const originalImageUrls = [
                 "https://th.bing.com/th/id/R.341a69e6922b56cb4e55d245a4f9891f?rik=faDjCJXVvHmzAQ&riu=http%3a%2f%2fwww.prettydesigns.com%2fwp-content%2fuploads%2f2015%2f04%2fMotivational-Quotes-7.jpg&ehk=P6rvqpjYNijkTErO0cQsvr1zj6fNKbV1rYkRYxoyTeQ%3d&risl=&pid=ImgRaw&r=0",
                 "https://harunmudak.com/wp-content/uploads/2020/12/life-is-short-quotes-2.png",
@@ -1023,43 +1368,45 @@
                 "https://funzumo.com/wp-content/uploads/2019/04/31-Short-Inspirational-Quotes-And-Short-Inspirational-Sayings-3.jpg"
             ];
 
-            // --- WORLD CONFIGURATIONS ---
             const worlds = {
                 gilded: {
-                    icon: '✦',
-                    name: 'The Gilded Carnival',
+                    icon: '✦', name: 'The Gilded Carnival',
                     mood: 'Empowerment & Strength',
                     section: 'RISE LIKE THE SUN',
                     sectionHint: 'Quotes to ignite your inner fire',
                     tagline: 'Quotes worn as jewels for the soul that dares to rise',
-                    render: renderPennantPhotos,
-                    quotes: empowermentQuotes
+                    render: renderPennantPhotos, quotes: empowermentQuotes
                 },
                 jungle: {
-                    icon: '❁',
-                    name: 'The Verdant Canopy',
+                    icon: '❁', name: 'The Verdant Canopy',
                     mood: 'Success & Perseverance',
                     section: 'GROWTH IN THE UNDERGROWTH',
                     sectionHint: 'Words to fuel your journey upward',
                     tagline: 'Through the thicket, toward the light — success blooms for those who persist',
-                    render: renderCanopyQuotes,
-                    quotes: successQuotes
+                    render: renderCanopyQuotes, quotes: successQuotes
                 },
                 daydream: {
-                    icon: '☁',
-                    name: 'Day Dreaming',
+                    icon: '☁', name: 'Day Dreaming',
                     mood: 'Gratitude & Good Vibes',
                     section: 'COZY THOUGHTS IN THE CLOUDS',
-                    sectionHint: 'Gentle reminders of life\'s sweetness',
+                    sectionHint: "Gentle reminders of life's sweetness",
                     tagline: 'Soft words for tender hearts — finding light in the everyday',
-                    render: renderDreamQuotes,
-                    quotes: gratitudeQuotes
+                    render: renderDreamQuotes, quotes: gratitudeQuotes
+                },
+                arabian: {
+                    icon: '☾', name: 'The Arabian Night',
+                    mood: 'Life, Memory, Nature & Reverie',
+                    section: 'TALES OF THE NIGHT',
+                    sectionHint: 'Wander slowly — the lanterns are in no hurry, and neither are you',
+                    tagline: 'Tales woven in starlight — linger beneath the lanterns and let the night remember you',
+                    render: renderArabianQuotes, quotes: arabianAllQuotes
                 }
             };
 
             const gallery = document.getElementById('gallery');
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = lightbox.querySelector('img');
+            let revealObserver = null;
 
             lightbox.addEventListener('click', () => lightbox.style.display = 'none');
 
@@ -1068,7 +1415,335 @@
                 lightbox.style.display = 'flex';
             }
 
-            function clearGallery() { gallery.innerHTML = ''; gallery.className = ''; }
+            /* ---------- HELPERS ---------- */
+            function shuffleArray(arr) {
+                const a = [...arr];
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            }
+
+            /* ---------- TOAST ---------- */
+            const TOAST_ICONS = {
+                copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+                whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+                error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+                loading: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>'
+            };
+
+            let toastTimer = null;
+            function showToast(message, kind = 'copy') {
+                const toast = document.getElementById('quoteToast');
+                const iconEl = toast.querySelector('.quote-toast-icon');
+                const textEl = toast.querySelector('.quote-toast-text');
+                iconEl.innerHTML = TOAST_ICONS[kind] || TOAST_ICONS.copy;
+                textEl.textContent = message;
+                toast.classList.remove('show');
+                void toast.offsetWidth;
+                toast.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+            }
+
+            /* ---------- COPY ---------- */
+            function copyQuote(q) {
+                const text = `"${q.text}"\n— ${q.author}`;
+                const done = (ok) => showToast(ok ? 'Copied to clipboard' : 'Could not copy', ok ? 'copy' : 'error');
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text)
+                        .then(() => done(true))
+                        .catch(() => fallbackCopy(text, done));
+                } else {
+                    fallbackCopy(text, done);
+                }
+            }
+
+            function fallbackCopy(text, done) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;outline:0;box-shadow:none;background:transparent;opacity:0;';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, text.length);
+                let ok = false;
+                try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+                document.body.removeChild(ta);
+                done(ok);
+            }
+
+            /* ---------- QUOTE CARD (canvas) ---------- */
+            function hexToRgba(hex, alpha) {
+                hex = (hex || '').replace('#', '').trim();
+                if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+                if (hex.length !== 6) return `rgba(0,0,0,${alpha})`;
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                return `rgba(${r},${g},${b},${alpha})`;
+            }
+
+            function wrapText(ctx, text, maxWidth, font) {
+                ctx.font = font;
+                const words = text.split(' ');
+                const lines = [];
+                let cur = '';
+                for (const w of words) {
+                    const test = cur ? cur + ' ' + w : w;
+                    if (ctx.measureText(test).width > maxWidth && cur) {
+                        lines.push(cur);
+                        cur = w;
+                    } else {
+                        cur = test;
+                    }
+                }
+                if (cur) lines.push(cur);
+                return lines;
+            }
+
+            function drawOrnament(ctx, x, y, color) {
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.8;
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillRect(-9, -9, 18, 18);
+                ctx.restore();
+                [-48, 48].forEach(off => {
+                    ctx.save();
+                    ctx.translate(x + off, y);
+                    ctx.rotate(Math.PI / 4);
+                    ctx.fillRect(-5, -5, 10, 10);
+                    ctx.restore();
+                });
+                ctx.globalAlpha = 1;
+            }
+
+            async function generateQuoteCard(q) {
+                try {
+                    await Promise.all([
+                        document.fonts.load('italic 500 60px "Cormorant Garamond"'),
+                        document.fonts.load('500 28px "Marcellus"'),
+                        document.fonts.load('400 18px "Marcellus"'),
+                        document.fonts.load('500 60px "Italiana"')
+                    ]);
+                } catch (e) {}
+
+                const cs = getComputedStyle(document.body);
+                const get = (name, fb) => (cs.getPropertyValue(name).trim() || fb);
+                const bgDeep = get('--bg-deep', '#17120a');
+                const bgSurface = get('--bg-surface', '#1d1710');
+                const gold = get('--gold', '#F5C842');
+                const goldLight = get('--gold-light', '#FFE9A8');
+                const textColor = get('--text', '#FBF3DC');
+                const textSec = get('--text-secondary', '#C4B494');
+
+                const W = 1080, H = 1350, pad = 64;
+                const canvas = document.createElement('canvas');
+                canvas.width = W;
+                canvas.height = H;
+                const ctx = canvas.getContext('2d');
+
+                const grd = ctx.createLinearGradient(0, 0, W, H);
+                grd.addColorStop(0, bgDeep);
+                grd.addColorStop(1, bgSurface);
+                ctx.fillStyle = grd;
+                ctx.fillRect(0, 0, W, H);
+
+                const glowTop = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, W);
+                glowTop.addColorStop(0, hexToRgba(gold, 0.16));
+                glowTop.addColorStop(1, hexToRgba(gold, 0));
+                ctx.fillStyle = glowTop;
+                ctx.fillRect(0, 0, W, H * 0.6);
+
+                const glowBot = ctx.createRadialGradient(W/2, H, 0, W/2, H, W * 0.8);
+                glowBot.addColorStop(0, hexToRgba(gold, 0.09));
+                glowBot.addColorStop(1, hexToRgba(gold, 0));
+                ctx.fillStyle = glowBot;
+                ctx.fillRect(0, H * 0.4, W, H * 0.6);
+
+                ctx.strokeStyle = gold;
+                ctx.globalAlpha = 0.55;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(pad, pad, W - pad * 2, H - pad * 2);
+                ctx.globalAlpha = 0.22;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(pad + 16, pad + 16, W - (pad + 16) * 2, H - (pad + 16) * 2);
+                ctx.globalAlpha = 1;
+
+                drawOrnament(ctx, W / 2, pad + 60, gold);
+                drawOrnament(ctx, W / 2, H - pad - 60, gold);
+
+                const maxWidth = W - pad * 2 - 140;
+                let fontSize = 62;
+                const lineMult = 1.55;
+                let font = `italic 500 ${fontSize}px "Cormorant Garamond", Georgia, serif`;
+                const fullText = `"${q.text}"`;
+                let lines = wrapText(ctx, fullText, maxWidth, font);
+                let lineH = fontSize * lineMult;
+                const maxH = H - pad * 2 - 360;
+
+                while (lines.length * lineH > maxH && fontSize > 30) {
+                    fontSize -= 3;
+                    lineH = fontSize * lineMult;
+                    font = `italic 500 ${fontSize}px "Cormorant Garamond", Georgia, serif`;
+                    lines = wrapText(ctx, fullText, maxWidth, font);
+                }
+
+                const totalH = lines.length * lineH;
+                const centerY = H / 2 - 20;
+                const startY = centerY - totalH / 2 + lineH / 2;
+
+                ctx.fillStyle = textColor;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = font;
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, W / 2, startY + i * lineH);
+                });
+
+                const authorY = startY + (lines.length - 1) * lineH + lineH * 1.2 + 60;
+
+                ctx.strokeStyle = gold;
+                ctx.globalAlpha = 0.6;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(W / 2 - 90, authorY - 40);
+                ctx.lineTo(W / 2 + 90, authorY - 40);
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(W / 2, authorY - 40);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillStyle = gold;
+                ctx.fillRect(-5, -5, 10, 10);
+                ctx.restore();
+                ctx.globalAlpha = 1;
+
+                ctx.fillStyle = goldLight;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = `500 26px "Marcellus", Georgia, serif`;
+                ctx.fillText(`— ${q.author.toUpperCase()} —`, W / 2, authorY);
+
+                ctx.globalAlpha = 0.65;
+                ctx.fillStyle = textSec;
+                ctx.font = `400 16px "Marcellus", Georgia, serif`;
+                ctx.fillText('THE HANGING ARCHIVE', W / 2, H - pad - 20);
+                ctx.globalAlpha = 1;
+
+                return new Promise((resolve, reject) => {
+                    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('toBlob failed')), 'image/png', 0.92);
+                });
+            }
+
+            /* ---------- WHATSAPP SHARE (card image) ---------- */
+            async function shareQuoteAsCard(q) {
+                let blob;
+                try {
+                    showToast('Preparing card...', 'loading');
+                    blob = await generateQuoteCard(q);
+                } catch (e) {
+                    shareQuoteText(q);
+                    return;
+                }
+
+                const filename = 'quote-' + Date.now() + '.png';
+                const quoteText = `"${q.text}"\n— ${q.author}\n\nvia The Hanging Archive`;
+                const file = new File([blob], filename, { type: 'image/png' });
+
+                // 1) Native share with file
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({ files: [file], text: quoteText, title: 'Quote' });
+                        showToast('Shared', 'whatsapp');
+                        return;
+                    } catch (e) {
+                        if (e && e.name === 'AbortError') return;
+                    }
+                }
+
+                // 2) Copy image to clipboard + open WhatsApp Web
+                if (navigator.clipboard && window.ClipboardItem) {
+                    try {
+                        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+                        window.open('https://wa.me/?text=' + encodeURIComponent(quoteText), '_blank', 'noopener,noreferrer');
+                        showToast('Card copied — paste in chat', 'whatsapp');
+                        return;
+                    } catch (e) {}
+                }
+
+                // 3) Download + open WhatsApp Web
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 3000);
+                window.open('https://wa.me/?text=' + encodeURIComponent(quoteText), '_blank', 'noopener,noreferrer');
+                showToast('Card saved — attach in chat', 'whatsapp');
+            }
+
+            function shareQuoteText(q) {
+                const text = `"${q.text}"\n— ${q.author}`;
+                window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
+                showToast('Opening WhatsApp', 'whatsapp');
+            }
+
+            /* ---------- QUOTE MODAL ---------- */
+            const quoteModal = document.getElementById('quoteModal');
+            const quoteModalText = document.getElementById('quoteModalText');
+            const quoteModalAuthor = document.getElementById('quoteModalAuthor');
+            const quoteModalClose = document.getElementById('quoteModalClose');
+            const quoteModalCopy = document.getElementById('quoteModalCopy');
+            const quoteModalWhatsapp = document.getElementById('quoteModalWhatsapp');
+            let currentModalQuote = null;
+
+            function openQuoteModal(q) {
+                currentModalQuote = q;
+                quoteModalText.textContent = `“${q.text}”`;
+                quoteModalAuthor.textContent = `— ${q.author}`;
+                quoteModal.classList.add('active');
+                quoteModal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeQuoteModal() {
+                if (!quoteModal.classList.contains('active')) return;
+                quoteModal.classList.remove('active');
+                quoteModal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+
+            quoteModalClose.addEventListener('click', closeQuoteModal);
+            quoteModal.addEventListener('click', (e) => {
+                if (!e.target.closest('.quote-modal-inner')) closeQuoteModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeQuoteModal();
+            });
+            quoteModalCopy.addEventListener('click', () => {
+                if (currentModalQuote) copyQuote(currentModalQuote);
+            });
+            quoteModalWhatsapp.addEventListener('click', () => {
+                if (currentModalQuote) shareQuoteAsCard(currentModalQuote);
+            });
+
+            function clearGallery() {
+                if (revealObserver) { revealObserver.disconnect(); revealObserver = null; }
+                closeQuoteModal();
+                gallery.innerHTML = '';
+                gallery.className = '';
+            }
+
+            /* ---------- RENDERERS ---------- */
+            const copyIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+            const waIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
 
             function renderPennantPhotos(quotes) {
                 clearGallery();
@@ -1079,8 +1754,8 @@
                 mobile.className = 'hanging-mobile';
                 rod.appendChild(mobile);
                 gallery.appendChild(rod);
-6
-                const shuffledQuotes = [...quotes].sort(() => Math.random() - 0.5);
+
+                const shuffledQuotes = shuffleArray(quotes);
 
                 originalImageUrls.forEach((url, index) => {
                     const testImg = new Image();
@@ -1101,21 +1776,33 @@
                             <div class="photo-card" style="height:${height}px;">
                                 <img src="${url}" alt="photo" loading="lazy">
                                 <div class="pennant-quote-overlay">
-                                    <p class="pq-text">"${quote.text}"</p>c 6
+                                    <p class="pq-text">"${quote.text}"</p>
                                     <p class="pq-author">— ${quote.author}</p>
+                                    <div class="pq-actions">
+                                        <button class="pq-btn" type="button" data-action="copy" aria-label="Copy this quote">${copyIconSmall}</button>
+                                        <button class="pq-btn" type="button" data-action="whatsapp" aria-label="Share quote card on WhatsApp">${waIconSmall}</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tassel"></div>`;
+
                         item.addEventListener('click', (e) => {
+                            if (e.target.closest('.pq-actions')) return;
                             e.stopPropagation();
                             openLightbox(url);
                         });
+                        item.querySelector('[data-action="copy"]').addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            copyQuote(quote);
+                        });
+                        item.querySelector('[data-action="whatsapp"]').addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            shareQuoteAsCard(quote);
+                        });
+
                         mobile.appendChild(item);
                     };
                     testImg.onerror = () => {};
-                    setTimeout(() => {
-                        if (!testImg.complete || testImg.naturalWidth === 0) {}
-                    }, 8000);
                 });
             }
 
@@ -1124,7 +1811,8 @@
                 gallery.classList.add('gallery--canopy');
                 const container = document.createElement('div');
                 container.className = 'canopy-quotes';
-                quotes.forEach((q, i) => {
+                const shuffled = shuffleArray(quotes);
+                shuffled.forEach((q, i) => {
                     const tilt = (Math.sin(i * 2.3) * 6).toFixed(1);
                     const widthPercent = 28 + Math.floor(Math.random() * 18);
                     const item = document.createElement('div');
@@ -1132,6 +1820,9 @@
                     item.style.setProperty('--tilt', tilt + 'deg');
                     item.style.setProperty('--cw', widthPercent + '%');
                     item.style.animationDelay = (i * 0.06) + 's';
+                    item.setAttribute('role', 'button');
+                    item.setAttribute('tabindex', '0');
+                    item.setAttribute('aria-label', 'View quote enlarged');
                     item.innerHTML = `
                         <svg class="vine" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 2 Q 20 2 20 14 Q 20 24 36 24" stroke="var(--accent-b)" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -1142,12 +1833,15 @@
                         <span class="quote-mark">&ldquo;</span>
                         <p class="quote-text">${q.text}</p>
                         <div class="quote-author">${q.author}</div>`;
+                    item.addEventListener('click', () => openQuoteModal(q));
+                    item.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuoteModal(q); }
+                    });
                     container.appendChild(item);
                 });
                 gallery.appendChild(container);
             }
 
-            /* ---- DAY DREAMING: Gratitude cards ---- */
             const wcPairs = [
                 ['--accent-a', '--accent-c'],
                 ['--accent-b', '--accent-d'],
@@ -1161,12 +1855,16 @@
                 gallery.classList.add('gallery--dream');
                 const container = document.createElement('div');
                 container.className = 'dream-quotes';
-                quotes.forEach((q, i) => {
+                const shuffled = shuffleArray(quotes);
+                shuffled.forEach((q, i) => {
                     const pair = wcPairs[i % wcPairs.length];
                     const glyph = glyphs[i % glyphs.length];
                     const item = document.createElement('div');
                     item.className = 'dream-card';
                     item.style.setProperty('--delay', (i * 0.08) + 's');
+                    item.setAttribute('role', 'button');
+                    item.setAttribute('tabindex', '0');
+                    item.setAttribute('aria-label', 'View quote enlarged');
                     item.innerHTML = `
                         <div class="watercolor" style="--wc-a:var(${pair[0]});--wc-b:var(${pair[1]});"></div>
                         <div class="dream-content">
@@ -1174,12 +1872,96 @@
                             <p class="quote-text">"${q.text}"</p>
                             <div class="quote-author">— ${q.author}</div>
                         </div>`;
+                    item.addEventListener('click', () => openQuoteModal(q));
+                    item.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuoteModal(q); }
+                    });
                     container.appendChild(item);
                 });
                 gallery.appendChild(container);
             }
 
-            /* ---- DREAMSCAPE (daydream only) ---- */
+            function renderArabianQuotes(quotes) {
+                clearGallery();
+                gallery.classList.add('gallery--arabian');
+                const journey = document.createElement('div');
+                journey.className = 'arabian-journey';
+
+                const intro = document.createElement('div');
+                intro.className = 'journey-intro';
+                intro.innerHTML = `
+                    <div class="journey-intro-ornament">✦</div>
+                    <p class="journey-intro-text">Settle into the night. There is no need to hurry here — the stars have been waiting for you, and each word is meant to be lingered over.</p>
+                    <div class="journey-intro-ornament">✦</div>`;
+                journey.appendChild(intro);
+
+                const aligns = ['left', 'right', 'center', 'left', 'right', 'center'];
+                const shuffled = shuffleArray(quotes);
+
+                shuffled.forEach((q, i) => {
+                    const align = aligns[i % aligns.length];
+                    const item = document.createElement('div');
+                    item.className = 'journey-quote';
+                    item.dataset.align = align;
+                    item.innerHTML = `
+                        <div class="journey-flourish">✦ ✦ ✦</div>
+                        <p class="journey-text">“${q.text}”</p>
+                        <div class="journey-source">— ${q.author}</div>
+                        <div class="journey-actions">
+                            <button class="quote-action" type="button" data-action="copy" aria-label="Copy this quote to clipboard" title="Copy quote">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                            </button>
+                            <button class="quote-action" type="button" data-action="whatsapp" aria-label="Share quote card on WhatsApp" title="Share card on WhatsApp">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                                </svg>
+                            </button>
+                        </div>`;
+
+                    item.querySelector('[data-action="copy"]').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        copyQuote(q);
+                    });
+                    item.querySelector('[data-action="whatsapp"]').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        shareQuoteAsCard(q);
+                    });
+
+                    journey.appendChild(item);
+                });
+
+                const closer = document.createElement('div');
+                closer.className = 'journey-closer';
+                closer.innerHTML = `
+                    <div class="journey-intro-ornament">✦</div>
+                    <p class="journey-intro-text">The night is long, and its lanterns are patient. Carry these words gently — they are not meant to be kept, but to be remembered.</p>`;
+                journey.appendChild(closer);
+
+                gallery.appendChild(journey);
+                observeArabianReveal();
+            }
+
+            function observeArabianReveal() {
+                const cards = gallery.querySelectorAll('.journey-quote');
+                if (!('IntersectionObserver' in window)) {
+                    cards.forEach(c => c.classList.add('revealed'));
+                    return;
+                }
+                revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(en => {
+                        if (en.isIntersecting) {
+                            en.target.classList.add('revealed');
+                            revealObserver.unobserve(en.target);
+                        }
+                    });
+                }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+                cards.forEach(c => revealObserver.observe(c));
+            }
+
+            /* ---- DREAMSCAPE (daydream) ---- */
             function cloudSVG(w, h, color) {
                 return `<svg viewBox="0 0 200 100" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
                     <ellipse cx="60" cy="60" rx="50" ry="30" fill="${color}"/>
@@ -1221,6 +2003,40 @@
             }
             buildDreamscape();
 
+            /* ---- ARABIAN NIGHT: stars + embers ---- */
+            function buildArabianNight() {
+                const field = document.getElementById('arabianNight');
+                if (!field) return;
+                field.querySelectorAll('.star, .arabian-ember').forEach(el => el.remove());
+
+                for (let i = 0; i < 80; i++) {
+                    const s = document.createElement('span');
+                    s.className = 'star';
+                    const size = (1 + Math.random() * 2.2).toFixed(1);
+                    s.style.width = size + 'px';
+                    s.style.height = size + 'px';
+                    s.style.left = (Math.random() * 100).toFixed(2) + '%';
+                    s.style.top = (Math.random() * 100).toFixed(2) + '%';
+                    s.style.animationDuration = (3 + Math.random() * 4.5).toFixed(1) + 's';
+                    s.style.animationDelay = (-Math.random() * 6).toFixed(2) + 's';
+                    field.appendChild(s);
+                }
+
+                for (let i = 0; i < 22; i++) {
+                    const e = document.createElement('span');
+                    e.className = 'arabian-ember';
+                    const size = (2 + Math.random() * 1.6).toFixed(1);
+                    e.style.width = size + 'px';
+                    e.style.height = size + 'px';
+                    e.style.left = (Math.random() * 100).toFixed(2) + '%';
+                    e.style.bottom = (Math.random() * 30 - 10).toFixed(2) + '%';
+                    e.style.animationDuration = (10 + Math.random() * 12).toFixed(1) + 's';
+                    e.style.animationDelay = (-Math.random() * 15).toFixed(2) + 's';
+                    field.appendChild(e);
+                }
+            }
+            buildArabianNight();
+
             function applyWorld(key) {
                 const w = worlds[key];
                 document.body.setAttribute('data-theme', key);
@@ -1237,7 +2053,7 @@
                 localStorage.setItem('archiveWorld', key);
             }
 
-            const order = ['gilded', 'daydream', 'jungle'];
+            const order = ['gilded', 'daydream', 'jungle', 'arabian'];
             let current = localStorage.getItem('archiveWorld');
             if (!order.includes(current)) current = 'gilded';
             applyWorld(current);
