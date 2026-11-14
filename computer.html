@@ -2029,7 +2029,7 @@
             const notifToggle = document.getElementById('notifToggle');
             const notifIcon = document.getElementById('notifIcon');
             let notificationsEnabled = localStorage.getItem('notifEnabled') === 'true';
-            let notifInterval = null;
+            let notifTimeout = null;
 
             function updateNotifUI() {
                 if (notificationsEnabled) {
@@ -2045,41 +2045,47 @@
                 }
             }
 
-            function checkAndSendNotification() {
+            function triggerNotification(type) {
+                const q = allQuotesPool[Math.floor(Math.random() * allQuotesPool.length)];
+                const title = type === 'morning' ? "Good Morning · A Quote for You" : "Evening Reflection · A Quote for You";
+                new Notification(title, {
+                    body: `"${q.text}"\n— ${q.author}`,
+                    icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
+                });
+            }
+
+            function scheduleNextNotification() {
+                if (notifTimeout) clearTimeout(notifTimeout);
                 if (!notificationsEnabled || Notification.permission !== 'granted') return;
 
                 const now = new Date();
-                const hour = now.getHours();
-                const minute = now.getMinutes();
-                const dateStr = now.toDateString();
+                const morningTarget = new Date(now);
+                morningTarget.setHours(5, 0, 0, 0); // 5:00 AM
+                const eveningTarget = new Date(now);
+                eveningTarget.setHours(18, 5, 0, 0); // 6:05 PM (TEST TIME)
 
-                const lastMorning = localStorage.getItem('lastMorningNotif');
-                const lastEvening = localStorage.getItem('lastEveningNotif');
+                let nextTarget;
+                let type;
 
-                // 5:00 AM - Morning Quote
-                if (hour === 5 && minute === 0 && lastMorning !== dateStr) {
-                    const q = allQuotesPool[Math.floor(Math.random() * allQuotesPool.length)];
-                    new Notification("Good Morning · A Quote for You", {
-                        body: `"${q.text}"\n— ${q.author}`,
-                        icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png' 
-                    });
-                    localStorage.setItem('lastMorningNotif', dateStr);
-                } 
-                // 6:05 PM - Evening Quote (Changed for testing)
-                else if (hour === 18 && minute === 5 && lastEvening !== dateStr) {
-                    const q = allQuotesPool[Math.floor(Math.random() * allQuotesPool.length)];
-                    new Notification("Evening Reflection · A Quote for You", {
-                        body: `"${q.text}"\n— ${q.author}`,
-                        icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
-                    });
-                    localStorage.setItem('lastEveningNotif', dateStr);
+                if (now < morningTarget) {
+                    nextTarget = morningTarget;
+                    type = 'morning';
+                } else if (now < eveningTarget) {
+                    nextTarget = eveningTarget;
+                    type = 'evening';
+                } else {
+                    // Next day morning
+                    nextTarget = new Date(morningTarget);
+                    nextTarget.setDate(nextTarget.getDate() + 1);
+                    type = 'morning';
                 }
-            }
 
-            function startNotificationScheduler() {
-                if (notifInterval) clearInterval(notifInterval);
-                checkAndSendNotification(); // Check immediately
-                notifInterval = setInterval(checkAndSendNotification, 60000); // Check every minute
+                const delay = nextTarget.getTime() - now.getTime();
+
+                notifTimeout = setTimeout(() => {
+                    triggerNotification(type);
+                    scheduleNextNotification(); // Schedule the next one
+                }, delay);
             }
 
             notifToggle.addEventListener('click', async () => {
@@ -2089,7 +2095,7 @@
                     localStorage.setItem('notifEnabled', 'false');
                     updateNotifUI();
                     showToast('Daily reminders turned off', 'copy');
-                    if (notifInterval) clearInterval(notifInterval);
+                    if (notifTimeout) clearTimeout(notifTimeout);
                 } else {
                     // Turn ON
                     if (!('Notification' in window)) {
@@ -2107,13 +2113,17 @@
                         localStorage.setItem('notifEnabled', 'true');
                         updateNotifUI();
                         showToast('Daily reminders on · 5 AM & 6:05 PM', 'bell');
-                        startNotificationScheduler();
-                        
-                        // Trigger a test notification so the user knows it works
-                        new Notification("Reminders Activated", {
-                            body: "You will receive a quote every morning at 5:00 AM and evening at 6:05 PM.",
-                            icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
-                        });
+                        scheduleNextNotification();
+
+                        // Send test notification after 5 seconds
+                        showToast('Sending test notification in 5s...', 'bell');
+                        setTimeout(() => {
+                            new Notification("Test Reminder", {
+                                body: "This is a test. You will receive quotes at 5:00 AM and 6:05 PM.",
+                                icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
+                            });
+                        }, 5000);
+
                     } else {
                         showToast('Notification permission denied', 'error');
                     }
@@ -2123,7 +2133,7 @@
             // Init notifications state on load
             updateNotifUI();
             if (notificationsEnabled && Notification.permission === 'granted') {
-                startNotificationScheduler();
+                scheduleNextNotification();
             }
 
         })();
