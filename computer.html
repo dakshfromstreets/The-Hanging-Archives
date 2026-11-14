@@ -466,7 +466,7 @@
             border-radius: 12px; box-shadow: 0 0 40px rgba(0, 0, 0, .5);
         }
 
-        /* ===== WORLD 1 — GILDED ===== */
+        /* ===== WORLD 1 — GILDED (images only, actions on hover) ===== */
         .gallery--pennant { padding-top: 14px; }
 
         .rod-container {
@@ -531,36 +531,35 @@
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
 
-        .pennant-quote-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, .55) 22%, rgba(0, 0, 0, .92) 62%);
-            padding: 1.6rem .7rem .65rem; text-align: center;
-            opacity: 1;
-            transition: background .3s ease;
+        /* Hover-only action strip — no quote text on the images */
+        .pennant-actions-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent 60%, rgba(0, 0, 0, .6) 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: .7rem;
+            opacity: 0;
+            transition: opacity .3s ease;
             pointer-events: none;
         }
 
-        .pennant-photo-item:hover .pennant-quote-overlay {
-            background: linear-gradient(transparent, rgba(0, 0, 0, .65) 22%, rgba(0, 0, 0, .96) 62%);
+        .pennant-photo-item:hover .pennant-actions-overlay,
+        .pennant-photo-item:focus-within .pennant-actions-overlay {
+            opacity: 1;
         }
 
-        .pennant-quote-overlay .pq-text {
-            font-family: 'Cormorant Garamond', serif; font-style: italic;
-            font-size: .8rem; color: #fff; line-height: 1.35; margin-bottom: .3rem;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, .95), 0 0 10px rgba(0, 0, 0, .8);
-        }
-
-        .pennant-quote-overlay .pq-author {
-            font-size: .6rem; color: var(--gold-light);
-            text-transform: uppercase; letter-spacing: 1px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, .95);
-            margin-bottom: .35rem;
+        @media (hover: none) {
+            .pennant-actions-overlay {
+                opacity: .9;
+                background: linear-gradient(transparent 72%, rgba(0, 0, 0, .45) 100%);
+            }
         }
 
         .pq-actions {
             display: flex;
             gap: .4rem;
-            justify-content: center;
             pointer-events: auto;
         }
 
@@ -571,12 +570,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, .12);
-            border: 1px solid rgba(255, 255, 255, .28);
+            background: rgba(255, 255, 255, .14);
+            border: 1px solid rgba(255, 255, 255, .3);
             border-radius: 50%;
-            color: rgba(255, 255, 255, .92);
+            color: rgba(255, 255, 255, .95);
             cursor: pointer;
-            pointer-events: auto;
             transition: all .25s ease;
             -webkit-tap-highlight-color: transparent;
         }
@@ -1475,20 +1473,10 @@
                 done(ok);
             }
 
-            /* ---------- QUOTE CARD (canvas) ---------- */
-            function hexToRgba(hex, alpha) {
-                hex = (hex || '').replace('#', '').trim();
-                if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
-                if (hex.length !== 6) return `rgba(0,0,0,${alpha})`;
-                const r = parseInt(hex.substring(0, 2), 16);
-                const g = parseInt(hex.substring(2, 4), 16);
-                const b = parseInt(hex.substring(4, 6), 16);
-                return `rgba(${r},${g},${b},${alpha})`;
-            }
-
+            /* ---------- PREMIUM QUOTE CARD (canvas) ---------- */
             function wrapText(ctx, text, maxWidth, font) {
                 ctx.font = font;
-                const words = text.split(' ');
+                const words = text.split(/\s+/);
                 const lines = [];
                 let cur = '';
                 for (const w of words) {
@@ -1504,100 +1492,109 @@
                 return lines;
             }
 
-            function drawOrnament(ctx, x, y, color) {
-                ctx.fillStyle = color;
-                ctx.globalAlpha = 0.8;
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.rotate(Math.PI / 4);
-                ctx.fillRect(-9, -9, 18, 18);
-                ctx.restore();
-                [-48, 48].forEach(off => {
-                    ctx.save();
-                    ctx.translate(x + off, y);
-                    ctx.rotate(Math.PI / 4);
-                    ctx.fillRect(-5, -5, 10, 10);
-                    ctx.restore();
-                });
-                ctx.globalAlpha = 1;
+            function getPalette(theme) {
+                const palettes = {
+                    gilded: {
+                        bg1: '#1a0c0e', bg2: '#0a0506',
+                        gold: '#D8AE6C', goldLight: '#F2D796',
+                        text: '#F6EEE2', textSec: '#8a7355',
+                        glow: '216,174,108', light: false
+                    },
+                    jungle: {
+                        bg1: '#0e2310', bg2: '#050f05',
+                        gold: '#A8D870', goldLight: '#C5E896',
+                        text: '#E8F0DD', textSec: '#6d7c5b',
+                        glow: '168,216,112', light: false
+                    },
+                    daydream: {
+                        bg1: '#fbf6ff', bg2: '#ffffff',
+                        gold: '#B65C8C', goldLight: '#8a4568',
+                        text: '#3B3A4A', textSec: '#8f8aa6',
+                        glow: '201,182,228', light: true
+                    },
+                    arabian: {
+                        bg1: '#211810', bg2: '#0b0805',
+                        gold: '#F5C842', goldLight: '#FFE9A8',
+                        text: '#FBF3DC', textSec: '#7f6f4a',
+                        glow: '245,200,66', light: false
+                    }
+                };
+                return palettes[theme] || palettes.gilded;
             }
 
-            async function generateQuoteCard(q) {
+            async function generateQuoteCanvas(q) {
                 try {
                     await Promise.all([
-                        document.fonts.load('italic 500 60px "Cormorant Garamond"'),
-                        document.fonts.load('500 28px "Marcellus"'),
-                        document.fonts.load('400 18px "Marcellus"'),
-                        document.fonts.load('500 60px "Italiana"')
+                        document.fonts.load('italic 500 40px "Cormorant Garamond"'),
+                        document.fonts.load('500 16px "Marcellus"'),
+                        document.fonts.load('400 12px "Marcellus"')
                     ]);
                 } catch (e) {}
 
-                const cs = getComputedStyle(document.body);
-                const get = (name, fb) => (cs.getPropertyValue(name).trim() || fb);
-                const bgDeep = get('--bg-deep', '#17120a');
-                const bgSurface = get('--bg-surface', '#1d1710');
-                const gold = get('--gold', '#F5C842');
-                const goldLight = get('--gold-light', '#FFE9A8');
-                const textColor = get('--text', '#FBF3DC');
-                const textSec = get('--text-secondary', '#C4B494');
+                const theme = document.body.getAttribute('data-theme') || 'gilded';
+                const p = getPalette(theme);
 
-                const W = 1080, H = 1350, pad = 64;
+                // Landscape dimensions matching the reference image
+                const W = 1080, H = 460;
                 const canvas = document.createElement('canvas');
                 canvas.width = W;
                 canvas.height = H;
                 const ctx = canvas.getContext('2d');
 
-                const grd = ctx.createLinearGradient(0, 0, W, H);
-                grd.addColorStop(0, bgDeep);
-                grd.addColorStop(1, bgSurface);
-                ctx.fillStyle = grd;
+                // Draw rounded rectangle clipping path
+                const radius = 28;
+                ctx.beginPath();
+                ctx.moveTo(radius, 0);
+                ctx.lineTo(W - radius, 0);
+                ctx.quadraticCurveTo(W, 0, W, radius);
+                ctx.lineTo(W, H - radius);
+                ctx.quadraticCurveTo(W, H, W - radius, H);
+                ctx.lineTo(radius, H);
+                ctx.quadraticCurveTo(0, H, 0, H - radius);
+                ctx.lineTo(0, radius);
+                ctx.quadraticCurveTo(0, 0, radius, 0);
+                ctx.closePath();
+                ctx.clip();
+
+                // base gradient
+                const bg = ctx.createLinearGradient(0, 0, W, H);
+                bg.addColorStop(0, p.bg1);
+                bg.addColorStop(1, p.bg2);
+                ctx.fillStyle = bg;
                 ctx.fillRect(0, 0, W, H);
 
-                const glowTop = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, W);
-                glowTop.addColorStop(0, hexToRgba(gold, 0.16));
-                glowTop.addColorStop(1, hexToRgba(gold, 0));
-                ctx.fillStyle = glowTop;
-                ctx.fillRect(0, 0, W, H * 0.6);
-
-                const glowBot = ctx.createRadialGradient(W/2, H, 0, W/2, H, W * 0.8);
-                glowBot.addColorStop(0, hexToRgba(gold, 0.09));
-                glowBot.addColorStop(1, hexToRgba(gold, 0));
-                ctx.fillStyle = glowBot;
-                ctx.fillRect(0, H * 0.4, W, H * 0.6);
-
-                ctx.strokeStyle = gold;
-                ctx.globalAlpha = 0.55;
-                ctx.lineWidth = 2;
-                ctx.strokeRect(pad, pad, W - pad * 2, H - pad * 2);
-                ctx.globalAlpha = 0.22;
+                // outer + inner border (very subtle)
+                const padOuter = 20, padInner = 32;
+                ctx.strokeStyle = p.gold;
+                ctx.globalAlpha = p.light ? 0.45 : 0.35;
                 ctx.lineWidth = 1;
-                ctx.strokeRect(pad + 16, pad + 16, W - (pad + 16) * 2, H - (pad + 16) * 2);
+                ctx.strokeRect(padOuter, padOuter, W - padOuter * 2, H - padOuter * 2);
+
+                ctx.globalAlpha = p.light ? 0.30 : 0.22;
+                ctx.strokeRect(padInner, padInner, W - padInner * 2, H - padInner * 2);
                 ctx.globalAlpha = 1;
 
-                drawOrnament(ctx, W / 2, pad + 60, gold);
-                drawOrnament(ctx, W / 2, H - pad - 60, gold);
-
-                const maxWidth = W - pad * 2 - 140;
-                let fontSize = 62;
-                const lineMult = 1.55;
+                // quote text
+                const maxWidth = W - padInner * 2 - 80;
+                let fontSize = 36;
                 let font = `italic 500 ${fontSize}px "Cormorant Garamond", Georgia, serif`;
                 const fullText = `"${q.text}"`;
                 let lines = wrapText(ctx, fullText, maxWidth, font);
-                let lineH = fontSize * lineMult;
-                const maxH = H - pad * 2 - 360;
+                let lineH = fontSize * 1.45;
+                const maxTextH = H - padInner * 2 - 120;
 
-                while (lines.length * lineH > maxH && fontSize > 30) {
-                    fontSize -= 3;
-                    lineH = fontSize * lineMult;
+                while (lines.length * lineH > maxTextH && fontSize > 20) {
+                    fontSize -= 2;
+                    lineH = fontSize * 1.45;
                     font = `italic 500 ${fontSize}px "Cormorant Garamond", Georgia, serif`;
                     lines = wrapText(ctx, fullText, maxWidth, font);
                 }
 
                 const totalH = lines.length * lineH;
-                const centerY = H / 2 - 20;
+                const centerY = H / 2 - 18;
                 const startY = centerY - totalH / 2 + lineH / 2;
 
-                ctx.fillStyle = textColor;
+                ctx.fillStyle = p.text;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.font = font;
@@ -1605,94 +1602,93 @@
                     ctx.fillText(line, W / 2, startY + i * lineH);
                 });
 
-                const authorY = startY + (lines.length - 1) * lineH + lineH * 1.2 + 60;
+                // divider + diamond
+                const lastLineY = startY + (lines.length - 1) * lineH;
+                const dividerY = lastLineY + lineH * 0.5 + 26;
 
-                ctx.strokeStyle = gold;
-                ctx.globalAlpha = 0.6;
+                ctx.strokeStyle = p.gold;
+                ctx.globalAlpha = p.light ? 0.7 : 0.6;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.moveTo(W / 2 - 90, authorY - 40);
-                ctx.lineTo(W / 2 + 90, authorY - 40);
+                ctx.moveTo(W / 2 - 90, dividerY);
+                ctx.lineTo(W / 2 - 20, dividerY);
+                ctx.moveTo(W / 2 + 20, dividerY);
+                ctx.lineTo(W / 2 + 90, dividerY);
                 ctx.stroke();
 
                 ctx.save();
-                ctx.translate(W / 2, authorY - 40);
+                ctx.translate(W / 2, dividerY);
                 ctx.rotate(Math.PI / 4);
-                ctx.fillStyle = gold;
-                ctx.fillRect(-5, -5, 10, 10);
+                ctx.fillStyle = p.gold;
+                ctx.fillRect(-4, -4, 8, 8);
                 ctx.restore();
                 ctx.globalAlpha = 1;
 
-                ctx.fillStyle = goldLight;
+                // author
+                ctx.fillStyle = p.goldLight;
+                ctx.font = `500 15px "Marcellus", Georgia, serif`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.font = `500 26px "Marcellus", Georgia, serif`;
-                ctx.fillText(`— ${q.author.toUpperCase()} —`, W / 2, authorY);
+                const authorUpper = (q.author || 'Unknown').toUpperCase();
+                ctx.fillText(`— ${authorUpper} —`, W / 2, dividerY + 28);
 
-                ctx.globalAlpha = 0.65;
-                ctx.fillStyle = textSec;
-                ctx.font = `400 16px "Marcellus", Georgia, serif`;
-                ctx.fillText('THE HANGING ARCHIVE', W / 2, H - pad - 20);
-                ctx.globalAlpha = 1;
-
-                return new Promise((resolve, reject) => {
-                    canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('toBlob failed')), 'image/png', 0.92);
-                });
+                return canvas;
             }
 
-            /* ---------- WHATSAPP SHARE (card image) ---------- */
+            /* ---------- WHATSAPP SHARE — CARD ONLY ---------- */
             async function shareQuoteAsCard(q) {
-                let blob;
+                let canvas;
                 try {
                     showToast('Preparing card...', 'loading');
-                    blob = await generateQuoteCard(q);
+                    canvas = await generateQuoteCanvas(q);
                 } catch (e) {
-                    shareQuoteText(q);
+                    showToast('Could not create card', 'error');
                     return;
                 }
 
-                const filename = 'quote-' + Date.now() + '.png';
-                const quoteText = `"${q.text}"\n— ${q.author}\n\nvia The Hanging Archive`;
-                const file = new File([blob], filename, { type: 'image/png' });
+                // JPEG for file share (small)
+                const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
 
-                // 1) Native share with file
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    try {
-                        await navigator.share({ files: [file], text: quoteText, title: 'Quote' });
-                        showToast('Shared', 'whatsapp');
-                        return;
-                    } catch (e) {
-                        if (e && e.name === 'AbortError') return;
+                // 1) Native share sheet — image only, no text
+                try {
+                    const file = new File([jpegBlob], 'hanging-archive.jpg', { type: 'image/jpeg' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({ files: [file] });
+                            showToast('Shared', 'whatsapp');
+                            return;
+                        } catch (err) {
+                            if (err && err.name === 'AbortError') return;
+                        }
                     }
-                }
+                } catch (e) {}
 
-                // 2) Copy image to clipboard + open WhatsApp Web
+                // 2) Clipboard image + open bare WhatsApp Web
                 if (navigator.clipboard && window.ClipboardItem) {
                     try {
-                        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-                        window.open('https://wa.me/?text=' + encodeURIComponent(quoteText), '_blank', 'noopener,noreferrer');
+                        const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+                        window.open('https://web.whatsapp.com/', '_blank', 'noopener,noreferrer');
                         showToast('Card copied — paste in chat', 'whatsapp');
                         return;
-                    } catch (e) {}
+                    } catch (err) {}
                 }
 
-                // 3) Download + open WhatsApp Web
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(() => URL.revokeObjectURL(url), 3000);
-                window.open('https://wa.me/?text=' + encodeURIComponent(quoteText), '_blank', 'noopener,noreferrer');
-                showToast('Card saved — attach in chat', 'whatsapp');
-            }
-
-            function shareQuoteText(q) {
-                const text = `"${q.text}"\n— ${q.author}`;
-                window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
-                showToast('Opening WhatsApp', 'whatsapp');
+                // 3) Download card + open bare WhatsApp Web
+                try {
+                    const url = URL.createObjectURL(jpegBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'hanging-archive.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    setTimeout(() => URL.revokeObjectURL(url), 4000);
+                    window.open('https://web.whatsapp.com/', '_blank', 'noopener,noreferrer');
+                    showToast('Card saved — attach in chat', 'whatsapp');
+                } catch (e) {
+                    showToast('Could not share card', 'error');
+                }
             }
 
             /* ---------- QUOTE MODAL ---------- */
@@ -1772,12 +1768,11 @@
                         item.style.setProperty('--pw', width + 'px');
                         item.style.setProperty('--ph', height + 'px');
                         item.style.animationDelay = (-(index % 7) * 0.5) + 's, ' + (index * 0.05) + 's';
+                        // images only — no quote text on the hanging cards
                         item.innerHTML = `
                             <div class="photo-card" style="height:${height}px;">
                                 <img src="${url}" alt="photo" loading="lazy">
-                                <div class="pennant-quote-overlay">
-                                    <p class="pq-text">"${quote.text}"</p>
-                                    <p class="pq-author">— ${quote.author}</p>
+                                <div class="pennant-actions-overlay">
                                     <div class="pq-actions">
                                         <button class="pq-btn" type="button" data-action="copy" aria-label="Copy this quote">${copyIconSmall}</button>
                                         <button class="pq-btn" type="button" data-action="whatsapp" aria-label="Share quote card on WhatsApp">${waIconSmall}</button>
@@ -2068,4 +2063,3 @@
 </body>
 
 </html>
-<!-- GitHub automatic deployment test -->
