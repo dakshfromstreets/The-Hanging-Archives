@@ -352,6 +352,7 @@
             color: var(--gold); letter-spacing: 2px;
             font-size: .72rem; text-transform: uppercase;
             animation: bounce 2.2s infinite; opacity: .8;
+            text-decoration: none;
         }
 
         @keyframes bounce {
@@ -464,6 +465,183 @@
         .lightbox-overlay img {
             max-width: 90vw; max-height: 90vh;
             border-radius: 12px; box-shadow: 0 0 40px rgba(0, 0, 0, .5);
+        }
+
+        /* ================= QUOTE OF THE DAY ================= */
+        .today {
+            position: relative; z-index: 1;
+            max-width: 920px; margin: 0 auto;
+            padding: 5.5rem 1.4rem 3.5rem;
+            scroll-margin-top: 1rem;
+        }
+
+        .today-frame {
+            position: relative; text-align: center;
+            padding: 6.2rem 3rem 2.8rem;
+            border: 1px solid var(--card-border);
+            border-radius: 220px 220px 30px 30px;
+            background:
+                radial-gradient(ellipse at 50% 0%, var(--amb-a) 0%, transparent 62%),
+                var(--bg-surface);
+            box-shadow: 0 40px 90px var(--card-shadow), 0 0 80px var(--glow);
+            overflow: hidden;
+            transition: background .6s ease, border-color .6s ease, box-shadow .6s ease;
+        }
+
+        .today-frame::before {
+            content: ''; position: absolute; inset: 12px;
+            border: 1px solid var(--card-border); opacity: .5;
+            border-radius: 208px 208px 20px 20px;
+            pointer-events: none;
+        }
+
+        .today-frame::after {
+            content: ''; position: absolute; top: 0; bottom: 0; left: -60%;
+            width: 40%; transform: skewX(-14deg);
+            background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .06), transparent);
+            animation: sheen 11s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sheen {
+            0%, 62% { left: -60%; }
+            100% { left: 130%; }
+        }
+
+        .today-eyebrow {
+            font-family: var(--display-font), serif;
+            font-size: .78rem; letter-spacing: .46em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 1.1rem;
+        }
+
+        .today-date { display: flex; flex-direction: column; gap: .25rem; align-items: center; }
+
+        .td-weekday {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: 1.6rem; color: var(--gold-light); line-height: 1.1;
+        }
+
+        .td-date {
+            font-family: 'Marcellus', serif; font-size: .74rem;
+            letter-spacing: .3em; text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .today-rule {
+            display: flex; align-items: center; justify-content: center;
+            gap: .9rem; margin: 1.8rem auto 2rem; width: min(260px, 70%);
+            color: var(--gold);
+        }
+
+        .today-rule i {
+            flex: 1; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold));
+        }
+
+        .today-rule i:last-child { transform: scaleX(-1); }
+        .today-rule b { font-weight: 400; font-size: .9rem; filter: drop-shadow(0 0 10px var(--glow)); }
+
+        .today-quote {
+            font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+            font-size: clamp(1.65rem, 4vw, 2.6rem);
+            line-height: 1.55; color: var(--text);
+            max-width: 700px; margin: 0 auto;
+            text-shadow: 0 0 60px var(--glow);
+        }
+
+        .today-quote .w {
+            display: inline-block; opacity: 0;
+            transform: translateY(10px); filter: blur(5px);
+            transition: opacity 1s cubic-bezier(.16, 1, .3, 1),
+                        transform 1s cubic-bezier(.16, 1, .3, 1),
+                        filter 1s cubic-bezier(.16, 1, .3, 1);
+            transition-delay: calc(.5s + var(--i, 0) * .05s);
+        }
+
+        .today.in .today-quote .w { opacity: 1; transform: none; filter: none; }
+
+        .rv {
+            opacity: 0; transform: translateY(12px);
+            transition: opacity 1.1s cubic-bezier(.16, 1, .3, 1), transform 1.1s cubic-bezier(.16, 1, .3, 1);
+            transition-delay: var(--d, 0s);
+        }
+
+        .today.in .rv { opacity: 1; transform: none; }
+
+        .today-author {
+            margin-top: 2rem;
+            font-family: 'Marcellus', serif; font-size: .9rem;
+            letter-spacing: .34em; text-transform: uppercase; color: var(--gold);
+        }
+
+        .today-cat {
+            margin-top: .55rem;
+            font-family: 'Quicksand', sans-serif; font-size: .78rem;
+            letter-spacing: .08em; color: var(--text-secondary);
+        }
+
+        .today-actions {
+            display: flex; gap: .8rem; justify-content: center;
+            flex-wrap: wrap; margin-top: 2.2rem;
+        }
+
+        .today-meta {
+            display: flex; align-items: center; justify-content: center;
+            flex-wrap: wrap; gap: .6rem 1rem;
+            margin-top: 2.4rem; padding-top: 1.4rem;
+            border-top: 1px solid var(--card-border);
+            font-size: .64rem; letter-spacing: .2em; text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .today-meta b { color: var(--gold-light); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .12em; }
+        .today-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: .7; }
+
+        /* ===== HEARTS (shared) ===== */
+        .heart-ico { transition: transform .3s ease, fill .25s ease; }
+        [data-heart].is-saved .heart-ico { fill: currentColor; }
+        [data-heart].pop .heart-ico { animation: heartPop .55s cubic-bezier(.16, 1, .3, 1); }
+
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            35% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        .card-heart {
+            position: absolute; top: .85rem; right: .95rem; z-index: 3;
+            width: 34px; height: 34px; padding: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid var(--card-border);
+            border-radius: 50%; color: var(--gold);
+            cursor: pointer; opacity: .75;
+            transition: all .3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card-heart svg { width: 15px; height: 15px; display: block; }
+
+        .card-heart:hover, .card-heart:focus-visible, .card-heart.is-saved {
+            opacity: 1; border-color: var(--gold);
+            background: rgba(255, 255, 255, .1);
+            box-shadow: 0 0 18px var(--glow);
+            outline: none; transform: scale(1.06);
+        }
+
+        .card-heart.is-saved { color: var(--gold-light); }
+
+        .quote-modal-btn.is-saved {
+            background: var(--gold); border-color: var(--gold-light); color: var(--bg-deep);
+        }
+
+        [data-theme="daydream"] .quote-modal-btn.is-saved { color: #fff; }
+
+        .pq-btn.is-saved { background: var(--gold); border-color: var(--gold-light); color: #1a1408; }
+
+        .quote-action.is-saved {
+            color: var(--gold-light); border-color: rgba(245, 200, 66, .7);
+            background: rgba(245, 200, 66, .16);
         }
 
         /* ===== WORLD 1 — GILDED (images only, actions on hover) ===== */
@@ -989,8 +1167,9 @@
             position: fixed;
             bottom: 2.4rem; left: 50%;
             transform: translateX(-50%) translateY(22px);
-            display: flex; align-items: center; gap: .7rem;
-            padding: .85rem 1.5rem .85rem 1.15rem;
+            display: flex; align-items: center; gap: .8rem;
+            padding: .8rem 1.3rem .8rem 1.1rem;
+            max-width: min(92vw, 460px);
             background: rgba(23, 18, 10, .95);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
@@ -1000,7 +1179,6 @@
             font-family: 'Marcellus', serif;
             font-size: .78rem; letter-spacing: .14em;
             text-transform: uppercase;
-            white-space: nowrap;
             box-shadow: 0 14px 40px rgba(0, 0, 0, .55), 0 0 34px rgba(245, 200, 66, .2);
             opacity: 0; visibility: hidden; pointer-events: none;
             z-index: 2000;
@@ -1017,15 +1195,333 @@
                         visibility 0s;
         }
 
+        .quote-toast.show.has-action { pointer-events: auto; }
+
         .quote-toast-icon {
             display: flex; align-items: center; justify-content: center;
-            width: 18px; height: 18px;
+            width: 18px; height: 18px; flex-shrink: 0;
             color: var(--gold);
             filter: drop-shadow(0 0 6px rgba(245, 200, 66, .55));
         }
 
         .quote-toast-icon svg { width: 15px; height: 15px; display: block; }
-        .quote-toast-text { padding-left: .15rem; }
+
+        .quote-toast-body { display: flex; flex-direction: column; gap: .12rem; min-width: 0; }
+        .quote-toast-text { white-space: nowrap; }
+
+        .quote-toast-sub {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            font-size: .98rem; letter-spacing: .01em; text-transform: none;
+            color: #d9c9a8; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .quote-toast-action {
+            display: none; flex-shrink: 0;
+            background: none; border: 0;
+            border-left: 1px solid rgba(245, 200, 66, .3);
+            padding: .25rem 0 .25rem .9rem;
+            color: #F5C842; cursor: pointer;
+            font-family: 'Marcellus', serif;
+            font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+            transition: color .25s ease;
+        }
+
+        .quote-toast-action:hover, .quote-toast-action:focus-visible { color: #fff; outline: none; }
+
+        /* ================= PRIVATE ARCHIVE (FAB + DRAWER) ================= */
+        .archive-fab {
+            position: fixed; right: 1.6rem; bottom: 1.6rem; z-index: 900;
+            width: 58px; height: 58px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            color: var(--gold); cursor: pointer;
+            box-shadow: 0 12px 34px var(--card-shadow), 0 0 28px var(--glow);
+            transition: transform .35s cubic-bezier(.16, 1, .3, 1), opacity .35s ease,
+                        background .5s ease, border-color .5s ease, box-shadow .4s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .archive-fab svg { width: 22px; height: 22px; display: block; }
+
+        .archive-fab:hover, .archive-fab:focus-visible {
+            transform: translateY(-3px) scale(1.06);
+            border-color: var(--gold-light);
+            box-shadow: 0 16px 40px var(--card-shadow), 0 0 40px var(--glow);
+            outline: none;
+        }
+
+        .archive-fab.has-items svg { fill: currentColor; }
+        .archive-fab.bump { animation: fabBump .6s cubic-bezier(.16, 1, .3, 1); }
+
+        @keyframes fabBump {
+            0% { transform: scale(1); }
+            35% { transform: scale(1.18); }
+            100% { transform: scale(1); }
+        }
+
+        .archive-badge {
+            position: absolute; top: -4px; right: -4px;
+            min-width: 21px; height: 21px; padding: 0 6px;
+            display: none; align-items: center; justify-content: center;
+            background: var(--gold); color: #1a1408;
+            border-radius: 999px; font-size: .68rem; font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .4);
+        }
+
+        [data-theme="daydream"] .archive-badge { color: #fff; }
+        .archive-fab.has-items .archive-badge { display: flex; }
+
+        body.archive-open .archive-fab { opacity: 0; pointer-events: none; transform: scale(.8); }
+
+        .archive-backdrop {
+            position: fixed; inset: 0; z-index: 1650;
+            background: rgba(0, 0, 0, .55);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            opacity: 0; visibility: hidden;
+            transition: opacity .45s ease, visibility .45s ease;
+        }
+
+        .archive-backdrop.active { opacity: 1; visibility: visible; }
+
+        .archive-drawer {
+            position: fixed; top: 0; right: 0; bottom: 0; z-index: 1700;
+            width: min(470px, 100vw);
+            display: flex; flex-direction: column;
+            background:
+                radial-gradient(ellipse at 50% 0%, var(--amb-a) 0%, transparent 55%),
+                var(--bg-surface);
+            border-left: 1px solid var(--card-border);
+            box-shadow: -30px 0 80px rgba(0, 0, 0, .45);
+            transform: translateX(104%); visibility: hidden;
+            transition: transform .6s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .6s;
+        }
+
+        .archive-drawer.active {
+            transform: translateX(0); visibility: visible;
+            transition: transform .6s cubic-bezier(.16, 1, .3, 1), visibility 0s;
+        }
+
+        .ad-head {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 1.8rem 1.6rem 1rem;
+        }
+
+        .ad-eyebrow {
+            font-family: 'Marcellus', serif; font-size: .64rem;
+            letter-spacing: .3em; text-transform: uppercase; color: var(--text-secondary);
+        }
+
+        .ad-title {
+            font-family: var(--display-font), serif; font-weight: 400;
+            font-size: 1.7rem; color: var(--gold-light); margin-top: .3rem; line-height: 1.15;
+            text-shadow: 0 0 30px var(--glow);
+        }
+
+        .ad-close {
+            width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+            background: transparent; border: 1px solid var(--card-border);
+            color: var(--gold); cursor: pointer; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .3s ease;
+        }
+
+        .ad-close:hover, .ad-close:focus-visible {
+            background: var(--accent-a); color: #fff; border-color: var(--gold);
+            transform: rotate(90deg); outline: none;
+        }
+
+        .ad-tabs {
+            display: flex; gap: 1.6rem; padding: 0 1.6rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .ad-tab {
+            position: relative; background: none; border: 0; cursor: pointer;
+            padding: .8rem 0 .9rem; color: var(--text-secondary);
+            font-family: 'Marcellus', serif; font-size: .7rem;
+            letter-spacing: .24em; text-transform: uppercase;
+            transition: color .3s ease;
+        }
+
+        .ad-tab::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+            background: var(--gold); box-shadow: 0 0 10px var(--glow);
+            transform: scaleX(0); transition: transform .45s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .ad-tab:hover, .ad-tab:focus-visible { color: var(--gold-light); outline: none; }
+        .ad-tab.active { color: var(--gold); }
+        .ad-tab.active::after { transform: scaleX(1); }
+        .ad-count { margin-left: .4rem; opacity: .7; font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0; }
+
+        .ad-body {
+            flex: 1; overflow-y: auto; padding: .6rem 1.6rem 2rem;
+            scrollbar-width: thin; scrollbar-color: var(--card-border) transparent;
+        }
+
+        .ad-body.animate > * { animation: adIn .6s cubic-bezier(.16, 1, .3, 1) both; animation-delay: calc(var(--i, 0) * 55ms); }
+
+        @keyframes adIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        .ad-foot {
+            padding: .9rem 1.6rem 1.2rem; border-top: 1px solid var(--card-border);
+            display: flex; justify-content: center;
+        }
+
+        .ad-foot:empty { display: none; }
+
+        .ad-foot-btn, .ad-link, .ad-back {
+            background: none; border: 0; cursor: pointer; color: var(--gold);
+            font-family: 'Marcellus', serif; font-size: .7rem;
+            letter-spacing: .22em; text-transform: uppercase;
+            transition: color .3s ease;
+        }
+
+        .ad-foot-btn { border: 1px solid var(--card-border); border-radius: 40px; padding: .65rem 1.4rem; }
+        .ad-foot-btn:hover, .ad-foot-btn:focus-visible { background: var(--gold); color: var(--bg-deep); border-color: var(--gold-light); outline: none; }
+        [data-theme="daydream"] .ad-foot-btn:hover { color: #fff; }
+        .ad-link:hover, .ad-back:hover, .ad-link:focus-visible, .ad-back:focus-visible { color: var(--gold-light); outline: none; }
+        .ad-link { color: var(--text-secondary); font-size: .62rem; }
+
+        .ad-filter { padding: 1rem 0 .4rem; display: flex; flex-direction: column; gap: .5rem; align-items: flex-start; }
+        .ad-filter-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 1.6rem; color: var(--text); }
+
+        .ad-section {
+            font-family: 'Marcellus', serif; font-weight: 400; font-size: .68rem;
+            letter-spacing: .3em; text-transform: uppercase; color: var(--text-secondary);
+            margin: 1.8rem 0 .8rem;
+        }
+
+        .ad-hint {
+            font-family: 'Cormorant Garamond', serif; font-style: italic;
+            color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; padding: .6rem 0;
+        }
+
+        .ad-empty {
+            text-align: center; padding: 4.5rem 1rem 2rem;
+            display: flex; flex-direction: column; align-items: center; gap: .9rem;
+        }
+
+        .ad-empty-glyph { font-size: 2rem; color: var(--gold); opacity: .8; filter: drop-shadow(0 0 16px var(--glow)); }
+        .ad-empty h3 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-style: italic; font-size: 1.6rem; color: var(--text); }
+        .ad-empty p { color: var(--text-secondary); font-size: .88rem; max-width: 300px; line-height: 1.7; }
+
+        .ad-day {
+            margin: 1.6rem 0 .1rem; font-family: 'Marcellus', serif;
+            font-size: .66rem; letter-spacing: .28em; text-transform: uppercase; color: var(--gold);
+        }
+
+        .ad-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin: 1rem 0 .4rem;
+        }
+
+        .ad-stats div {
+            text-align: center; padding: 1rem .4rem;
+            border: 1px solid var(--card-border); border-radius: 16px;
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .ad-stats b { display: block; font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--gold-light); line-height: 1; }
+        .ad-stats span { display: block; margin-top: .4rem; font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--text-secondary); }
+
+        .ar-row { padding: 1.4rem 0; border-bottom: 1px solid var(--card-border); }
+        .ar-row:last-child { border-bottom: 0; }
+
+        .ar-text {
+            font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500;
+            font-size: 1.22rem; line-height: 1.55; color: var(--text);
+        }
+
+        .ar-meta {
+            display: flex; flex-wrap: wrap; gap: .3rem .9rem; align-items: baseline;
+            margin-top: .6rem; font-family: 'Marcellus', serif;
+            font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold);
+        }
+
+        .ar-meta em { font-family: 'Quicksand', sans-serif; font-style: normal; letter-spacing: .04em; text-transform: none; font-size: .74rem; color: var(--text-secondary); }
+
+        .ar-actions { display: flex; gap: .5rem; margin-top: .9rem; }
+
+        .ar-btn {
+            width: 32px; height: 32px; padding: 0; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: transparent; border: 1px solid var(--card-border);
+            border-radius: 50%; color: var(--gold); cursor: pointer;
+            font-size: 1rem; line-height: 1;
+            transition: all .3s cubic-bezier(.16, 1, .3, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .ar-btn svg { width: 14px; height: 14px; display: block; }
+
+        .ar-btn:hover, .ar-btn:focus-visible, .ar-btn.on, .ar-btn.is-saved {
+            background: var(--gold); color: var(--bg-deep); border-color: var(--gold-light);
+            transform: translateY(-1px); outline: none;
+        }
+
+        [data-theme="daydream"] .ar-btn:hover, [data-theme="daydream"] .ar-btn.on, [data-theme="daydream"] .ar-btn.is-saved { color: #fff; }
+
+        .ar-panel {
+            margin-top: 1rem; padding: 1rem 1.1rem 1.1rem;
+            border: 1px solid var(--card-border); border-radius: 16px;
+            background: rgba(255, 255, 255, .025);
+            animation: adIn .45s cubic-bezier(.16, 1, .3, 1) both;
+        }
+
+        .ar-panel-label { font-family: 'Marcellus', serif; font-size: .62rem; letter-spacing: .26em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: .7rem; }
+        .ar-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: .8rem; }
+        .ar-chips:empty { display: none; }
+
+        .ar-chip {
+            padding: .38rem .9rem; background: transparent;
+            border: 1px solid var(--card-border); border-radius: 999px;
+            color: var(--text-secondary); cursor: pointer;
+            font-family: 'Quicksand', sans-serif; font-size: .78rem; font-weight: 500;
+            transition: all .3s ease;
+        }
+
+        .ar-chip:hover, .ar-chip:focus-visible { color: var(--gold-light); border-color: var(--gold); outline: none; }
+        .ar-chip.on { background: var(--gold); border-color: var(--gold-light); color: var(--bg-deep); }
+        [data-theme="daydream"] .ar-chip.on { color: #fff; }
+
+        .ar-new { display: flex; gap: .5rem; align-items: center; }
+
+        .ar-new input {
+            flex: 1; min-width: 0; padding: .55rem .95rem;
+            background: transparent; border: 1px solid var(--card-border); border-radius: 999px;
+            color: var(--text); font-family: 'Quicksand', sans-serif; font-size: .82rem;
+            transition: border-color .3s ease, box-shadow .3s ease;
+        }
+
+        .ar-new input::placeholder { color: var(--text-secondary); opacity: .75; }
+        .ar-new input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 18px var(--glow); }
+        .ar-new--shelf { margin: 1.2rem 0 .2rem; }
+
+        .shelf {
+            display: flex; flex-direction: column; gap: .35rem; width: 100%; text-align: left;
+            padding: 1.1rem 1.2rem; margin-bottom: .8rem; cursor: pointer;
+            background: rgba(255, 255, 255, .02); color: var(--text);
+            border: 1px solid var(--card-border); border-radius: 18px;
+            transition: all .4s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .shelf:hover, .shelf:focus-visible {
+            transform: translateY(-2px); border-color: var(--gold);
+            box-shadow: 0 12px 30px var(--card-shadow), 0 0 24px var(--glow); outline: none;
+        }
+
+        .shelf-top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+        .shelf-title { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.3rem; color: var(--gold-light); }
+        .shelf-count { font-family: 'Marcellus', serif; font-size: .78rem; letter-spacing: .12em; color: var(--gold); }
+        .shelf-sub { font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-secondary); }
+        .shelf-prev { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; line-height: 1.5; color: var(--text-secondary); }
 
         footer {
             text-align: center; padding: 2.4rem;
@@ -1047,10 +1543,18 @@
             .journey-text { font-size: 1.3rem; }
             .journey-source { font-size: .72rem; letter-spacing: .28em; }
             [data-theme="arabian"] .section-title { font-size: 1.8rem; letter-spacing: .2em; }
-            .quote-toast { bottom: 1.4rem; font-size: .72rem; padding: .75rem 1.2rem .75rem .95rem; }
+            .quote-toast { bottom: 1.4rem; font-size: .72rem; padding: .7rem 1.1rem .7rem .95rem; }
             .quote-modal { padding: .9rem; }
             .quote-modal-inner { padding: 2.6rem 1.5rem 2rem; border-radius: 20px; }
             .quote-modal-btn { padding: .7rem 1.1rem; font-size: .68rem; }
+            .today { padding: 4rem .9rem 2.5rem; }
+            .today-frame { padding: 4.6rem 1.3rem 2rem; border-radius: 120px 120px 22px 22px; }
+            .today-frame::before { border-radius: 110px 110px 14px 14px; inset: 9px; }
+            .today-meta { gap: .5rem .8rem; letter-spacing: .14em; }
+            .archive-fab { right: 1rem; bottom: 1rem; width: 54px; height: 54px; }
+            .ad-head { padding: 1.4rem 1.2rem .8rem; }
+            .ad-tabs { padding: 0 1.2rem; gap: 1.2rem; }
+            .ad-body { padding: .4rem 1.2rem 2rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1058,6 +1562,7 @@
                 animation-duration: .01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: .01ms !important;
+                transition-delay: 0s !important;
             }
         }
     </style>
@@ -1090,6 +1595,12 @@
             <div class="quote-modal-divider"></div>
             <p class="quote-modal-author" id="quoteModalAuthor"></p>
             <div class="quote-modal-actions">
+                <button class="quote-modal-btn" id="quoteModalSave" type="button" data-heart>
+                    <svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
+                    </svg>
+                    <span data-heart-label>Save</span>
+                </button>
                 <button class="quote-modal-btn" id="quoteModalCopy" type="button">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect x="9" y="9" width="13" height="13" rx="2"/>
@@ -1109,8 +1620,38 @@
 
     <div class="quote-toast" id="quoteToast" role="status" aria-live="polite">
         <span class="quote-toast-icon"></span>
-        <span class="quote-toast-text"></span>
+        <span class="quote-toast-body">
+            <span class="quote-toast-text"></span>
+            <span class="quote-toast-sub"></span>
+        </span>
+        <button class="quote-toast-action" id="quoteToastAction" type="button"></button>
     </div>
+
+    <!-- Private archive: floating button + drawer -->
+    <button class="archive-fab" id="archiveFab" type="button" aria-label="Open your private archive">
+        <svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
+        </svg>
+        <span class="archive-badge" id="archiveBadge">0</span>
+    </button>
+
+    <div class="archive-backdrop" id="archiveBackdrop"></div>
+    <aside class="archive-drawer" id="archiveDrawer" role="dialog" aria-modal="true" aria-label="Your private archive" aria-hidden="true">
+        <div class="ad-head">
+            <div>
+                <p class="ad-eyebrow">Private · kept on this device</p>
+                <h2 class="ad-title">Your Archive</h2>
+            </div>
+            <button class="ad-close" id="archiveClose" type="button" aria-label="Close archive">✕</button>
+        </div>
+        <div class="ad-tabs" role="tablist">
+            <button class="ad-tab active" type="button" role="tab" data-tab="saved">Saved<span class="ad-count" data-count="saved"></span></button>
+            <button class="ad-tab" type="button" role="tab" data-tab="collections">Collections<span class="ad-count" data-count="collections"></span></button>
+            <button class="ad-tab" type="button" role="tab" data-tab="journal">Journal</button>
+        </div>
+        <div class="ad-body" id="archiveBody"></div>
+        <div class="ad-foot" id="archiveFoot"></div>
+    </aside>
 
     <main class="main-wrapper">
         <header class="hero">
@@ -1121,8 +1662,12 @@
             <p class="hero-tagline" id="heroTagline">Quotes worn as jewels for the soul that dares to rise</p>
             <div class="hero-world" id="heroWorld">✦ &nbsp;The Gilded Carnival</div>
             <div class="mood-indicator" id="moodIndicator">Mood: Empowerment & Strength</div>
-            <div class="scroll-hint">▼ enter the archive ▼</div>
+            <a class="scroll-hint" href="#today">▼ today's quote ▼</a>
         </header>
+
+        <section class="today" id="today" aria-labelledby="todayLabel">
+            <div class="today-frame" id="todayFrame"></div>
+        </section>
 
         <nav class="nav" id="mainNav">
             <span class="nav-hint">Tap to Change the world</span>
@@ -1141,7 +1686,7 @@
         </section>
     </main>
 
-    <footer>© 2026 THE HANGING ARCHIVE · Museum Edition — Find the mood that speaks to your soul</footer>
+    <footer>© 2026 THE HANGING ARCHIVE · Museum Edition — Find the mood that speaks to your soul<br>Your saved quotes stay private, on this device only.</footer>
 
     <script>
         (function () {
@@ -1401,6 +1946,157 @@
                 }
             };
 
+            /* =====================================================
+               QUOTE IDENTITY — every quote gets a stable id + world
+               ===================================================== */
+            function qid(t) {
+                let h = 5381;
+                for (let i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0;
+                return 'q' + (h >>> 0).toString(36);
+            }
+
+            const quoteIndex = {};
+            Object.keys(worlds).forEach(k => {
+                worlds[k].quotes.forEach(q => {
+                    q.id = qid(q.text);
+                    q.world = k;
+                    quoteIndex[q.id] = q;
+                });
+            });
+
+            const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const clip = (t, n) => t.length > n ? t.slice(0, n - 1).trimEnd() + '…' : t;
+            const pad2 = n => String(n).padStart(2, '0');
+            const dateKey = d => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+
+            /* ---------- Quote of the Day pool (deterministic, no repeats until the cycle ends) ---------- */
+            function mulberry32(a) {
+                return function () {
+                    a |= 0; a = a + 0x6D2B79F5 | 0;
+                    let t = Math.imul(a ^ a >>> 15, 1 | a);
+                    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+                };
+            }
+
+            const dailyPool = (function () {
+                const pool = Object.values(quoteIndex)
+                    .filter(q => q.author !== 'Unknown' && q.text.length <= 170)
+                    .sort((a, b) => a.text < b.text ? -1 : 1);
+                const rnd = mulberry32(20260101);
+                for (let i = pool.length - 1; i > 0; i--) {
+                    const j = Math.floor(rnd() * (i + 1));
+                    [pool[i], pool[j]] = [pool[j], pool[i]];
+                }
+                return pool;
+            })();
+
+            function dailyPick(date) {
+                const dn = Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 864e5);
+                return dailyPool[((dn % dailyPool.length) + dailyPool.length) % dailyPool.length];
+            }
+
+            /* =====================================================
+               PRIVATE STORE — favourites, collections, journal, streak
+               ===================================================== */
+            const Store = (function () {
+                const KEY = 'hangingArchive.v2';
+                const blank = () => ({ favs: [], collections: [], journal: [], streak: { last: null, count: 0, best: 0 } });
+                let state = load();
+                let muted = 0, dirty = false;
+                const listeners = [];
+
+                function load() {
+                    try {
+                        const raw = localStorage.getItem(KEY);
+                        if (raw) return Object.assign(blank(), JSON.parse(raw));
+                    } catch (e) {}
+                    return blank();
+                }
+                function persist() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+                function changed() {
+                    if (muted) { dirty = true; return; }
+                    persist();
+                    listeners.forEach(fn => fn());
+                }
+                function daysBetween(a, b) { return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5); }
+
+                window.addEventListener('storage', e => {
+                    if (e.key === KEY) { state = load(); listeners.forEach(fn => fn()); }
+                });
+
+                return {
+                    get: () => state,
+                    subscribe: fn => listeners.push(fn),
+                    batch(fn) {
+                        muted++;
+                        try { fn(); } finally {
+                            muted--;
+                            if (!muted && dirty) { dirty = false; changed(); }
+                        }
+                    },
+                    snapshot: () => JSON.stringify(state),
+                    restore(snap) { try { state = Object.assign(blank(), JSON.parse(snap)); changed(); } catch (e) {} },
+                    isFav: id => state.favs.some(f => f.id === id),
+                    addFav(q) {
+                        if (state.favs.some(f => f.id === q.id)) return;
+                        state.favs.unshift({ id: q.id, text: q.text, author: q.author, world: q.world, savedAt: Date.now() });
+                        changed();
+                    },
+                    removeFav(id) {
+                        state.favs = state.favs.filter(f => f.id !== id);
+                        state.collections.forEach(c => { c.ids = c.ids.filter(x => x !== id); });
+                        changed();
+                    },
+                    createCollection(name) {
+                        name = String(name).trim().slice(0, 40);
+                        if (!name) return null;
+                        const existing = state.collections.find(c => c.name.toLowerCase() === name.toLowerCase());
+                        if (existing) return existing.id;
+                        const id = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+                        state.collections.push({ id, name, ids: [] });
+                        changed();
+                        return id;
+                    },
+                    addToCollection(colId, qid) {
+                        const c = state.collections.find(c => c.id === colId);
+                        if (c && !c.ids.includes(qid)) { c.ids.unshift(qid); changed(); }
+                    },
+                    toggleInCollection(colId, qid) {
+                        const c = state.collections.find(c => c.id === colId);
+                        if (!c) return;
+                        c.ids = c.ids.includes(qid) ? c.ids.filter(x => x !== qid) : [qid].concat(c.ids);
+                        changed();
+                    },
+                    deleteCollection(id) {
+                        state.collections = state.collections.filter(c => c.id !== id);
+                        changed();
+                    },
+                    recordVisit(key, q) {
+                        const s = state.streak;
+                        let touched = false;
+                        if (s.last !== key) {
+                            s.count = (s.last && daysBetween(s.last, key) === 1) ? s.count + 1 : 1;
+                            s.last = key;
+                            s.best = Math.max(s.best || 0, s.count);
+                            touched = true;
+                        }
+                        if (!state.journal.some(j => j.date === key)) {
+                            state.journal.unshift({ date: key, id: q.id, text: q.text, author: q.author, world: q.world });
+                            state.journal = state.journal.slice(0, 400);
+                            touched = true;
+                        }
+                        if (touched) changed();
+                    }
+                };
+            })();
+
+            function lookup(id) {
+                if (quoteIndex[id]) return quoteIndex[id];
+                const s = Store.get();
+                return s.favs.find(f => f.id === id) || s.journal.find(j => j.id === id) || null;
+            }
+
             const gallery = document.getElementById('gallery');
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = lightbox.querySelector('img');
@@ -1423,32 +2119,60 @@
                 return a;
             }
 
+            /* ---------- ICONS ---------- */
+            const heartPath = 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z';
+            const heartSvg = (w) => `<svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${heartPath}"/></svg>`;
+            const copyIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+            const waIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+            const folderIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
+
             /* ---------- TOAST ---------- */
             const TOAST_ICONS = {
                 copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+                heart: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${heartPath}"/></svg>`,
                 whatsapp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
                 error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
                 loading: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>'
             };
 
-            let toastTimer = null;
-            function showToast(message, kind = 'copy') {
-                const toast = document.getElementById('quoteToast');
-                const iconEl = toast.querySelector('.quote-toast-icon');
-                const textEl = toast.querySelector('.quote-toast-text');
-                iconEl.innerHTML = TOAST_ICONS[kind] || TOAST_ICONS.copy;
-                textEl.textContent = message;
-                toast.classList.remove('show');
-                void toast.offsetWidth;
-                toast.classList.add('show');
+            const toastEl = document.getElementById('quoteToast');
+            const toastAction = document.getElementById('quoteToastAction');
+            let toastTimer = null, toastActionFn = null;
+
+            function showToast(message, kind, opts) {
+                kind = kind || 'copy';
+                opts = opts || {};
+                toastEl.querySelector('.quote-toast-icon').innerHTML = TOAST_ICONS[kind] || TOAST_ICONS.copy;
+                toastEl.querySelector('.quote-toast-text').textContent = message;
+                const sub = toastEl.querySelector('.quote-toast-sub');
+                sub.textContent = opts.sub || '';
+                sub.style.display = opts.sub ? 'block' : 'none';
+                if (opts.action) {
+                    toastAction.textContent = opts.action.label;
+                    toastAction.style.display = 'block';
+                    toastActionFn = opts.action.fn;
+                } else {
+                    toastAction.style.display = 'none';
+                    toastActionFn = null;
+                }
+                toastEl.classList.toggle('has-action', !!opts.action);
+                toastEl.classList.remove('show');
+                void toastEl.offsetWidth;
+                toastEl.classList.add('show');
                 clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+                toastTimer = setTimeout(() => toastEl.classList.remove('show'), opts.duration || (opts.action ? 5200 : 2600));
             }
 
+            toastAction.addEventListener('click', () => {
+                const fn = toastActionFn;
+                toastActionFn = null;
+                toastEl.classList.remove('show');
+                if (fn) fn();
+            });
+
             /* ---------- COPY ---------- */
-            function copyQuote(q) {
-                const text = `"${q.text}"\n— ${q.author}`;
-                const done = (ok) => showToast(ok ? 'Copied to clipboard' : 'Could not copy', ok ? 'copy' : 'error');
+            function copyText(text, okMsg) {
+                const done = (ok) => showToast(ok ? (okMsg || 'Copied to clipboard') : 'Could not copy', ok ? 'copy' : 'error');
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(text)
                         .then(() => done(true))
@@ -1456,6 +2180,10 @@
                 } else {
                     fallbackCopy(text, done);
                 }
+            }
+
+            function copyQuote(q) {
+                copyText(`"${q.text}"\n— ${q.author}`);
             }
 
             function fallbackCopy(text, done) {
@@ -1691,12 +2419,57 @@
                 }
             }
 
+            /* =====================================================
+               HEARTS — one click anywhere, synced everywhere
+               ===================================================== */
+            function refreshHearts(root) {
+                (root || document).querySelectorAll('[data-heart]').forEach(el => {
+                    const saved = Store.isFav(el.dataset.qid);
+                    el.classList.toggle('is-saved', saved);
+                    el.setAttribute('aria-pressed', saved ? 'true' : 'false');
+                    el.setAttribute('aria-label', saved ? 'Remove from your archive' : 'Save to your archive');
+                    const lab = el.querySelector('[data-heart-label]');
+                    if (lab) lab.textContent = saved ? 'Saved' : 'Save';
+                });
+            }
+
+            function toggleSave(q, btn) {
+                if (Store.isFav(q.id)) {
+                    const snap = Store.snapshot();
+                    Store.removeFav(q.id);
+                    showToast('Removed from archive', 'copy', { action: { label: 'Undo', fn: () => Store.restore(snap) } });
+                } else {
+                    Store.addFav(q);
+                    showToast('Saved to your archive', 'heart', {
+                        sub: '“' + clip(q.text, 56) + '”',
+                        action: { label: 'View', fn: () => openDrawer('saved') }
+                    });
+                }
+                if (btn && document.body.contains(btn)) {
+                    btn.classList.remove('pop');
+                    void btn.offsetWidth;
+                    btn.classList.add('pop');
+                    setTimeout(() => btn.classList.remove('pop'), 650);
+                }
+            }
+
+            // Capture phase: hearts never trigger the card / lightbox underneath them
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-heart]');
+                if (!btn) return;
+                e.stopPropagation();
+                e.preventDefault();
+                const q = lookup(btn.dataset.qid);
+                if (q) toggleSave(q, btn);
+            }, true);
+
             /* ---------- QUOTE MODAL ---------- */
             const quoteModal = document.getElementById('quoteModal');
             const quoteModalText = document.getElementById('quoteModalText');
             const quoteModalAuthor = document.getElementById('quoteModalAuthor');
             const quoteModalClose = document.getElementById('quoteModalClose');
             const quoteModalCopy = document.getElementById('quoteModalCopy');
+            const quoteModalSave = document.getElementById('quoteModalSave');
             const quoteModalWhatsapp = document.getElementById('quoteModalWhatsapp');
             let currentModalQuote = null;
 
@@ -1704,6 +2477,8 @@
                 currentModalQuote = q;
                 quoteModalText.textContent = `“${q.text}”`;
                 quoteModalAuthor.textContent = `— ${q.author}`;
+                quoteModalSave.dataset.qid = q.id;
+                refreshHearts(quoteModal);
                 quoteModal.classList.add('active');
                 quoteModal.setAttribute('aria-hidden', 'false');
                 document.body.style.overflow = 'hidden';
@@ -1720,9 +2495,6 @@
             quoteModal.addEventListener('click', (e) => {
                 if (!e.target.closest('.quote-modal-inner')) closeQuoteModal();
             });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeQuoteModal();
-            });
             quoteModalCopy.addEventListener('click', () => {
                 if (currentModalQuote) copyQuote(currentModalQuote);
             });
@@ -1738,9 +2510,6 @@
             }
 
             /* ---------- RENDERERS ---------- */
-            const copyIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-            const waIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
-
             function renderPennantPhotos(quotes) {
                 clearGallery();
                 gallery.classList.add('gallery--pennant');
@@ -1774,6 +2543,7 @@
                                 <img src="${url}" alt="photo" loading="lazy">
                                 <div class="pennant-actions-overlay">
                                     <div class="pq-actions">
+                                        <button class="pq-btn" type="button" data-heart data-qid="${quote.id}" aria-pressed="false" aria-label="Save to your archive">${heartSvg()}</button>
                                         <button class="pq-btn" type="button" data-action="copy" aria-label="Copy this quote">${copyIconSmall}</button>
                                         <button class="pq-btn" type="button" data-action="whatsapp" aria-label="Share quote card on WhatsApp">${waIconSmall}</button>
                                     </div>
@@ -1796,6 +2566,7 @@
                         });
 
                         mobile.appendChild(item);
+                        refreshHearts(item);
                     };
                     testImg.onerror = () => {};
                 });
@@ -1825,16 +2596,19 @@
                             <circle cx="36" cy="24" r="2" fill="var(--gold)"/>
                         </svg>
                         <div class="leaf-pattern"></div>
+                        <button class="card-heart" type="button" data-heart data-qid="${q.id}" aria-pressed="false" aria-label="Save to your archive">${heartSvg()}</button>
                         <span class="quote-mark">&ldquo;</span>
-                        <p class="quote-text">${q.text}</p>
-                        <div class="quote-author">${q.author}</div>`;
+                        <p class="quote-text">${esc(q.text)}</p>
+                        <div class="quote-author">${esc(q.author)}</div>`;
                     item.addEventListener('click', () => openQuoteModal(q));
                     item.addEventListener('keydown', (e) => {
+                        if (e.target !== item) return;
                         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuoteModal(q); }
                     });
                     container.appendChild(item);
                 });
                 gallery.appendChild(container);
+                refreshHearts(gallery);
             }
 
             const wcPairs = [
@@ -1862,18 +2636,21 @@
                     item.setAttribute('aria-label', 'View quote enlarged');
                     item.innerHTML = `
                         <div class="watercolor" style="--wc-a:var(${pair[0]});--wc-b:var(${pair[1]});"></div>
+                        <button class="card-heart" type="button" data-heart data-qid="${q.id}" aria-pressed="false" aria-label="Save to your archive">${heartSvg()}</button>
                         <div class="dream-content">
                             <div class="dream-glyph">${glyph}</div>
-                            <p class="quote-text">"${q.text}"</p>
-                            <div class="quote-author">— ${q.author}</div>
+                            <p class="quote-text">"${esc(q.text)}"</p>
+                            <div class="quote-author">— ${esc(q.author)}</div>
                         </div>`;
                     item.addEventListener('click', () => openQuoteModal(q));
                     item.addEventListener('keydown', (e) => {
+                        if (e.target !== item) return;
                         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuoteModal(q); }
                     });
                     container.appendChild(item);
                 });
                 gallery.appendChild(container);
+                refreshHearts(gallery);
             }
 
             function renderArabianQuotes(quotes) {
@@ -1900,9 +2677,12 @@
                     item.dataset.align = align;
                     item.innerHTML = `
                         <div class="journey-flourish">✦ ✦ ✦</div>
-                        <p class="journey-text">“${q.text}”</p>
-                        <div class="journey-source">— ${q.author}</div>
+                        <p class="journey-text">“${esc(q.text)}”</p>
+                        <div class="journey-source">— ${esc(q.author)}</div>
                         <div class="journey-actions">
+                            <button class="quote-action" type="button" data-heart data-qid="${q.id}" aria-pressed="false" aria-label="Save to your archive" title="Save to your archive">
+                                <svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${heartPath}"/></svg>
+                            </button>
                             <button class="quote-action" type="button" data-action="copy" aria-label="Copy this quote to clipboard" title="Copy quote">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <rect x="9" y="9" width="13" height="13" rx="2"/>
@@ -1936,6 +2716,7 @@
                 journey.appendChild(closer);
 
                 gallery.appendChild(journey);
+                refreshHearts(journey);
                 observeArabianReveal();
             }
 
@@ -1955,6 +2736,388 @@
                 }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
                 cards.forEach(c => revealObserver.observe(c));
             }
+
+            /* =====================================================
+               QUOTE OF THE DAY
+               ===================================================== */
+            const todaySection = document.getElementById('today');
+            const todayFrame = document.getElementById('todayFrame');
+            let todayKeyCur = null;
+            let todayQuote = null;
+
+            function streakText() {
+                const n = Store.get().streak.count || 1;
+                return n >= 2 ? n + '-day streak' : 'Your journey begins';
+            }
+
+            function renderDaily(rerender) {
+                const now = new Date();
+                const key = dateKey(now);
+                const q = dailyPick(now);
+                todayKeyCur = key;
+                todayQuote = q;
+                Store.recordVisit(key, q);
+
+                const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
+                const longDate = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                const doy = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(now.getFullYear(), 0, 0)) / 864e5);
+                const words = q.text.split(/\s+/);
+                words[0] = '“' + words[0];
+                words[words.length - 1] += '”';
+                const wordsHtml = words.map((w, i) => `<span class="w" style="--i:${i}">${esc(w)}</span>`).join(' ');
+                const w = worlds[q.world];
+
+                todayFrame.innerHTML = `
+                    <p class="today-eyebrow rv" id="todayLabel" style="--d:.05s">Quote of the Day</p>
+                    <div class="today-date rv" style="--d:.15s">
+                        <span class="td-weekday">${esc(weekday)}</span>
+                        <span class="td-date">${esc(longDate)}</span>
+                    </div>
+                    <div class="today-rule rv" style="--d:.25s"><i></i><b>✦</b><i></i></div>
+                    <blockquote class="today-quote">${wordsHtml}</blockquote>
+                    <p class="today-author rv" style="--d:1.5s">— ${esc(q.author)}</p>
+                    <p class="today-cat rv" style="--d:1.6s">${esc(w.mood)}</p>
+                    <div class="today-actions rv" style="--d:1.75s">
+                        <button class="quote-modal-btn" type="button" data-heart data-qid="${q.id}">
+                            ${heartSvg()}<span data-heart-label>Save</span>
+                        </button>
+                        <button class="quote-modal-btn" type="button" data-today="copy">
+                            ${copyIconSmall}Copy
+                        </button>
+                        <button class="quote-modal-btn" type="button" data-today="share">
+                            ${waIconSmall}Share
+                        </button>
+                    </div>
+                    <div class="today-meta rv" style="--d:1.9s">
+                        <span>Nº ${doy}</span>
+                        <i class="dot"></i>
+                        <span>Next quote in <b id="todayCountdown">--:--:--</b></span>
+                        <i class="dot"></i>
+                        <span id="todayStreak">${esc(streakText())}</span>
+                    </div>`;
+                refreshHearts(todayFrame);
+                tick();
+
+                if (rerender) {
+                    todaySection.classList.remove('in');
+                    setTimeout(() => todaySection.classList.add('in'), 80);
+                }
+            }
+
+            todayFrame.addEventListener('click', (e) => {
+                const b = e.target.closest('[data-today]');
+                if (!b || !todayQuote) return;
+                if (b.dataset.today === 'copy') copyQuote(todayQuote);
+                else shareQuoteAsCard(todayQuote);
+            });
+
+            function tick() {
+                const now = new Date();
+                if (todayKeyCur && dateKey(now) !== todayKeyCur) { renderDaily(true); return; }
+                const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+                const s = Math.max(0, Math.floor((next - now) / 1000));
+                const el = document.getElementById('todayCountdown');
+                if (el) el.textContent = pad2(Math.floor(s / 3600)) + ':' + pad2(Math.floor(s % 3600 / 60)) + ':' + pad2(s % 60);
+            }
+
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(en => {
+                        if (en.isIntersecting) { todaySection.classList.add('in'); io.disconnect(); }
+                    });
+                }, { threshold: 0.2 });
+                io.observe(todaySection);
+            } else {
+                todaySection.classList.add('in');
+            }
+
+            /* =====================================================
+               PRIVATE ARCHIVE DRAWER
+               ===================================================== */
+            const drawer = document.getElementById('archiveDrawer');
+            const backdrop = document.getElementById('archiveBackdrop');
+            const fab = document.getElementById('archiveFab');
+            const badge = document.getElementById('archiveBadge');
+            const archiveBody = document.getElementById('archiveBody');
+            const archiveFoot = document.getElementById('archiveFoot');
+            let drawerOpen = false;
+            let lastFabCount = 0;
+            const ui = { tab: 'saved', filter: null, openRow: null, focusSel: null };
+
+            function updateFab() {
+                const n = Store.get().favs.length;
+                badge.textContent = n > 99 ? '99+' : n;
+                fab.classList.toggle('has-items', n > 0);
+                if (n > lastFabCount) {
+                    fab.classList.remove('bump');
+                    void fab.offsetWidth;
+                    fab.classList.add('bump');
+                }
+                lastFabCount = n;
+            }
+
+            function openDrawer(tab) {
+                if (tab) ui.tab = tab;
+                ui.openRow = null;
+                drawerOpen = true;
+                renderDrawer(true);
+                backdrop.classList.add('active');
+                drawer.classList.add('active');
+                drawer.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('archive-open');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => document.getElementById('archiveClose').focus({ preventScroll: true }), 80);
+            }
+
+            function closeDrawer() {
+                if (!drawerOpen) return;
+                drawerOpen = false;
+                backdrop.classList.remove('active');
+                drawer.classList.remove('active');
+                drawer.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('archive-open');
+                document.body.style.overflow = '';
+                fab.focus({ preventScroll: true });
+            }
+
+            function visibleFavs(s) {
+                let list = s.favs;
+                const f = ui.filter;
+                if (f) {
+                    if (f.type === 'col') {
+                        const c = s.collections.find(c => c.id === f.id);
+                        list = c ? list.filter(q => c.ids.includes(q.id)) : [];
+                    } else {
+                        list = list.filter(q => q.world === f.id);
+                    }
+                }
+                return list;
+            }
+
+            function emptyHtml(glyph, title, text) {
+                return `<div class="ad-empty"><div class="ad-empty-glyph">${glyph}</div><h3>${esc(title)}</h3><p>${esc(text)}</p></div>`;
+            }
+
+            function panelHtml(q) {
+                const s = Store.get();
+                const chips = s.collections.map(c =>
+                    `<button type="button" class="ar-chip${c.ids.includes(q.id) ? ' on' : ''}" data-col-toggle="${c.id}" data-qid="${q.id}">${esc(c.name)}</button>`
+                ).join('');
+                return `<div class="ar-panel">
+                    <p class="ar-panel-label">Keep in a collection</p>
+                    <div class="ar-chips">${chips}</div>
+                    <div class="ar-new">
+                        <input type="text" maxlength="40" placeholder="New collection…" data-new-col data-qid="${q.id}" aria-label="New collection name" autocomplete="off">
+                        <button class="ar-btn" type="button" data-new-col-btn aria-label="Create collection">+</button>
+                    </div>
+                </div>`;
+            }
+
+            function rowHtml(q, opts) {
+                const w = worlds[q.world];
+                const open = opts.folder && ui.openRow === q.id;
+                return `<article class="ar-row" style="--i:${opts.i || 0}">
+                    <p class="ar-text">“${esc(q.text)}”</p>
+                    <p class="ar-meta"><span>— ${esc(q.author)}</span>${w ? `<em>${esc(w.mood)}</em>` : ''}</p>
+                    <div class="ar-actions">
+                        <button class="ar-btn" type="button" data-heart data-qid="${q.id}" aria-pressed="false" aria-label="Save to your archive">${heartSvg()}</button>
+                        <button class="ar-btn" type="button" data-ar="copy" data-qid="${q.id}" aria-label="Copy quote" title="Copy">${copyIconSmall}</button>
+                        <button class="ar-btn" type="button" data-ar="share" data-qid="${q.id}" aria-label="Share quote card" title="Share">${waIconSmall}</button>
+                        ${opts.folder ? `<button class="ar-btn${open ? ' on' : ''}" type="button" data-ar="folder" data-qid="${q.id}" aria-label="Add to a collection" title="Collections">${folderIcon}</button>` : ''}
+                    </div>
+                    ${open ? panelHtml(q) : ''}
+                </article>`;
+            }
+
+            function viewSaved(s) {
+                if (ui.filter && ui.filter.type === 'col' && !s.collections.some(c => c.id === ui.filter.id)) ui.filter = null;
+                if (!s.favs.length) {
+                    return emptyHtml('♡', 'Your private archive is empty', 'Tap the heart on any quote to keep it here. Nothing ever leaves this device.');
+                }
+                let head = '';
+                if (ui.filter) {
+                    const f = ui.filter;
+                    const title = f.type === 'col' ? s.collections.find(c => c.id === f.id).name : worlds[f.id].mood;
+                    head = `<div class="ad-filter">
+                        <button class="ad-back" type="button" data-clear-filter>← All saved</button>
+                        <h3 class="ad-filter-title">${esc(title)}</h3>
+                        ${f.type === 'col' ? '<button class="ad-link" type="button" data-del-col>Delete collection</button>' : ''}
+                    </div>`;
+                }
+                const list = visibleFavs(s);
+                if (!list.length) {
+                    return head + '<p class="ad-hint">Nothing here yet. Use the folder icon on any saved quote to add it to this collection.</p>';
+                }
+                return head + list.map((q, i) => rowHtml(q, { folder: true, i: Math.min(i, 8) })).join('');
+            }
+
+            function shelfHtml(type, id, title, items, sub) {
+                const prev = items[0] ? `“${esc(clip(items[0].text, 92))}”` : 'Empty — add quotes with the folder icon in Saved.';
+                return `<button class="shelf" type="button" data-open-filter="${type}" data-filter-id="${esc(id)}">
+                    <span class="shelf-top"><span class="shelf-title">${esc(title)}</span><span class="shelf-count">${items.length}</span></span>
+                    ${sub ? `<span class="shelf-sub">${esc(sub)}</span>` : ''}
+                    <span class="shelf-prev">${prev}</span>
+                </button>`;
+            }
+
+            function viewCollections(s) {
+                const cols = s.collections.map(c => shelfHtml('col', c.id, c.name, s.favs.filter(q => c.ids.includes(q.id)))).join('');
+                const byWorld = Object.keys(worlds).map(k => {
+                    const items = s.favs.filter(q => q.world === k);
+                    return items.length ? shelfHtml('world', k, worlds[k].mood, items, worlds[k].name) : '';
+                }).join('');
+                return `
+                    <div class="ar-new ar-new--shelf">
+                        <input type="text" maxlength="40" placeholder="Name a new collection…" data-new-col aria-label="New collection name" autocomplete="off">
+                        <button class="ar-btn" type="button" data-new-col-btn aria-label="Create collection">+</button>
+                    </div>
+                    <h3 class="ad-section">Your collections</h3>
+                    ${cols || '<p class="ad-hint">Curate your own shelves — perhaps “Mornings” or “For hard days”.</p>'}
+                    <h3 class="ad-section">By world</h3>
+                    ${byWorld || '<p class="ad-hint">Saved quotes gather here by mood, automatically.</p>'}`;
+            }
+
+            function fmtDay(key) {
+                const [y, m, d] = key.split('-').map(Number);
+                const label = new Date(y, m - 1, d).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+                return (key === todayKeyCur ? 'Today · ' : '') + label;
+            }
+
+            function viewJournal(s) {
+                const st = s.streak;
+                const stats = `<div class="ad-stats">
+                    <div><b>${st.count || 0}</b><span>Day streak</span></div>
+                    <div><b>${st.best || 0}</b><span>Best</span></div>
+                    <div><b>${s.journal.length}</b><span>Days visited</span></div>
+                </div>`;
+                if (!s.journal.length) return stats + emptyHtml('✦', 'Your journal begins today', 'Each day’s quote is kept here, so you can always return to it.');
+                return stats + s.journal.map((j, i) =>
+                    `<div class="ad-day">${esc(fmtDay(j.date))}</div>` + rowHtml(j, { folder: false, i: Math.min(i, 8) })
+                ).join('');
+            }
+
+            function renderDrawer(animate) {
+                const s = Store.get();
+                drawer.querySelectorAll('.ad-tab').forEach(t => {
+                    const on = t.dataset.tab === ui.tab;
+                    t.classList.toggle('active', on);
+                    t.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+                drawer.querySelector('[data-count="saved"]').textContent = s.favs.length || '';
+                drawer.querySelector('[data-count="collections"]').textContent = s.collections.length || '';
+
+                const keep = animate ? 0 : archiveBody.scrollTop;
+                let html;
+                if (ui.tab === 'saved') html = viewSaved(s);
+                else if (ui.tab === 'collections') html = viewCollections(s);
+                else html = viewJournal(s);
+                archiveBody.className = 'ad-body' + (animate ? ' animate' : '');
+                archiveBody.innerHTML = html;
+                archiveBody.scrollTop = keep;
+
+                const showCopyAll = ui.tab === 'saved' && visibleFavs(s).length > 0;
+                archiveFoot.innerHTML = showCopyAll ? '<button class="ad-foot-btn" type="button" data-ar-all>Copy all</button>' : '';
+
+                refreshHearts(drawer);
+                if (ui.focusSel) {
+                    const el = archiveBody.querySelector(ui.focusSel);
+                    ui.focusSel = null;
+                    if (el) el.focus({ preventScroll: true });
+                }
+            }
+
+            function createFromInput(input) {
+                const name = input.value.trim();
+                if (!name) return;
+                const qid = input.dataset.qid;
+                ui.focusSel = qid ? `[data-new-col][data-qid="${qid}"]` : '[data-new-col]';
+                let colId = null;
+                Store.batch(() => {
+                    colId = Store.createCollection(name);
+                    if (colId && qid) Store.addToCollection(colId, qid);
+                });
+                showToast(qid ? 'Added to collection' : 'Collection created', 'copy', { sub: name.slice(0, 40) });
+            }
+
+            drawer.addEventListener('click', (e) => {
+                const t = e.target;
+
+                const tab = t.closest('.ad-tab');
+                if (tab) {
+                    ui.tab = tab.dataset.tab;
+                    ui.openRow = null;
+                    if (ui.tab === 'saved') ui.filter = null;
+                    renderDrawer(true);
+                    return;
+                }
+                const openF = t.closest('[data-open-filter]');
+                if (openF) {
+                    ui.filter = { type: openF.dataset.openFilter, id: openF.dataset.filterId };
+                    ui.tab = 'saved';
+                    ui.openRow = null;
+                    renderDrawer(true);
+                    return;
+                }
+                if (t.closest('[data-clear-filter]')) { ui.filter = null; ui.openRow = null; renderDrawer(true); return; }
+                if (t.closest('[data-del-col]')) {
+                    const f = ui.filter;
+                    if (!f || f.type !== 'col') return;
+                    const snap = Store.snapshot();
+                    ui.filter = null;
+                    Store.deleteCollection(f.id);
+                    showToast('Collection deleted', 'copy', { action: { label: 'Undo', fn: () => Store.restore(snap) } });
+                    return;
+                }
+                const ar = t.closest('[data-ar]');
+                if (ar) {
+                    const q = lookup(ar.dataset.qid);
+                    if (!q) return;
+                    if (ar.dataset.ar === 'copy') copyQuote(q);
+                    else if (ar.dataset.ar === 'share') shareQuoteAsCard(q);
+                    else if (ar.dataset.ar === 'folder') {
+                        ui.openRow = ui.openRow === q.id ? null : q.id;
+                        renderDrawer(false);
+                    }
+                    return;
+                }
+                const ct = t.closest('[data-col-toggle]');
+                if (ct) { Store.toggleInCollection(ct.dataset.colToggle, ct.dataset.qid); return; }
+                const nb = t.closest('[data-new-col-btn]');
+                if (nb) {
+                    const input = nb.parentElement.querySelector('[data-new-col]');
+                    if (input) createFromInput(input);
+                    return;
+                }
+                if (t.closest('[data-ar-all]')) {
+                    const list = visibleFavs(Store.get());
+                    copyText(list.map(q => `"${q.text}"\n— ${q.author}`).join('\n\n'), 'Copied ' + list.length + (list.length === 1 ? ' quote' : ' quotes'));
+                }
+            });
+
+            drawer.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.target.matches('[data-new-col]')) {
+                    e.preventDefault();
+                    createFromInput(e.target);
+                }
+            });
+
+            document.getElementById('archiveClose').addEventListener('click', closeDrawer);
+            backdrop.addEventListener('click', closeDrawer);
+            fab.addEventListener('click', () => openDrawer());
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                if (drawerOpen) closeDrawer();
+                else closeQuoteModal();
+            });
+
+            Store.subscribe(() => {
+                refreshHearts();
+                updateFab();
+                if (drawerOpen) renderDrawer(false);
+                const st = document.getElementById('todayStreak');
+                if (st) st.textContent = streakText();
+            });
 
             /* ---- DREAMSCAPE (daydream) ---- */
             function cloudSVG(w, h, color) {
@@ -2045,11 +3208,12 @@
                 document.getElementById('heroTagline').textContent = w.tagline;
                 document.getElementById('sectionHint').textContent = w.sectionHint;
                 w.render(w.quotes);
-                localStorage.setItem('archiveWorld', key);
+                try { localStorage.setItem('archiveWorld', key); } catch (e) {}
             }
 
             const order = ['gilded', 'daydream', 'jungle', 'arabian'];
-            let current = localStorage.getItem('archiveWorld');
+            let current = null;
+            try { current = localStorage.getItem('archiveWorld'); } catch (e) {}
             if (!order.includes(current)) current = 'gilded';
             applyWorld(current);
 
@@ -2058,6 +3222,13 @@
                 current = order[(idx + 1) % order.length];
                 applyWorld(current);
             });
+
+            /* ---- boot the ritual ---- */
+            renderDaily(false);
+            updateFab();
+            refreshHearts();
+            setInterval(tick, 1000);
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
         })();
     </script>
 </body>
