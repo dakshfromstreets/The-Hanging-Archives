@@ -98,11 +98,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
+        /* FIX 3: no overflow-x:hidden on body (it breaks position:fixed on mobile browsers) */
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg-deep);
             color: var(--text);
-            overflow-x: hidden;
             cursor: default;
             transition: background .7s ease, color .5s ease;
             line-height: 1.6;
@@ -140,7 +140,7 @@
             66% { transform: translate(-1%, 1.5%); }
         }
 
-        .main-wrapper { position: relative; z-index: 1; }
+        .main-wrapper { position: relative; z-index: 1; overflow-x: clip; }
 
         .dreamscape {
             position: fixed; inset: 0; z-index: 0;
@@ -608,29 +608,6 @@
             100% { transform: scale(1); }
         }
 
-        .card-heart {
-            position: absolute; top: .85rem; right: .95rem; z-index: 3;
-            width: 34px; height: 34px; padding: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(255, 255, 255, .05);
-            border: 1px solid var(--card-border);
-            border-radius: 50%; color: var(--gold);
-            cursor: pointer; opacity: .75;
-            transition: all .3s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .card-heart svg { width: 15px; height: 15px; display: block; }
-
-        .card-heart:hover, .card-heart:focus-visible, .card-heart.is-saved {
-            opacity: 1; border-color: var(--gold);
-            background: rgba(255, 255, 255, .1);
-            box-shadow: 0 0 18px var(--glow);
-            outline: none; transform: scale(1.06);
-        }
-
-        .card-heart.is-saved { color: var(--gold-light); }
-
         .quote-modal-btn.is-saved {
             background: var(--gold); border-color: var(--gold-light); color: var(--bg-deep);
         }
@@ -709,7 +686,6 @@
             width: 100%; height: 100%; object-fit: cover; display: block;
         }
 
-        /* Hover-only action strip — no quote text on the images */
         .pennant-actions-overlay {
             position: absolute;
             inset: 0;
@@ -1230,15 +1206,24 @@
         .quote-toast-action:hover, .quote-toast-action:focus-visible { color: #fff; outline: none; }
 
         /* ================= PRIVATE ARCHIVE (FAB + DRAWER) ================= */
+        /* FIX 3: solid background, no backdrop-filter, own GPU layer, safe-area aware —
+           so the heart button never disappears on a still page */
         .archive-fab {
-            position: fixed; right: 1.6rem; bottom: 1.6rem; z-index: 900;
+            position: fixed;
+            right: calc(1.6rem + env(safe-area-inset-right, 0px));
+            bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
+            z-index: 900;
             width: 58px; height: 58px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            background: var(--nav-bg);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            background: var(--bg-surface);
             border: 1px solid var(--card-border);
             color: var(--gold); cursor: pointer;
             box-shadow: 0 12px 34px var(--card-shadow), 0 0 28px var(--glow);
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
             transition: transform .35s cubic-bezier(.16, 1, .3, 1), opacity .35s ease,
                         background .5s ease, border-color .5s ease, box-shadow .4s ease;
             -webkit-tap-highlight-color: transparent;
@@ -1247,7 +1232,7 @@
         .archive-fab svg { width: 22px; height: 22px; display: block; }
 
         .archive-fab:hover, .archive-fab:focus-visible {
-            transform: translateY(-3px) scale(1.06);
+            transform: translate3d(0, -3px, 0) scale(1.06);
             border-color: var(--gold-light);
             box-shadow: 0 16px 40px var(--card-shadow), 0 0 40px var(--glow);
             outline: none;
@@ -1257,9 +1242,9 @@
         .archive-fab.bump { animation: fabBump .6s cubic-bezier(.16, 1, .3, 1); }
 
         @keyframes fabBump {
-            0% { transform: scale(1); }
-            35% { transform: scale(1.18); }
-            100% { transform: scale(1); }
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            35% { transform: translate3d(0, 0, 0) scale(1.18); }
+            100% { transform: translate3d(0, 0, 0) scale(1); }
         }
 
         .archive-badge {
@@ -1275,7 +1260,7 @@
         [data-theme="daydream"] .archive-badge { color: #fff; }
         .archive-fab.has-items .archive-badge { display: flex; }
 
-        body.archive-open .archive-fab { opacity: 0; pointer-events: none; transform: scale(.8); }
+        body.archive-open .archive-fab { opacity: 0; pointer-events: none; transform: translate3d(0, 0, 0) scale(.8); }
 
         .archive-backdrop {
             position: fixed; inset: 0; z-index: 1650;
@@ -1551,7 +1536,7 @@
             .today-frame { padding: 4.6rem 1.3rem 2rem; border-radius: 120px 120px 22px 22px; }
             .today-frame::before { border-radius: 110px 110px 14px 14px; inset: 9px; }
             .today-meta { gap: .5rem .8rem; letter-spacing: .14em; }
-            .archive-fab { right: 1rem; bottom: 1rem; width: 54px; height: 54px; }
+            .archive-fab { right: calc(1rem + env(safe-area-inset-right, 0px)); bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); width: 54px; height: 54px; }
             .ad-head { padding: 1.4rem 1.2rem .8rem; }
             .ad-tabs { padding: 0 1.2rem; gap: 1.2rem; }
             .ad-body { padding: .4rem 1.2rem 2rem; }
@@ -1690,183 +1675,113 @@
 
     <script>
         (function () {
+            const q = ([t, a]) => ({ text: t, author: a });
+
             const successQuotes = [
-                { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
-                { text: "The reason it’s important to push hardest when you want to quit the most is because it helps you callous your mind.", author: "David Goggins" },
-                { text: "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle.", author: "Steve Jobs" },
-                { text: "Pain doesn’t tell you when you ought to stop. Pain is the little voice in your head that tries to hold you back because it knows if you continue you will change.", author: "Kobe Bryant" },
-                { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
-                { text: "People underestimate how much brute force you have to use to will your goals into existence.", author: "Alex Hormozi" },
-                { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" },
-                { text: "There can be no great victories in your life unless you overcome adversity. You can’t be a great competitor unless you overcome adversity. That’s mental.", author: "Nick Saban" },
-                { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
-                { text: "Talent without working hard is nothing.", author: "Cristiano Ronaldo" },
-                { text: "The secret of getting ahead is getting started. The secret of getting started is breaking your complex overwhelming tasks into small manageable tasks, and starting on the first one.", author: "Mark Twain" },
-                { text: "You are in danger of living a life so comfortable and soft, that you will die without ever realizing your true potential.", author: "David Goggins" },
-                { text: "Perseverance is not a long race; it is many short races one after the other.", author: "Walter Elliot" },
-                { text: "Don’t count on motivation; count on discipline.", author: "Jocko Willink" },
-                { text: "There is no substitute for hard work. Never give up. Never stop believing. Never stop fighting.", author: "Hope Hicks" },
-                { text: "There are a lot of days where you can rest and recover, today ain’t one of them.", author: "Kobe Bryant" },
-                { text: "Through perseverance many people win success out of what seemed destined to be certain failure.", author: "Benjamin Disraeli" },
-                { text: "You get up every day—you’re entitled to nothing. Nobody owes you nothing. You could have talent, but if you don’t have discipline, and you don’t execute, you don’t focus… What do you get? Nothing. So nothing is acceptable but your best.", author: "Sahil Bloom" },
-                { text: "Success is stumbling from failure to failure with no loss of enthusiasm.", author: "Winston Churchill" },
-                { text: "The real race is always the same: it’s me against my goals.", author: "Katie Ledecky" },
-                { text: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.", author: "Vince Lombardi" },
-                { text: "Passing one obstacle simply says you’re worthy of more. The world seems to keep throwing them at you once it knows you can take it. Which is good, because we get better with every attempt.", author: "Ryan Holiday" },
-                { text: "Don't be discouraged. It's often the last key in the bunch that opens the lock.", author: "Unknown" },
-                { text: "We don’t want to tell our dreams. We want to show them. No long speeches. No excuses. Just results.", author: "Cristiano Ronaldo" },
-                { text: "The only limit to our realization of tomorrow will be our doubts of today.", author: "Franklin D. Roosevelt" },
-                { text: "The moment you give up, is the moment you let someone else win.", author: "Kobe Bryant" },
-                { text: "What you get by achieving your goals is not as important as what you become by achieving your goals.", author: "Zig Ziglar" },
-                { text: "The thing about grit is real. It’s about competing, pushing yourself, striving to be your best — and what’s really exciting is nobody controls this, but you.", author: "Pete Carroll" },
-                { text: "Fall seven times and stand up eight.", author: "Japanese Proverb" },
-                { text: "Pressure never stops. But the real pain doesn’t come from pressure, it comes from regret — from doubting the power that’s inside of only you.", author: "Jamie Kern Lima" },
-                { text: "Your hardest times often lead to the greatest moments of your life. Keep going. Tough situations build strong people in the end.", author: "Roy T. Bennett" },
-                { text: "You can shoot for the moon and land on the stars, or you can shoot for the moon and land on the moon. The goal is to run faster.", author: "Masai Russell" },
-                { text: "Great things are done by a series of small things brought together.", author: "Vincent Van Gogh" },
-                { text: "If they beat you before, they won’t get you again.", author: "Melissa Jefferson-Wooden" },
-                { text: "The man who moves a mountain begins by carrying away small stones.", author: "Confucius" },
-                { text: "The only failure is not giving 100 per cent.", author: "Hamish Kerr" },
-                { text: "Our greatest glory is not in never falling, but in rising every time we fall.", author: "Confucius" },
-                { text: "Sometimes, being young and unknown is your advantage.", author: "Katie Ledecky" },
-                { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
-                { text: "If you’re willing to die for something, then you’ll certainly be willing to work really hard for a long time for it. It’s not discipline — it’s purpose. Some things are important enough they’re worth suffering for.", author: "Alex Hormozi" },
-                { text: "A river cuts through rock, not because of its power, but because of its persistence.", author: "James N. Watkins" },
-                { text: "The things that you say will come to fruition. Even if you technically don’t get all the way there, you can come very close.", author: "Masai Russell" },
-                { text: "The only person you are destined to become is the person you decide to be.", author: "Ralph Waldo Emerson" },
-                { text: "If you’re like me, you didn’t come this far to be impressive. You came this far to be impactful.", author: "Jamie Kern Lima" },
-                { text: "Don't limit your challenges. Challenge your limits.", author: "Unknown" },
-                { text: "The test of whether you have work ethic is whether you can work when you’re tired.", author: "Alex Hormozi" },
-                { text: "Strength doesn't come from what you can do. It comes from overcoming the things you once thought you couldn't.", author: "Rikki Rogers" },
-                { text: "The struggle you're in today is developing the strength you need for tomorrow.", author: "Robert Tew" }
-            ];
+                ["Dripping water hollows out stone, not through force but through persistence.", "Ovid"],
+                ["Great works are performed not by strength but by perseverance.", "Samuel Johnson"],
+                ["Nothing will ever be attempted, if all possible objections must be first overcome.", "Samuel Johnson"],
+                ["First forget inspiration. Habit is more dependable. Habit will sustain you whether you're inspired or not.", "Octavia E. Butler"],
+                ["If you hear a voice within you say 'you cannot paint,' then by all means paint, and that voice will be silenced.", "Vincent van Gogh"],
+                ["Success is to be measured not so much by the position that one has reached in life as by the obstacles which he has overcome.", "Booker T. Washington"],
+                ["The strongest of all warriors are these two — Time and Patience.", "Leo Tolstoy"],
+                ["If you want to improve, be content to be thought foolish and stupid.", "Epictetus"],
+                ["Difficulties strengthen the mind, as labor does the body.", "Seneca"],
+                ["Permanence, perseverance and persistence in spite of all obstacles, discouragements, and impossibilities: it is this that in all things distinguishes the strong soul from the weak.", "Thomas Carlyle"],
+                ["Talent hits a target no one else can hit; genius hits a target no one else can see.", "Arthur Schopenhauer"],
+                ["It is good to have an end to journey toward; but it is the journey that matters, in the end.", "Ursula K. Le Guin"],
+                ["The reward of a thing well done is to have done it.", "Ralph Waldo Emerson"],
+                ["If there's a book that you want to read, but it hasn't been written yet, then you must write it.", "Toni Morrison"],
+                ["If the fool would persist in his folly he would become wise.", "William Blake"],
+                ["Although the world is full of suffering, it is full also of the overcoming of it.", "Helen Keller"],
+                ["How wonderful it is that nobody need wait a single moment before starting to improve the world.", "Anne Frank"],
+                ["To be great, be whole; don't exaggerate or exclude anything in you. Put all you are into the smallest thing you do. The whole moon gleams in each pool because it blooms up above.", "Fernando Pessoa"]
+            ].map(q);
 
             const gratitudeQuotes = [
-                { text: "Gratitude turns what we have into enough, and more. It turns denial into acceptance, chaos into order, confusion into clarity.", author: "Melody Beattie" },
-                { text: "Be thankful for what you have; you'll end up having more. If you concentrate on what you don't have, you will never, ever have enough.", author: "Oprah Winfrey" },
-                { text: "The more grateful I am, the more beauty I see.", author: "Mary Davis" },
-                { text: "Gratitude is the fairest blossom which springs from the soul.", author: "Henry Ward Beecher" },
-                { text: "Enjoy the little things, for one day you may look back and realize they were the big things.", author: "Robert Brault" },
-                { text: "When you arise in the morning, think of what a precious privilege it is to be alive – to breathe, to think, to enjoy, to love.", author: "Marcus Aurelius" },
-                { text: "Let us be grateful to the people who make us happy; they are the charming gardeners who make our souls blossom.", author: "Marcel Proust" },
-                { text: "The real gift of gratitude is that the more grateful you are, the more present you become.", author: "Robert Holden" },
-                { text: "Happiness comes in waves. It'll find you again.", author: "Unknown" },
-                { text: "Take a deep breath. Inhale peace. Exhale gratitude.", author: "Unknown" },
-                { text: "There is always, always, always something to be thankful for.", author: "Unknown" },
-                { text: "Kindness is free. Sprinkle that stuff everywhere.", author: "Unknown" },
-                { text: "The sun will rise and we will try again.", author: "Twenty One Pilots" },
-                { text: "A grateful heart is a magnet for miracles.", author: "Unknown" },
-                { text: "Every day may not be good, but there is something good in every day.", author: "Alice Morse Earle" },
-                { text: "The best way to pay for a lovely moment is to enjoy it.", author: "Richard Bach" },
-                { text: "Life is beautiful, and there's so much to smile about.", author: "Marilyn Monroe" },
-                { text: "What if you woke up today with only the things you thanked God for yesterday?", author: "Unknown" },
-                { text: "Gratitude is not only the greatest of virtues, but the parent of all others.", author: "Cicero" },
-                { text: "In the end, maybe it's wiser to surrender before the miraculous scope of human generosity and to just keep saying thank you, forever and sincerely.", author: "David Foster Wallace" },
-                { text: "Good vibes only. But also, let's be real: sometimes bad vibes sneak in. Thank them for visiting, and let them go.", author: "Unknown" },
-                { text: "May you find reasons to smile every single day.", author: "Unknown" },
-                { text: "Your vibe attracts your tribe. Stay grateful, stay kind.", author: "Unknown" },
-                { text: "The smallest act of kindness is worth more than the grandest intention.", author: "Oscar Wilde" },
-                { text: "It's not happiness that brings us gratitude. It's gratitude that brings us happiness.", author: "Unknown" }
-            ];
+                ["I would maintain that thanks are the highest form of thought; and that gratitude is happiness doubled by wonder.", "G. K. Chesterton"],
+                ["We can only be said to be alive in those moments when our hearts are conscious of our treasures.", "Thornton Wilder"],
+                ["Do any human beings ever realize life while they live it? Every, every minute?", "Thornton Wilder"],
+                ["Attention is the beginning of devotion.", "Mary Oliver"],
+                ["How we spend our days is, of course, how we spend our lives.", "Annie Dillard"],
+                ["Where there is great love there are always miracles.", "Willa Cather"],
+                ["In ordinary life we hardly realize that we receive much more than we give, and that it is only with gratitude that life becomes rich.", "Dietrich Bonhoeffer"],
+                ["At times our own light goes out and is rekindled by a spark from another person. Each of us has cause to think with deep gratitude of those who have lighted the flame within us.", "Albert Schweitzer"],
+                ["That it will never come again is what makes life so sweet.", "Emily Dickinson"],
+                ["Forever is composed of nows.", "Emily Dickinson"],
+                ["Be joyful though you have considered all the facts.", "Wendell Berry"],
+                ["Heaven is under our feet as well as over our heads.", "Henry David Thoreau"],
+                ["Nothing is enough for the man to whom enough is too little.", "Epicurus"],
+                ["My experience is what I agree to attend to.", "William James"],
+                ["Very little is needed to make a happy life; it is all within yourself, in your way of thinking.", "Marcus Aurelius"],
+                ["Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts.", "Rachel Carson"],
+                ["There is no charm equal to tenderness of heart.", "Jane Austen"]
+            ].map(q);
 
             const empowermentQuotes = [
-                { text: "She believed she could, so she did.", author: "R.S. Grey" },
-                { text: "You are braver than you believe, stronger than you seem, and smarter than you think.", author: "A.A. Milne" },
-                { text: "No one can make you feel inferior without your consent.", author: "Eleanor Roosevelt" },
-                { text: "The most courageous act is still to think for yourself. Aloud.", author: "Coco Chanel" },
-                { text: "You have power over your mind — not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius" },
-                { text: "I am not what happened to me. I am what I choose to become.", author: "Carl Jung" },
-                { text: "You may have to fight a battle more than once to win it.", author: "Margaret Thatcher" },
-                { text: "What lies behind us and what lies before us are tiny matters compared to what lies within us.", author: "Ralph Waldo Emerson" },
-                { text: "Courage doesn't always roar. Sometimes courage is the quiet voice at the end of the day saying, 'I will try again tomorrow.'", author: "Mary Anne Radmacher" },
-                { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-                { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
-                { text: "The only way out is through.", author: "Robert Frost" },
-                { text: "Rock bottom became the solid foundation on which I rebuilt my life.", author: "J.K. Rowling" },
-                { text: "You are the sky. Everything else — it's just the weather.", author: "Pema Chödrön" },
-                { text: "Sometimes you don't realize your own strength until you come face to face with your greatest weakness.", author: "Susan Gale" },
-                { text: "Rise above the storm and you will find the sunshine.", author: "Mario Fernández" },
-                { text: "The world breaks everyone, and afterward, some are strong at the broken places.", author: "Ernest Hemingway" },
-                { text: "You've survived 100% of your bad days. You're doing great.", author: "Unknown" },
-                { text: "Stars can't shine without darkness.", author: "Unknown" },
-                { text: "He who conquers himself is the mightiest warrior.", author: "Confucius" }
-            ];
+                ["I am no bird; and no net ensnares me: I am a free human being with an independent will.", "Charlotte Brontë"],
+                ["Lock up your libraries if you like; but there is no gate, no lock, no bolt that you can set upon the freedom of my mind.", "Virginia Woolf"],
+                ["I would rather be ashes than dust! I would rather that my spark should burn out in a brilliant blaze than it should be stifled by dry-rot.", "Jack London"],
+                ["Beware; for I am fearless, and therefore powerful.", "Mary Shelley"],
+                ["If you surrendered to the air, you could ride it.", "Toni Morrison"],
+                ["When I dare to be powerful, to use my strength in the service of my vision, then it becomes less and less important whether I am afraid.", "Audre Lorde"],
+                ["Self-respect is a discipline, a habit of mind that can never be faked but can be developed, trained, coaxed forth.", "Joan Didion"],
+                ["Do stuff. Be clenched, curious. Not waiting for inspiration's shove or society's kiss on your forehead.", "Susan Sontag"],
+                ["Perhaps all the dragons in our lives are princesses who are only waiting to see us act, just once, with beauty and courage.", "Rainer Maria Rilke"],
+                ["I prefer to be true to myself, even at the hazard of incurring the ridicule of others, rather than to be false, and to incur my own abhorrence.", "Frederick Douglass"],
+                ["When we are no longer able to change a situation, we are challenged to change ourselves.", "Viktor Frankl"],
+                ["Not everything that is faced can be changed, but nothing can be changed until it is faced.", "James Baldwin"],
+                ["One must still have chaos in oneself to be able to give birth to a dancing star.", "Friedrich Nietzsche"],
+                ["Who looks outside, dreams; who looks inside, awakes.", "Carl Jung"],
+                ["The future enters into us, in order to transform itself in us, long before it happens.", "Rainer Maria Rilke"],
+                ["No man is free who is not master of himself.", "Epictetus"],
+                ["He suffers more than necessary, who suffers before it is necessary.", "Seneca"],
+                ["We suffer more often in imagination than in reality.", "Seneca"],
+                ["Not till we are lost, in other words not till we have lost the world, do we begin to find ourselves.", "Henry David Thoreau"],
+                ["Waste no more time arguing about what a good man should be. Be one.", "Marcus Aurelius"],
+                ["Mastering others is strength; mastering yourself is true power.", "Lao Tzu"]
+            ].map(q);
 
             const lifeQuotes = [
-                { text: "Life is not a problem to be solved, but a reality to be experienced.", author: "Søren Kierkegaard" },
-                { text: "We do not remember days, we remember moments.", author: "Cesare Pavese" },
-                { text: "In solitude the mind gains strength and learns to lean upon itself.", author: "Laurence Sterne" },
-                { text: "Cultivate the habit of being grateful for every good thing that comes to you, and to give thanks continuously.", author: "Ralph Waldo Emerson" },
-                { text: "To live is the rarest thing in the world. Most people exist, that is all.", author: "Oscar Wilde" },
-                { text: "Nothing is ever really lost to us as long as we remember it.", author: "L.M. Montgomery" },
-                { text: "I never found a companion that was so companionable as solitude.", author: "Henry David Thoreau" },
-                { text: "Wear gratitude like a cloak and it will feed every corner of your life.", author: "Rumi" },
-                { text: "In three words I can sum up everything I've learned about life: it goes on.", author: "Robert Frost" },
-                { text: "Memory is the treasury and guardian of all things.", author: "Cicero" },
-                { text: "Solitude is not the absence of company, but the moment when our soul is free to speak to us and help us decide what to do with our life.", author: "Paulo Coelho" },
-                { text: "Be grateful for your life, every detail of it, and your face will come to shine like a sun.", author: "Rumi" },
-                { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
-                { text: "Yesterday is but today's memory, and tomorrow is today's dream.", author: "Khalil Gibran" },
-                { text: "The more powerful and original a mind, the more it will incline towards the religion of solitude.", author: "Aldous Huxley" },
-                { text: "The heart that gives thanks is a happy one; for we cannot help feeling joyful when we are thankful.", author: "Dale Carnegie" },
-                { text: "Life isn't about finding yourself. Life is about creating yourself.", author: "George Bernard Shaw" },
-                { text: "The heart's memory eliminates the bad and magnifies the good.", author: "Gabriel García Márquez" },
-                { text: "Solitude is a silent storm that breaks down all our dead branches; yet it sends our living roots deeper into the living heart of the living earth.", author: "Khalil Gibran" },
-                { text: "Gratitude is a powerful catalyst for happiness. It's the spark that lights a fire of joy in your soul.", author: "Amy Collette" },
-                { text: "The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate — to have it make some difference that you have lived and lived well.", author: "Ralph Waldo Emerson" },
-                { text: "Our memories are the only paradise from which we can never be expelled.", author: "Jean Paul" },
-                { text: "I live in that solitude which is painful in youth, but delicious in the years of maturity.", author: "Albert Einstein" },
-                { text: "The roots of all goodness lie in the soil of appreciation for goodness.", author: "Dalai Lama" },
-                { text: "Life shrinks or expands in proportion to one's courage.", author: "Anaïs Nin" },
-                { text: "Some memories are realities, and are better than anything that can ever happen to one again.", author: "Willa Cather" },
-                { text: "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.", author: "Ralph Waldo Emerson" },
-                { text: "When we give thanks for what we have, the universe opens its hands to give us more.", author: "Unknown" },
-                { text: "It is not length of life, but depth of life.", author: "Ralph Waldo Emerson" },
-                { text: "The things we truly love stay with us always, locked in our hearts as long as life remains.", author: "Josephine Baker" },
-                { text: "In solitude is wisdom born.", author: "Unknown" },
-                { text: "Gratitude is the single most important ingredient for living a successful and fulfilling life.", author: "Unknown" },
-                { text: "Your time is limited, so don't waste it living someone else's life.", author: "Steve Jobs" },
-                { text: "Memory is a way of holding on to the things you love, the things you are, the things you never want to lose.", author: "Kevin Arnold" },
-                { text: "Alone, we are given space to hear our own voice — and learn to trust it.", author: "Unknown" },
-                { text: "There is no joy without gratitude, and no gratitude without a heart that has learned to see.", author: "Unknown" },
-                { text: "The two most important days in your life are the day you are born and the day you find out why.", author: "Mark Twain" },
-                { text: "The past beats inside me like a second heart.", author: "John Banville" },
-                { text: "Sometimes you need to be alone to remember who you are when no one is watching.", author: "Unknown" },
-                { text: "Let gratitude be the pillow upon which you kneel to say your nightly prayer.", author: "Maya Angelou" },
-                { text: "Life is really simple, but we insist on making it complicated.", author: "Confucius" },
-                { text: "Memory is the seamstress of identity — it stitches the past into who we are.", author: "Unknown" },
-                { text: "Solitude is where the soul goes to breathe.", author: "Unknown" },
-                { text: "Gratitude makes sense of our past, brings peace for today, and creates a vision for tomorrow.", author: "Melody Beattie" },
-                { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
-                { text: "We are what we remember, and we become what we choose to remember.", author: "Unknown" },
-                { text: "Life is a series of natural and spontaneous changes. Don't resist them; that only creates sorrow.", author: "Lao Tzu" },
-                { text: "The unexamined life is not worth living.", author: "Socrates" }
-            ];
+                ["A book must be the axe for the frozen sea within us.", "Franz Kafka"],
+                ["There are years that ask questions and years that answer.", "Zora Neale Hurston"],
+                ["I have dreamt in my life, dreams that have stayed with me ever after, and changed my ideas; they've gone through and through me, like wine through water, and altered the color of my mind.", "Emily Brontë"],
+                ["Time is the substance I am made of.", "Jorge Luis Borges"],
+                ["I am nothing. I shall never be anything. I cannot want to be anything. Apart from that, I have in me all the dreams of the world.", "Fernando Pessoa"],
+                ["Love is so short, forgetting is so long.", "Pablo Neruda"],
+                ["Nothing can ever happen twice. In consequence, the sorry fact is that we arrive here improvised and leave without the chance to practice.", "Wisława Szymborska"],
+                ["What makes the desert beautiful is that somewhere it hides a well.", "Antoine de Saint-Exupéry"],
+                ["Within you there is a stillness and a sanctuary to which you can retreat at any time and be yourself.", "Hermann Hesse"],
+                ["I am certain of nothing but of the holiness of the heart's affections and the truth of Imagination.", "John Keats"],
+                ["Nothing ever becomes real till it is experienced.", "John Keats"],
+                ["Let everything happen to you: beauty and terror. Just keep going. No feeling is final.", "Rainer Maria Rilke"],
+                ["Life is not a series of gig lamps symmetrically arranged; life is a luminous halo, a semi-transparent envelope surrounding us from the beginning of consciousness to the end.", "Virginia Woolf"],
+                ["Our deeds still travel with us from afar, and what we have been makes us what we are.", "George Eliot"],
+                ["There is no love of life without despair of life.", "Albert Camus"],
+                ["The mystery of human existence lies not in just staying alive, but in finding something to live for.", "Fyodor Dostoevsky"],
+                ["Not I, nor anyone else can travel that road for you. You must travel it by yourself.", "Walt Whitman"],
+                ["We are healed of a suffering only by experiencing it to the full.", "Marcel Proust"],
+                ["Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.", "Antoine de Saint-Exupéry"]
+            ].map(q);
 
             const humanNatureQuotes = [
-                { text: "Man is the only creature who refuses to be what he is.", author: "Albert Camus" },
-                { text: "We are all broken — that's how the light gets in.", author: "Ernest Hemingway" },
-                { text: "The line dividing good and evil cuts through the heart of every human being.", author: "Aleksandr Solzhenitsyn" },
-                { text: "Man is condemned to be free; because once thrown into the world, he is responsible for everything he does.", author: "Jean-Paul Sartre" },
-                { text: "Everyone you meet is fighting a battle you know nothing about. Be kind. Always.", author: "Ian Maclaren" },
-                { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Will Durant" },
-                { text: "Man's main task in life is to give birth to himself, to become what he potentially is.", author: "Erich Fromm" },
-                { text: "Every man has his secret sorrows which the world knows not; and often times we call a man cold when he is only sad.", author: "Henry Wadsworth Longfellow" },
-                { text: "We are all born mad. Some remain so.", author: "Samuel Beckett" },
-                { text: "Humans are the only animals that blush, and the only animals that need to.", author: "Mark Twain" },
-                { text: "People will forget what you said, people will forget what you did, but people will never forget how you made them feel.", author: "Maya Angelou" },
-                { text: "The true test of character is not how much we know how to do, but how we behave when we don't know what to do.", author: "John Holt" },
-                { text: "We are drawn to the flaws in others because they remind us of our own.", author: "Unknown" },
-                { text: "Behind every mask there is a face, and behind that a story.", author: "Marty Rubin" },
-                { text: "The human heart is a strange and complex thing. It can hold both great love and great darkness at the same time.", author: "Unknown" },
-                { text: "We judge ourselves by what we feel capable of doing, while others judge us by what we have already done.", author: "Henry Wadsworth Longfellow" },
-                { text: "It is not in the stars to hold our destiny but in ourselves.", author: "William Shakespeare" },
-                { text: "Every human being is a puzzle, and the pieces don't always fit the way we think they should.", author: "Unknown" },
-                { text: "The greatest trick the devil ever pulled was convincing the world he didn't exist.", author: "Charles Baudelaire" },
-                { text: "There is no such thing as a true self; we are all just echoes of the people we've met.", author: "Unknown" },
-                { text: "Man will always be a mystery to himself, and that is what makes him beautiful.", author: "Unknown" },
-                { text: "The more I see of the world, the more am I dissatisfied with it.", author: "Jane Austen" }
-            ];
+                ["I imagine one of the reasons people cling to their hates so stubbornly is because they sense, once hate is gone, they will be forced to deal with pain.", "James Baldwin"],
+                ["We all have strength enough to endure the misfortunes of others.", "François de La Rochefoucauld"],
+                ["We are never so happy or so unhappy as we imagine.", "François de La Rochefoucauld"],
+                ["Man is least himself when he talks in his own person. Give him a mask, and he will tell you the truth.", "Oscar Wilde"],
+                ["Experience is merely the name men gave to their mistakes.", "Oscar Wilde"],
+                ["What do we live for, if it is not to make life less difficult to each other?", "George Eliot"],
+                ["If you hate a person, you hate something in him that is part of yourself. What isn't part of ourselves doesn't disturb us.", "Hermann Hesse"],
+                ["Forgiveness is the only reaction that does not merely re-act but acts anew and unexpectedly.", "Hannah Arendt"],
+                ["The sad truth is that most evil is done by people who never make up their minds to be good or evil.", "Hannah Arendt"],
+                ["To see what is in front of one's nose needs a constant struggle.", "George Orwell"],
+                ["Every man takes the limits of his own field of vision for the limits of the world.", "Arthur Schopenhauer"],
+                ["Attention is the rarest and purest form of generosity.", "Simone Weil"],
+                ["Taking a new step, uttering a new word, is what people fear most.", "Fyodor Dostoevsky"],
+                ["Everything that irritates us about others can lead us to an understanding of ourselves.", "Carl Jung"],
+                ["All of humanity's problems stem from man's inability to sit quietly in a room alone.", "Blaise Pascal"],
+                ["Whoever fights monsters should see to it that in the process he does not become a monster.", "Friedrich Nietzsche"]
+            ].map(q);
 
             function interleaveQuotes(a, b) {
                 const out = [];
@@ -1924,7 +1839,7 @@
                     icon: '❁', name: 'The Verdant Canopy',
                     mood: 'Success & Perseverance',
                     section: 'GROWTH IN THE UNDERGROWTH',
-                    sectionHint: 'Words to fuel your journey upward',
+                    sectionHint: 'Tap a leaf to open, save or share it',
                     tagline: 'Through the thicket, toward the light — success blooms for those who persist',
                     render: renderCanopyQuotes, quotes: successQuotes
                 },
@@ -1932,7 +1847,7 @@
                     icon: '☁', name: 'Day Dreaming',
                     mood: 'Gratitude & Good Vibes',
                     section: 'COZY THOUGHTS IN THE CLOUDS',
-                    sectionHint: "Gentle reminders of life's sweetness",
+                    sectionHint: "Gentle reminders of life's sweetness — tap a card to keep it",
                     tagline: 'Soft words for tender hearts — finding light in the everyday',
                     render: renderDreamQuotes, quotes: gratitudeQuotes
                 },
@@ -1969,7 +1884,7 @@
             const pad2 = n => String(n).padStart(2, '0');
             const dateKey = d => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
 
-            /* ---------- Quote of the Day pool (deterministic, no repeats until the cycle ends) ---------- */
+            /* ---------- Quote of the Day pool ---------- */
             function mulberry32(a) {
                 return function () {
                     a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -1981,7 +1896,7 @@
 
             const dailyPool = (function () {
                 const pool = Object.values(quoteIndex)
-                    .filter(q => q.author !== 'Unknown' && q.text.length <= 170)
+                    .filter(q => q.text.length <= 200)
                     .sort((a, b) => a.text < b.text ? -1 : 1);
                 const rnd = mulberry32(20260101);
                 for (let i = pool.length - 1; i > 0; i--) {
@@ -2121,7 +2036,7 @@
 
             /* ---------- ICONS ---------- */
             const heartPath = 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z';
-            const heartSvg = (w) => `<svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${heartPath}"/></svg>`;
+            const heartSvg = () => `<svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${heartPath}"/></svg>`;
             const copyIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
             const waIconSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
             const folderIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
@@ -2201,7 +2116,11 @@
                 done(ok);
             }
 
-            /* ---------- PREMIUM QUOTE CARD (canvas) ---------- */
+            /* =====================================================
+               SHARE CARDS (canvas)
+               FIX 2: regular share = SQUARE 1080×1080, quote big & readable
+               FIX 5: Quote of the Day share = grand arch card, same as on the page
+               ===================================================== */
             function wrapText(ctx, text, maxWidth, font) {
                 ctx.font = font;
                 const words = text.split(/\s+/);
@@ -2220,166 +2139,283 @@
                 return lines;
             }
 
+            // largest font size that fits the box
+            function fitText(ctx, text, maxW, maxH, start, min, lh) {
+                let size = start, font, lines, lineH;
+                do {
+                    font = `italic 500 ${size}px "Cormorant Garamond", Georgia, serif`;
+                    lines = wrapText(ctx, text, maxW, font);
+                    lineH = size * lh;
+                    if (lines.length * lineH <= maxH) break;
+                    size -= 2;
+                } while (size >= min);
+                return { lines, size, lineH, font };
+            }
+
+            // letter-spaced text, centred
+            function spaced(ctx, text, cx, y, sp) {
+                const chars = [...text];
+                const widths = chars.map(c => ctx.measureText(c).width);
+                const total = widths.reduce((a, b) => a + b, 0) + sp * (chars.length - 1);
+                let x = cx - total / 2;
+                const prev = ctx.textAlign;
+                ctx.textAlign = 'left';
+                chars.forEach((c, i) => { ctx.fillText(c, x, y); x += widths[i] + sp; });
+                ctx.textAlign = prev;
+            }
+
+            function diamond(ctx, x, y, s) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillRect(-s / 2, -s / 2, s, s);
+                ctx.restore();
+            }
+
+            function archPath(ctx, x, y, w, h, rt, rb) {
+                ctx.beginPath();
+                ctx.moveTo(x, y + rt);
+                ctx.arcTo(x, y, x + rt, y, rt);
+                ctx.lineTo(x + w - rt, y);
+                ctx.arcTo(x + w, y, x + w, y + rt, rt);
+                ctx.lineTo(x + w, y + h - rb);
+                ctx.arcTo(x + w, y + h, x + w - rb, y + h, rb);
+                ctx.lineTo(x + rb, y + h);
+                ctx.arcTo(x, y + h, x, y + h - rb, rb);
+                ctx.closePath();
+            }
+
             function getPalette(theme) {
                 const palettes = {
-                    gilded: {
-                        bg1: '#1a0c0e', bg2: '#0a0506',
-                        gold: '#D8AE6C', goldLight: '#F2D796',
-                        text: '#F6EEE2', textSec: '#8a7355',
-                        glow: '216,174,108', light: false
-                    },
-                    jungle: {
-                        bg1: '#0e2310', bg2: '#050f05',
-                        gold: '#A8D870', goldLight: '#C5E896',
-                        text: '#E8F0DD', textSec: '#6d7c5b',
-                        glow: '168,216,112', light: false
-                    },
-                    daydream: {
-                        bg1: '#fbf6ff', bg2: '#ffffff',
-                        gold: '#B65C8C', goldLight: '#8a4568',
-                        text: '#3B3A4A', textSec: '#8f8aa6',
-                        glow: '201,182,228', light: true
-                    },
-                    arabian: {
-                        bg1: '#211810', bg2: '#0b0805',
-                        gold: '#F5C842', goldLight: '#FFE9A8',
-                        text: '#FBF3DC', textSec: '#7f6f4a',
-                        glow: '245,200,66', light: false
-                    }
+                    gilded: { bg1: '#1f1013', bg2: '#0a0506', surface: '#22121a', gold: '#D8AE6C', goldLight: '#F2D796', text: '#F6EEE2', textSec: '#a58f72', glow: '216,174,108', light: false },
+                    jungle: { bg1: '#10270f', bg2: '#050f05', surface: '#0f1f0f', gold: '#A8D870', goldLight: '#C5E896', text: '#E8F0DD', textSec: '#8fa27c', glow: '168,216,112', light: false },
+                    daydream: { bg1: '#fbf6ff', bg2: '#efe6ff', surface: '#ffffff', gold: '#B65C8C', goldLight: '#8a4568', text: '#3B3A4A', textSec: '#8f8aa6', glow: '201,182,228', light: true },
+                    arabian: { bg1: '#241a0e', bg2: '#0b0805', surface: '#1d1710', gold: '#F5C842', goldLight: '#FFE9A8', text: '#FBF3DC', textSec: '#a99869', glow: '245,200,66', light: false }
                 };
                 return palettes[theme] || palettes.gilded;
             }
 
-            async function generateQuoteCanvas(q) {
+            async function loadCardFonts() {
                 try {
                     await Promise.all([
                         document.fonts.load('italic 500 40px "Cormorant Garamond"'),
                         document.fonts.load('500 16px "Marcellus"'),
-                        document.fonts.load('400 12px "Marcellus"')
+                        document.fonts.load('italic 600 40px "Cormorant Garamond"')
                     ]);
                 } catch (e) {}
+            }
 
-                const theme = document.body.getAttribute('data-theme') || 'gilded';
-                const p = getPalette(theme);
-
-                // Landscape dimensions matching the reference image
-                const W = 1080, H = 460;
-                const canvas = document.createElement('canvas');
-                canvas.width = W;
-                canvas.height = H;
-                const ctx = canvas.getContext('2d');
-
-                // Draw rounded rectangle clipping path
-                const radius = 28;
-                ctx.beginPath();
-                ctx.moveTo(radius, 0);
-                ctx.lineTo(W - radius, 0);
-                ctx.quadraticCurveTo(W, 0, W, radius);
-                ctx.lineTo(W, H - radius);
-                ctx.quadraticCurveTo(W, H, W - radius, H);
-                ctx.lineTo(radius, H);
-                ctx.quadraticCurveTo(0, H, 0, H - radius);
-                ctx.lineTo(0, radius);
-                ctx.quadraticCurveTo(0, 0, radius, 0);
-                ctx.closePath();
-                ctx.clip();
-
-                // base gradient
+            function paintBackdrop(ctx, W, H, p, glowY) {
                 const bg = ctx.createLinearGradient(0, 0, W, H);
                 bg.addColorStop(0, p.bg1);
                 bg.addColorStop(1, p.bg2);
                 ctx.fillStyle = bg;
                 ctx.fillRect(0, 0, W, H);
+                const gl = ctx.createRadialGradient(W / 2, glowY, 0, W / 2, glowY, W * 0.75);
+                gl.addColorStop(0, `rgba(${p.glow},${p.light ? 0.30 : 0.20})`);
+                gl.addColorStop(1, `rgba(${p.glow},0)`);
+                ctx.fillStyle = gl;
+                ctx.fillRect(0, 0, W, H);
+            }
 
-                // outer + inner border (very subtle)
-                const padOuter = 20, padInner = 32;
+            function paintStars(ctx, W, H, p, seed, count) {
+                const rnd = mulberry32(seed);
+                ctx.fillStyle = p.goldLight;
+                for (let i = 0; i < count; i++) {
+                    ctx.globalAlpha = 0.15 + rnd() * 0.5;
+                    ctx.beginPath();
+                    ctx.arc(rnd() * W, rnd() * H, 0.8 + rnd() * 1.8, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            // ---- square card ----
+            async function generateQuoteCanvas(q) {
+                await loadCardFonts();
+                const theme = document.body.getAttribute('data-theme') || 'gilded';
+                const p = getPalette(theme);
+                const W = 1080, H = 1080;
+                const canvas = document.createElement('canvas');
+                canvas.width = W; canvas.height = H;
+                const ctx = canvas.getContext('2d');
+
+                paintBackdrop(ctx, W, H, p, H * 0.4);
+                if (theme === 'arabian' || theme === 'gilded') paintStars(ctx, W, H, p, 77, 46);
+
+                // frame
                 ctx.strokeStyle = p.gold;
-                ctx.globalAlpha = p.light ? 0.45 : 0.35;
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = p.light ? 0.5 : 0.45;
+                ctx.strokeRect(40, 40, W - 80, H - 80);
                 ctx.lineWidth = 1;
-                ctx.strokeRect(padOuter, padOuter, W - padOuter * 2, H - padOuter * 2);
-
-                ctx.globalAlpha = p.light ? 0.30 : 0.22;
-                ctx.strokeRect(padInner, padInner, W - padInner * 2, H - padInner * 2);
+                ctx.globalAlpha = p.light ? 0.32 : 0.25;
+                ctx.strokeRect(62, 62, W - 124, H - 124);
                 ctx.globalAlpha = 1;
 
-                // quote text
-                const maxWidth = W - padInner * 2 - 80;
-                let fontSize = 36;
-                let font = `italic 500 ${fontSize}px "Cormorant Garamond", Georgia, serif`;
-                const fullText = `"${q.text}"`;
-                let lines = wrapText(ctx, fullText, maxWidth, font);
-                let lineH = fontSize * 1.45;
-                const maxTextH = H - padInner * 2 - 120;
+                ctx.fillStyle = p.gold;
+                [[40, 40], [W - 40, 40], [40, H - 40], [W - 40, H - 40]].forEach(([x, y]) => diamond(ctx, x, y, 14));
 
-                while (lines.length * lineH > maxTextH && fontSize > 20) {
-                    fontSize -= 2;
-                    lineH = fontSize * 1.45;
-                    font = `italic 500 ${fontSize}px "Cormorant Garamond", Georgia, serif`;
-                    lines = wrapText(ctx, fullText, maxWidth, font);
-                }
+                // top ornament
+                ctx.globalAlpha = 0.9;
+                diamond(ctx, W / 2, 148, 14);
+                ctx.globalAlpha = 0.55;
+                ctx.fillRect(W / 2 - 110, 147, 70, 2);
+                ctx.fillRect(W / 2 + 40, 147, 70, 2);
+                ctx.globalAlpha = 1;
 
-                const totalH = lines.length * lineH;
-                const centerY = H / 2 - 18;
-                const startY = centerY - totalH / 2 + lineH / 2;
+                // quote (big, readable)
+                const text = `“${q.text}”`;
+                const fit = fitText(ctx, text, W - 2 * 150, 560, 78, 34, 1.36);
+                const blockH = fit.lines.length * fit.lineH;
+                const groupH = blockH + 120;
+                const top = (H - groupH) / 2 + 10;
 
                 ctx.fillStyle = p.text;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.font = font;
-                lines.forEach((line, i) => {
-                    ctx.fillText(line, W / 2, startY + i * lineH);
-                });
+                ctx.font = fit.font;
+                fit.lines.forEach((line, i) => ctx.fillText(line, W / 2, top + fit.lineH * (i + 0.5)));
 
-                // divider + diamond
-                const lastLineY = startY + (lines.length - 1) * lineH;
-                const dividerY = lastLineY + lineH * 0.5 + 26;
-
-                ctx.strokeStyle = p.gold;
-                ctx.globalAlpha = p.light ? 0.7 : 0.6;
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(W / 2 - 90, dividerY);
-                ctx.lineTo(W / 2 - 20, dividerY);
-                ctx.moveTo(W / 2 + 20, dividerY);
-                ctx.lineTo(W / 2 + 90, dividerY);
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(W / 2, dividerY);
-                ctx.rotate(Math.PI / 4);
+                // divider + author
+                const divY = top + blockH + 44;
                 ctx.fillStyle = p.gold;
-                ctx.fillRect(-4, -4, 8, 8);
+                ctx.globalAlpha = 0.6;
+                ctx.fillRect(W / 2 - 100, divY - 1, 70, 2);
+                ctx.fillRect(W / 2 + 30, divY - 1, 70, 2);
+                ctx.globalAlpha = 1;
+                diamond(ctx, W / 2, divY, 10);
+
+                ctx.fillStyle = p.goldLight;
+                ctx.font = '500 26px "Marcellus", Georgia, serif';
+                ctx.textBaseline = 'middle';
+                spaced(ctx, (q.author || 'Unknown').toUpperCase(), W / 2, divY + 52, 6);
+
+                // footer
+                ctx.fillStyle = p.textSec;
+                ctx.font = '500 17px "Marcellus", Georgia, serif';
+                spaced(ctx, 'THE HANGING ARCHIVE', W / 2, H - 100, 7);
+
+                return canvas;
+            }
+
+            // ---- grand Quote-of-the-Day card (mirrors the on-page arch) ----
+            async function generateDailyCanvas(q, meta) {
+                await loadCardFonts();
+                const theme = document.body.getAttribute('data-theme') || 'gilded';
+                const p = getPalette(theme);
+                const W = 1080, H = 1350;
+                const canvas = document.createElement('canvas');
+                canvas.width = W; canvas.height = H;
+                const ctx = canvas.getContext('2d');
+
+                paintBackdrop(ctx, W, H, p, 260);
+                if (theme !== 'daydream') paintStars(ctx, W, H, p, 2026, 70);
+
+                // arch body
+                const ax = 60, ay = 60, aw = W - 120, ah = H - 120;
+                ctx.save();
+                ctx.shadowColor = `rgba(${p.glow},${p.light ? 0.35 : 0.45})`;
+                ctx.shadowBlur = 70;
+                archPath(ctx, ax, ay, aw, ah, 330, 44);
+                ctx.fillStyle = p.surface;
+                ctx.fill();
                 ctx.restore();
+
+                // soft glow inside the arch
+                ctx.save();
+                archPath(ctx, ax, ay, aw, ah, 330, 44);
+                ctx.clip();
+                const ig = ctx.createRadialGradient(W / 2, ay, 0, W / 2, ay, 620);
+                ig.addColorStop(0, `rgba(${p.glow},${p.light ? 0.30 : 0.22})`);
+                ig.addColorStop(1, `rgba(${p.glow},0)`);
+                ctx.fillStyle = ig;
+                ctx.fillRect(ax, ay, aw, ah);
+                ctx.restore();
+
+                // double border
+                ctx.strokeStyle = p.gold;
+                archPath(ctx, ax, ay, aw, ah, 330, 44);
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = p.light ? 0.55 : 0.5;
+                ctx.stroke();
+                archPath(ctx, ax + 20, ay + 20, aw - 40, ah - 40, 310, 28);
+                ctx.lineWidth = 1;
+                ctx.globalAlpha = p.light ? 0.35 : 0.28;
+                ctx.stroke();
                 ctx.globalAlpha = 1;
 
-                // author
-                ctx.fillStyle = p.goldLight;
-                ctx.font = `500 15px "Marcellus", Georgia, serif`;
-                ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                const authorUpper = (q.author || 'Unknown').toUpperCase();
-                ctx.fillText(`— ${authorUpper} —`, W / 2, dividerY + 28);
+                ctx.textAlign = 'center';
+
+                // eyebrow
+                ctx.fillStyle = p.gold;
+                ctx.font = '500 22px "Marcellus", Georgia, serif';
+                spaced(ctx, 'QUOTE OF THE DAY', W / 2, 236, 11);
+
+                // date
+                ctx.fillStyle = p.goldLight;
+                ctx.font = 'italic 600 54px "Cormorant Garamond", Georgia, serif';
+                ctx.fillText(meta.weekday, W / 2, 306);
+                ctx.fillStyle = p.textSec;
+                ctx.font = '400 20px "Marcellus", Georgia, serif';
+                spaced(ctx, meta.longDate.toUpperCase(), W / 2, 356, 6);
+
+                // rule
+                ctx.fillStyle = p.gold;
+                ctx.globalAlpha = 0.6;
+                ctx.fillRect(W / 2 - 150, 414, 110, 2);
+                ctx.fillRect(W / 2 + 40, 414, 110, 2);
+                ctx.globalAlpha = 1;
+                diamond(ctx, W / 2, 415, 14);
+
+                // quote
+                const text = `“${q.text}”`;
+                const fit = fitText(ctx, text, 720, 420, 70, 34, 1.4);
+                const blockH = fit.lines.length * fit.lineH;
+                const qTop = 700 - blockH / 2;
+                ctx.fillStyle = p.text;
+                ctx.font = fit.font;
+                fit.lines.forEach((line, i) => ctx.fillText(line, W / 2, qTop + fit.lineH * (i + 0.5)));
+
+                // author + mood
+                const authorY = qTop + blockH + 78;
+                ctx.fillStyle = p.gold;
+                ctx.font = '500 26px "Marcellus", Georgia, serif';
+                spaced(ctx, '— ' + (q.author || 'Unknown').toUpperCase(), W / 2, authorY, 8);
+                ctx.fillStyle = p.textSec;
+                ctx.font = '500 22px "Quicksand", "Marcellus", sans-serif';
+                ctx.fillText(meta.mood, W / 2, authorY + 48);
+
+                // footer meta
+                ctx.fillStyle = p.gold;
+                ctx.globalAlpha = 0.4;
+                ctx.fillRect(ax + 120, 1196, aw - 240, 1);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = p.textSec;
+                ctx.font = '400 17px "Marcellus", Georgia, serif';
+                spaced(ctx, `Nº ${meta.doy}   ·   THE HANGING ARCHIVE`, W / 2, 1238, 6);
 
                 return canvas;
             }
 
             /* ---------- WHATSAPP SHARE — CARD ONLY ---------- */
-            async function shareQuoteAsCard(q) {
+            async function shareQuoteAsCard(q, opts) {
                 let canvas;
                 try {
                     showToast('Preparing card...', 'loading');
-                    canvas = await generateQuoteCanvas(q);
+                    canvas = (opts && opts.daily) ? await generateDailyCanvas(q, opts.daily) : await generateQuoteCanvas(q);
                 } catch (e) {
                     showToast('Could not create card', 'error');
                     return;
                 }
 
-                // JPEG for file share (small)
-                const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+                const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+                const fname = (opts && opts.daily) ? 'quote-of-the-day.jpg' : 'hanging-archive.jpg';
 
-                // 1) Native share sheet — image only, no text
+                // 1) Native share sheet — image only
                 try {
-                    const file = new File([jpegBlob], 'hanging-archive.jpg', { type: 'image/jpeg' });
+                    const file = new File([jpegBlob], fname, { type: 'image/jpeg' });
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
                             await navigator.share({ files: [file] });
@@ -2391,7 +2427,7 @@
                     }
                 } catch (e) {}
 
-                // 2) Clipboard image + open bare WhatsApp Web
+                // 2) Clipboard image + open WhatsApp Web
                 if (navigator.clipboard && window.ClipboardItem) {
                     try {
                         const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
@@ -2402,12 +2438,12 @@
                     } catch (err) {}
                 }
 
-                // 3) Download card + open bare WhatsApp Web
+                // 3) Download card + open WhatsApp Web
                 try {
                     const url = URL.createObjectURL(jpegBlob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = 'hanging-archive.jpg';
+                    a.download = fname;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -2453,7 +2489,6 @@
                 }
             }
 
-            // Capture phase: hearts never trigger the card / lightbox underneath them
             document.addEventListener('click', (e) => {
                 const btn = e.target.closest('[data-heart]');
                 if (!btn) return;
@@ -2537,7 +2572,6 @@
                         item.style.setProperty('--pw', width + 'px');
                         item.style.setProperty('--ph', height + 'px');
                         item.style.animationDelay = (-(index % 7) * 0.5) + 's, ' + (index * 0.05) + 's';
-                        // images only — no quote text on the hanging cards
                         item.innerHTML = `
                             <div class="photo-card" style="height:${height}px;">
                                 <img src="${url}" alt="photo" loading="lazy">
@@ -2572,6 +2606,7 @@
                 });
             }
 
+            /* FIX 1: no heart on every card — tap a leaf to open it, save from there */
             function renderCanopyQuotes(quotes) {
                 clearGallery();
                 gallery.classList.add('gallery--canopy');
@@ -2588,7 +2623,7 @@
                     item.style.animationDelay = (i * 0.06) + 's';
                     item.setAttribute('role', 'button');
                     item.setAttribute('tabindex', '0');
-                    item.setAttribute('aria-label', 'View quote enlarged');
+                    item.setAttribute('aria-label', 'Open quote');
                     item.innerHTML = `
                         <svg class="vine" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2 2 Q 20 2 20 14 Q 20 24 36 24" stroke="var(--accent-b)" stroke-width="2" fill="none" stroke-linecap="round"/>
@@ -2596,7 +2631,6 @@
                             <circle cx="36" cy="24" r="2" fill="var(--gold)"/>
                         </svg>
                         <div class="leaf-pattern"></div>
-                        <button class="card-heart" type="button" data-heart data-qid="${q.id}" aria-pressed="false" aria-label="Save to your archive">${heartSvg()}</button>
                         <span class="quote-mark">&ldquo;</span>
                         <p class="quote-text">${esc(q.text)}</p>
                         <div class="quote-author">${esc(q.author)}</div>`;
@@ -2608,7 +2642,6 @@
                     container.appendChild(item);
                 });
                 gallery.appendChild(container);
-                refreshHearts(gallery);
             }
 
             const wcPairs = [
@@ -2633,10 +2666,9 @@
                     item.style.setProperty('--delay', (i * 0.08) + 's');
                     item.setAttribute('role', 'button');
                     item.setAttribute('tabindex', '0');
-                    item.setAttribute('aria-label', 'View quote enlarged');
+                    item.setAttribute('aria-label', 'Open quote');
                     item.innerHTML = `
                         <div class="watercolor" style="--wc-a:var(${pair[0]});--wc-b:var(${pair[1]});"></div>
-                        <button class="card-heart" type="button" data-heart data-qid="${q.id}" aria-pressed="false" aria-label="Save to your archive">${heartSvg()}</button>
                         <div class="dream-content">
                             <div class="dream-glyph">${glyph}</div>
                             <p class="quote-text">"${esc(q.text)}"</p>
@@ -2650,7 +2682,6 @@
                     container.appendChild(item);
                 });
                 gallery.appendChild(container);
-                refreshHearts(gallery);
             }
 
             function renderArabianQuotes(quotes) {
@@ -2744,6 +2775,7 @@
             const todayFrame = document.getElementById('todayFrame');
             let todayKeyCur = null;
             let todayQuote = null;
+            let todayMeta = null;
 
             function streakText() {
                 const n = Store.get().streak.count || 1;
@@ -2761,11 +2793,13 @@
                 const weekday = now.toLocaleDateString('en-GB', { weekday: 'long' });
                 const longDate = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
                 const doy = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(now.getFullYear(), 0, 0)) / 864e5);
+                const w = worlds[q.world];
+                todayMeta = { weekday, longDate, doy, mood: w.mood };
+
                 const words = q.text.split(/\s+/);
                 words[0] = '“' + words[0];
                 words[words.length - 1] += '”';
-                const wordsHtml = words.map((w, i) => `<span class="w" style="--i:${i}">${esc(w)}</span>`).join(' ');
-                const w = worlds[q.world];
+                const wordsHtml = words.map((wd, i) => `<span class="w" style="--i:${i}">${esc(wd)}</span>`).join(' ');
 
                 todayFrame.innerHTML = `
                     <p class="today-eyebrow rv" id="todayLabel" style="--d:.05s">Quote of the Day</p>
@@ -2808,7 +2842,7 @@
                 const b = e.target.closest('[data-today]');
                 if (!b || !todayQuote) return;
                 if (b.dataset.today === 'copy') copyQuote(todayQuote);
-                else shareQuoteAsCard(todayQuote);
+                else shareQuoteAsCard(todayQuote, { daily: todayMeta });   // FIX 5
             });
 
             function tick() {
