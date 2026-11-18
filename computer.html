@@ -1206,8 +1206,8 @@
         .quote-toast-action:hover, .quote-toast-action:focus-visible { color: #fff; outline: none; }
 
         /* ================= PRIVATE ARCHIVE (FAB + DRAWER) ================= */
-        /* FIX 3: solid background, no backdrop-filter, own GPU layer, safe-area aware —
-           so the heart button never disappears on a still page */
+        /* Floating heart: appears while the page is scrolling, fades away a few seconds
+           after scrolling stops. (Nav bar also has a permanent heart button.) */
         .archive-fab {
             position: fixed;
             right: calc(1.6rem + env(safe-area-inset-right, 0px));
@@ -1219,19 +1219,30 @@
             border: 1px solid var(--card-border);
             color: var(--gold); cursor: pointer;
             box-shadow: 0 12px 34px var(--card-shadow), 0 0 28px var(--glow);
-            transform: translate3d(0, 0, 0);
-            -webkit-transform: translate3d(0, 0, 0);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate3d(0, 16px, 0) scale(.82);
+            -webkit-transform: translate3d(0, 16px, 0) scale(.82);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            will-change: transform;
-            transition: transform .35s cubic-bezier(.16, 1, .3, 1), opacity .35s ease,
+            will-change: transform, opacity;
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), opacity .45s ease,
                         background .5s ease, border-color .5s ease, box-shadow .4s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
         .archive-fab svg { width: 22px; height: 22px; display: block; }
 
-        .archive-fab:hover, .archive-fab:focus-visible {
+        .archive-fab.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate3d(0, 0, 0) scale(1);
+            -webkit-transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        .archive-fab:focus-visible { opacity: 1; pointer-events: auto; }
+
+        .archive-fab.show:hover, .archive-fab:focus-visible {
             transform: translate3d(0, -3px, 0) scale(1.06);
             border-color: var(--gold-light);
             box-shadow: 0 16px 40px var(--card-shadow), 0 0 40px var(--glow);
@@ -1260,7 +1271,23 @@
         [data-theme="daydream"] .archive-badge { color: #fff; }
         .archive-fab.has-items .archive-badge { display: flex; }
 
-        body.archive-open .archive-fab { opacity: 0; pointer-events: none; transform: translate3d(0, 0, 0) scale(.8); }
+        body.archive-open .archive-fab { opacity: 0; pointer-events: none; transform: translate3d(0, 16px, 0) scale(.8); }
+
+        /* permanent heart in the nav bar */
+        .nav-archive { position: relative; }
+        .nav-archive svg { width: 18px; height: 18px; display: block; }
+        .nav-archive.has-items svg { fill: currentColor; }
+        .nav-badge {
+            position: absolute; top: -6px; right: -6px;
+            min-width: 18px; height: 18px; padding: 0 5px;
+            display: none; align-items: center; justify-content: center;
+            background: var(--gold); color: #1a1408;
+            border-radius: 999px; font-size: .62rem; font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+        }
+        [data-theme="daydream"] .nav-badge { color: #fff; }
+        .nav-archive.has-items .nav-badge { display: flex; }
 
         .archive-backdrop {
             position: fixed; inset: 0; z-index: 1650;
@@ -1659,6 +1686,10 @@
             <button class="theme-toggle" id="themeToggle" aria-label="Switch world"><span id="themeIcon">✦</span></button>
             <span class="world-name" id="worldName">The Gilded Carnival</span>
             <span class="nav-mood" id="navMood">· Empowerment</span>
+            <button class="theme-toggle nav-archive" id="navArchive" type="button" aria-label="Open your private archive" title="Your archive">
+                <svg class="heart-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+                <span class="nav-badge" id="navBadge">0</span>
+            </button>
         </nav>
 
         <section class="gallery-section">
@@ -1695,7 +1726,63 @@
                 ["If the fool would persist in his folly he would become wise.", "William Blake"],
                 ["Although the world is full of suffering, it is full also of the overcoming of it.", "Helen Keller"],
                 ["How wonderful it is that nobody need wait a single moment before starting to improve the world.", "Anne Frank"],
-                ["To be great, be whole; don't exaggerate or exclude anything in you. Put all you are into the smallest thing you do. The whole moon gleams in each pool because it blooms up above.", "Fernando Pessoa"]
+                ["To be great, be whole; don't exaggerate or exclude anything in you. Put all you are into the smallest thing you do. The whole moon gleams in each pool because it blooms up above.", "Fernando Pessoa"],
+                ["I attribute my success to this: I never gave or took any excuse.", "Florence Nightingale"],
+                ["Do the thing, and you shall have the power.", "Ralph Waldo Emerson"],
+                ["The impediment to action advances action. What stands in the way becomes the way.", "Marcus Aurelius"],
+                ["Begin at once to live, and count each separate day as a separate life.", "Seneca"],
+                ["It is not that we have a short time to live, but that we waste much of it.", "Seneca"],
+                ["The only way to make sense out of change is to plunge into it, move with it, and join the dance.", "Alan Watts"],
+                ["There are no shortcuts to any place worth going.", "Beverly Sills"],
+                ["Every artist was first an amateur.", "Ralph Waldo Emerson"],
+                ["Genius is only a greater aptitude for patience.", "Comte de Buffon"],
+                ["When nothing seems to help, I go and look at a stonecutter hammering away at his rock perhaps a hundred times without so much as a crack showing in it. Yet at the hundred and first blow it will split in two, and I know it was not that blow that did it, but all that had gone before.", "Jacob Riis"],
+                ["I don't wait for moods. You accomplish nothing if you do that. Your mind must know it has got to get down to work.", "Pearl S. Buck"],
+                ["Inspiration exists, but it has to find you working.", "Pablo Picasso"],
+                ["Nobody can go back and start a new beginning, but anyone can start today and make a new ending.", "Maria Robinson"],
+                ["You can't use up creativity. The more you use, the more you have.", "Maya Angelou"],
+                ["Courage doesn't always roar. Sometimes courage is the quiet voice at the end of the day saying, 'I will try again tomorrow.'", "Mary Anne Radmacher"],
+                ["Perseverance is not a long race; it is many short races one after the other.", "Walter Elliot"],
+                ["Energy and persistence conquer all things.", "Benjamin Franklin"],
+                ["The best way out is always through.", "Robert Frost"],
+                ["Great things are done by a series of small things brought together.", "Vincent van Gogh"],
+                ["What is done in love is done well.", "Vincent van Gogh"],
+                ["I would rather die of passion than of boredom.", "Vincent van Gogh"],
+                ["Dost thou love life? Then do not squander time, for that is the stuff life is made of.", "Benjamin Franklin"],
+                ["Well done is better than well said.", "Benjamin Franklin"],
+                ["Diligence is the mother of good luck.", "Benjamin Franklin"],
+                ["Lost time is never found again.", "Benjamin Franklin"],
+                ["Never leave that till tomorrow which you can do today.", "Benjamin Franklin"],
+                ["The price of anything is the amount of life you exchange for it.", "Henry David Thoreau"],
+                ["If one advances confidently in the direction of his dreams, and endeavors to live the life which he has imagined, he will meet with a success unexpected in common hours.", "Henry David Thoreau"],
+                ["Things do not change; we change.", "Henry David Thoreau"],
+                ["If you want to shine like a sun, first burn like a sun.", "A. P. J. Abdul Kalam"],
+                ["Dream, dream, dream. Dreams transform into thoughts and thoughts result in action.", "A. P. J. Abdul Kalam"],
+                ["Excellence is a continuous process and not an accident.", "A. P. J. Abdul Kalam"],
+                ["Take up one idea. Make that one idea your life — think of it, dream of it, live on that idea.", "Swami Vivekananda"],
+                ["All power is within you; you can do anything and everything.", "Swami Vivekananda"],
+                ["You can't cross the sea merely by standing and staring at the water.", "Rabindranath Tagore"],
+                ["Faith is the bird that feels the light when the dawn is still dark.", "Rabindranath Tagore"],
+                ["It is not the mountain we conquer, but ourselves.", "Edmund Hillary"],
+                ["You must do the thing you think you cannot do.", "Eleanor Roosevelt"],
+                ["It is a rough road that leads to the heights of greatness.", "Seneca"],
+                ["While we are postponing, life speeds by.", "Seneca"],
+                ["No man is more unhappy than he who never faces adversity. For he is not permitted to prove himself.", "Seneca"],
+                ["No great thing is created suddenly, any more than a bunch of grapes or a fig. If you tell me that you desire a fig, I answer you that there must be time.", "Epictetus"],
+                ["First say to yourself what you would be; and then do what you have to do.", "Epictetus"],
+                ["Dig within. Within is the wellspring of good; and it is always ready to bubble up, if you just dig.", "Marcus Aurelius"],
+                ["A man who dares to waste one hour of time has not discovered the value of life.", "Charles Darwin"],
+                ["I keep the subject constantly before me and wait till the first dawnings open slowly, by little and little, into a full and clear light.", "Isaac Newton"],
+                ["In the fields of observation, chance favors only the prepared mind.", "Louis Pasteur"],
+                ["Life is not easy for any of us. But what of that? We must have perseverance and above all confidence in ourselves.", "Marie Curie"],
+                ["Character cannot be developed in ease and quiet. Only through experience of trial and suffering can the soul be strengthened, ambition inspired, and success achieved.", "Helen Keller"],
+                ["If there is no struggle, there is no progress.", "Frederick Douglass"],
+                ["Knowing is not enough; we must apply. Willing is not enough; we must do.", "Johann Wolfgang von Goethe"],
+                ["Things which matter most must never be at the mercy of things which matter least.", "Johann Wolfgang von Goethe"],
+                ["The beginning is the most important part of the work.", "Plato"],
+                ["Courage is grace under pressure.", "Ernest Hemingway"],
+                ["Nothing great was ever achieved without enthusiasm.", "Ralph Waldo Emerson"],
+                ["The secret of joy in work is contained in one word — excellence. To know how to do something well is to enjoy it.", "Pearl S. Buck"]
             ].map(q);
 
             const gratitudeQuotes = [
@@ -1715,7 +1802,62 @@
                 ["My experience is what I agree to attend to.", "William James"],
                 ["Very little is needed to make a happy life; it is all within yourself, in your way of thinking.", "Marcus Aurelius"],
                 ["Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts.", "Rachel Carson"],
-                ["There is no charm equal to tenderness of heart.", "Jane Austen"]
+                ["There is no charm equal to tenderness of heart.", "Jane Austen"],
+                ["Joy is the simplest form of gratitude.", "Karl Barth"],
+                ["The thankful receiver bears a plentiful harvest.", "William Blake"],
+                ["It is not joy that makes us grateful; it is gratitude that makes us joyful.", "David Steindl-Rast"],
+                ["To be able to enjoy one's past life is to live twice.", "Martial"],
+                ["Let us not look back in anger, nor forward in fear, but around in awareness.", "James Thurber"],
+                ["Happiness is not a matter of intensity but of balance, order, rhythm and harmony.", "Thomas Merton"],
+                ["The best things in life are nearest: breath in your nostrils, light in your eyes, flowers at your feet, duties at your hand, the path of right just before you.", "Robert Louis Stevenson"],
+                ["If your everyday life seems poor, don't blame it; blame yourself; tell yourself that you are not poet enough to call forth its riches.", "Rainer Maria Rilke"],
+                ["The miracle is not to walk on water. The miracle is to walk on the green earth, dwelling deeply in the present moment and feeling truly alive.", "Thich Nhat Hanh"],
+                ["Because you are alive, everything is possible.", "Thich Nhat Hanh"],
+                ["Beauty and grace are performed whether or not we will or sense them. The least we can do is try to be there.", "Annie Dillard"],
+                ["There is no duty we so much underrate as the duty of being happy.", "Robert Louis Stevenson"],
+                ["Do not indulge in dreams of having what you have not, but reckon up the chief of the blessings you do possess, and then thankfully remember how you would crave for them if they were not yours.", "Marcus Aurelius"],
+                ["He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.", "Epictetus"],
+                ["Wealth consists not in having great possessions, but in having few wants.", "Epictetus"],
+                ["Gratitude is not only the greatest of virtues, but the parent of all the others.", "Cicero"],
+                ["Do not spoil what you have by desiring what you have not; remember that what you now have was once among the things you only hoped for.", "Epicurus"],
+                ["He who is not satisfied with a little, is satisfied with nothing.", "Epicurus"],
+                ["Gratitude is the fairest blossom which springs from the soul.", "Henry Ward Beecher"],
+                ["Gratitude turns what we have into enough.", "Melody Beattie"],
+                ["That is happiness; to be dissolved into something complete and great.", "Willa Cather"],
+                ["There is nothing like staying at home for real comfort.", "Jane Austen"],
+                ["Think only of the past as its remembrance gives you pleasure.", "Jane Austen"],
+                ["Reflect upon your present blessings, of which every man has many; not on your past misfortunes, of which all men have some.", "Charles Dickens"],
+                ["I will honour Christmas in my heart, and try to keep it all the year.", "Charles Dickens"],
+                ["Isn't it splendid to think of all the things there are to find out about? It just makes me feel glad to be alive.", "L. M. Montgomery"],
+                ["Kindred spirits are not so scarce as I used to think.", "L. M. Montgomery"],
+                ["I'm so glad I live in a world where there are Octobers.", "L. M. Montgomery"],
+                ["If you look the right way, you can see that the whole world is a garden.", "Frances Hodgson Burnett"],
+                ["Believe me, my young friend, there is nothing — absolutely nothing — half so much worth doing as simply messing about in boats.", "Kenneth Grahame"],
+                ["I know of nothing else but miracles.", "Walt Whitman"],
+                ["For everything you have missed, you have gained something else.", "Ralph Waldo Emerson"],
+                ["Let us be silent, that we may hear the whispers of the gods.", "Ralph Waldo Emerson"],
+                ["Morning is when I am awake and there is a dawn in me.", "Henry David Thoreau"],
+                ["Live in each season as it passes; breathe the air, drink the drink, taste the fruit, and resign yourself to the influences of each.", "Henry David Thoreau"],
+                ["I am grateful for what I am and have. My thanksgiving is perpetual.", "Henry David Thoreau"],
+                ["Thousands of tired, nerve-shaken, over-civilized people are beginning to find out that going to the mountains is going home.", "John Muir"],
+                ["In every walk with nature one receives far more than he seeks.", "John Muir"],
+                ["The more clearly we can focus our attention on the wonders and realities of the universe about us, the less taste we shall have for destruction.", "Rachel Carson"],
+                ["One way to open your eyes to unnoticed beauty is to ask yourself, 'What if I had never seen this before? What if I knew I would never see it again?'", "Rachel Carson"],
+                ["The butterfly counts not months but moments, and has time enough.", "Rabindranath Tagore"],
+                ["Let life be beautiful like summer flowers and death like autumn leaves.", "Rabindranath Tagore"],
+                ["I slept and dreamt that life was joy. I awoke and saw that life was service. I acted and behold, service was joy.", "Rabindranath Tagore"],
+                ["Your joy is your sorrow unmasked.", "Kahlil Gibran"],
+                ["The deeper that sorrow carves into your being, the more joy you can contain.", "Kahlil Gibran"],
+                ["In the sweetness of friendship let there be laughter, and sharing of pleasures.", "Kahlil Gibran"],
+                ["The world will never starve for want of wonders; but only for want of wonder.", "G. K. Chesterton"],
+                ["Let gratitude be the pillow upon which you kneel to say your nightly prayer.", "Maya Angelou"],
+                ["Let us be grateful to the people who make us happy; they are the charming gardeners who make our souls blossom.", "Marcel Proust"],
+                ["For all that has been — thanks. For all that shall be — yes.", "Dag Hammarskjöld"],
+                ["He who knows he has enough is rich.", "Lao Tzu"],
+                ["Every day is a journey, and the journey itself is home.", "Matsuo Bashō"],
+                ["The soul is healed by being with children.", "Fyodor Dostoevsky"],
+                ["Kindness is the language which the deaf can hear and the blind can see.", "Mark Twain"],
+                ["The best and most beautiful things in the world cannot be seen or even touched — they must be felt with the heart.", "Helen Keller"]
             ].map(q);
 
             const empowermentQuotes = [
@@ -1739,7 +1881,58 @@
                 ["We suffer more often in imagination than in reality.", "Seneca"],
                 ["Not till we are lost, in other words not till we have lost the world, do we begin to find ourselves.", "Henry David Thoreau"],
                 ["Waste no more time arguing about what a good man should be. Be one.", "Marcus Aurelius"],
-                ["Mastering others is strength; mastering yourself is true power.", "Lao Tzu"]
+                ["Mastering others is strength; mastering yourself is true power.", "Lao Tzu"],
+                ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+                ["I took a deep breath and listened to the old brag of my heart. I am, I am, I am.", "Sylvia Plath"],
+                ["The most common way people give up their power is by thinking they don't have any.", "Alice Walker"],
+                ["To be nobody-but-yourself, in a world which is doing its best, night and day, to make you everybody else, means to fight the hardest battle which any human being can fight.", "E. E. Cummings"],
+                ["There is a vitality, a life force, an energy, a quickening that is translated through you into action, and because there is only one of you in all time, this expression is unique.", "Martha Graham"],
+                ["Courage is the price that life exacts for granting peace.", "Amelia Earhart"],
+                ["I paint myself because I am so often alone and because I am the subject I know best.", "Frida Kahlo"],
+                ["You may encounter many defeats, but you must not be defeated.", "Maya Angelou"],
+                ["Nothing will work unless you do.", "Maya Angelou"],
+                ["Your silence will not protect you.", "Audre Lorde"],
+                ["I am not free while any woman is unfree, even when her shackles are very different from my own.", "Audre Lorde"],
+                ["Love takes off the masks that we fear we cannot live without and know we cannot live within.", "James Baldwin"],
+                ["The place in which I'll fit will not exist until I make it.", "James Baldwin"],
+                ["I can't believe what you say, because I see what you do.", "James Baldwin"],
+                ["Definitions belong to the definers, not the defined.", "Toni Morrison"],
+                ["If you are free, you need to free somebody else.", "Toni Morrison"],
+                ["Feet, what do I need you for when I have wings to fly?", "Frida Kahlo"],
+                ["I wish that every human life might be pure transparent freedom.", "Simone de Beauvoir"],
+                ["Arrange whatever pieces come your way.", "Virginia Woolf"],
+                ["No need to hurry. No need to sparkle. No need to be anybody but oneself.", "Virginia Woolf"],
+                ["Be patient toward all that is unsolved in your heart and try to love the questions themselves.", "Rainer Maria Rilke"],
+                ["You have your way. I have my way. As for the right way, the correct way, and the only way, it does not exist.", "Friedrich Nietzsche"],
+                ["In the midst of winter, I found there was, within me, an invincible summer.", "Albert Camus"],
+                ["One must imagine Sisyphus happy.", "Albert Camus"],
+                ["Everything can be taken from a man but one thing: the last of the human freedoms — to choose one's attitude in any given set of circumstances.", "Viktor Frankl"],
+                ["Never esteem anything as of advantage to you that will make you break your word or lose your self-respect.", "Marcus Aurelius"],
+                ["It's not what happens to you, but how you react to it that matters.", "Epictetus"],
+                ["I have learned over the years that when one's mind is made up, this diminishes fear.", "Rosa Parks"],
+                ["I had reasoned this out in my mind: there was one of two things I had a right to, liberty or death; if I could not have one, I would have the other.", "Harriet Tubman"],
+                ["If the first woman God ever made was strong enough to turn the world upside down all alone, these women together ought to be able to turn it back, and get it right side up again.", "Sojourner Truth"],
+                ["I do not wish them to have power over men; but over themselves.", "Mary Wollstonecraft"],
+                ["Independence is happiness.", "Susan B. Anthony"],
+                ["You gain strength, courage, and confidence by every experience in which you really stop to look fear in the face.", "Eleanor Roosevelt"],
+                ["The weak can never forgive. Forgiveness is the attribute of the strong.", "Mahatma Gandhi"],
+                ["Strength does not come from physical capacity. It comes from an indomitable will.", "Mahatma Gandhi"],
+                ["You cannot believe in God until you believe in yourself.", "Swami Vivekananda"],
+                ["The greatest sin is to think yourself weak.", "Swami Vivekananda"],
+                ["I measure the progress of a community by the degree of progress which women have achieved.", "B. R. Ambedkar"],
+                ["We want deeper sincerity of motive, a greater courage in speech and earnestness in action.", "Sarojini Naidu"],
+                ["To love oneself is the beginning of a lifelong romance.", "Oscar Wilde"],
+                ["The final mystery is oneself.", "Oscar Wilde"],
+                ["Trust thyself: every heart vibrates to that iron string.", "Ralph Waldo Emerson"],
+                ["Nothing can bring you peace but yourself.", "Ralph Waldo Emerson"],
+                ["The mass of men lead lives of quiet desperation.", "Henry David Thoreau"],
+                ["Rather than love, than money, than fame, give me truth.", "Henry David Thoreau"],
+                ["I care for myself. The more solitary, the more friendless, the more unsustained I am, the more I will respect myself.", "Charlotte Brontë"],
+                ["To go wrong in one's own way is better than to go right in someone else's.", "Fyodor Dostoevsky"],
+                ["Courage is resistance to fear, mastery of fear — not absence of fear.", "Mark Twain"],
+                ["I do not weep at the world — I am too busy sharpening my oyster knife.", "Zora Neale Hurston"],
+                ["All that you touch you change. All that you change changes you.", "Octavia E. Butler"],
+                ["We are volcanoes. When we women offer our experience as our truth, as human truth, all the maps change.", "Ursula K. Le Guin"]
             ].map(q);
 
             const lifeQuotes = [
@@ -1761,7 +1954,39 @@
                 ["The mystery of human existence lies not in just staying alive, but in finding something to live for.", "Fyodor Dostoevsky"],
                 ["Not I, nor anyone else can travel that road for you. You must travel it by yourself.", "Walt Whitman"],
                 ["We are healed of a suffering only by experiencing it to the full.", "Marcel Proust"],
-                ["Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.", "Antoine de Saint-Exupéry"]
+                ["Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.", "Antoine de Saint-Exupéry"],
+                ["Life can only be understood backwards; but it must be lived forwards.", "Søren Kierkegaard"],
+                ["To live is so startling it leaves little time for anything else.", "Emily Dickinson"],
+                ["The soul becomes dyed with the color of its thoughts.", "Marcus Aurelius"],
+                ["The world is full of magical things patiently waiting for our wits to grow sharper.", "Eden Phillpotts"],
+                ["There is no greater sorrow than to recall happiness in times of misery.", "Dante Alighieri"],
+                ["What we remember from childhood we remember forever: permanent ghosts, ill-defined, yet legible.", "Cynthia Ozick"],
+                ["Memory believes before knowing remembers.", "William Faulkner"],
+                ["We live as we dream, alone.", "Joseph Conrad"],
+                ["A moment's insight is sometimes worth a life's experience.", "Oliver Wendell Holmes Sr."],
+                ["I have always imagined that Paradise will be a kind of library.", "Jorge Luis Borges"],
+                ["What matters in life is not what happens to you but what you remember and how you remember it.", "Gabriel García Márquez"],
+                ["The only thing that makes life possible is permanent, intolerable uncertainty: not knowing what comes next.", "Ursula K. Le Guin"],
+                ["Of a city, you do not enjoy seven or seventy wonders, but the answer it gives to a question of yours.", "Italo Calvino"],
+                ["The inferno of the living is not something that will be; if there is one, it is what is already here, the inferno where we live every day, that we form by being together.", "Italo Calvino"],
+                ["The cradle rocks above an abyss, and common sense tells us that our existence is but a brief crack of light between two eternities of darkness.", "Vladimir Nabokov"],
+                ["Memories warm you up from the inside. But they also tear you apart.", "Haruki Murakami"],
+                ["You can cut all the flowers but you cannot keep spring from coming.", "Pablo Neruda"],
+                ["Perhaps everything terrible is, in its deepest being, something helpless that wants help from us.", "Rainer Maria Rilke"],
+                ["Do you not see how necessary a world of pains and troubles is to school an intelligence and make it a soul?", "John Keats"],
+                ["Nothing has really happened until it has been recorded.", "Virginia Woolf"],
+                ["Life shrinks or expands in proportion to one's courage.", "Anaïs Nin"],
+                ["I must be a mermaid. I have no fear of depths and a great fear of shallow living.", "Anaïs Nin"],
+                ["The only true paradise is the paradise we have lost.", "Marcel Proust"],
+                ["Beauty will save the world.", "Fyodor Dostoevsky"],
+                ["All, everything that I understand, I understand only because I love.", "Leo Tolstoy"],
+                ["Yesterday is but today's memory, and tomorrow is today's dream.", "Kahlil Gibran"],
+                ["Trust in dreams, for in them is hidden the gate to eternity.", "Kahlil Gibran"],
+                ["The Moving Finger writes; and, having writ, moves on: nor all thy Piety nor Wit shall lure it back to cancel half a Line.", "Omar Khayyám"],
+                ["Ah, my Beloved, fill the Cup that clears to-day of past Regret and future Fears.", "Omar Khayyám"],
+                ["Clouds come floating into my life, no longer to carry rain or usher storm, but to add color to my sunset sky.", "Rabindranath Tagore"],
+                ["The same stream of life that runs through my veins night and day runs through the world and dances in rhythmic measures.", "Rabindranath Tagore"],
+                ["Not hammer-strokes, but dance of the water sings the pebbles into perfection.", "Rabindranath Tagore"]
             ].map(q);
 
             const humanNatureQuotes = [
@@ -1780,7 +2005,23 @@
                 ["Taking a new step, uttering a new word, is what people fear most.", "Fyodor Dostoevsky"],
                 ["Everything that irritates us about others can lead us to an understanding of ourselves.", "Carl Jung"],
                 ["All of humanity's problems stem from man's inability to sit quietly in a room alone.", "Blaise Pascal"],
-                ["Whoever fights monsters should see to it that in the process he does not become a monster.", "Friedrich Nietzsche"]
+                ["Whoever fights monsters should see to it that in the process he does not become a monster.", "Friedrich Nietzsche"],
+                ["We are what we pretend to be, so we must be careful about what we pretend to be.", "Kurt Vonnegut"],
+                ["Vanity and pride are different things, though the words are often used synonymously. A person may be proud without being vain.", "Jane Austen"],
+                ["No one is useless in this world who lightens the burden of it to anyone else.", "Charles Dickens"],
+                ["The greatest thing in the world is to know how to belong to oneself.", "Michel de Montaigne"],
+                ["People are lonely because they build walls instead of bridges.", "Joseph Fort Newton"],
+                ["In the end, we will remember not the words of our enemies, but the silence of our friends.", "Martin Luther King Jr."],
+                ["Of all the things which wisdom provides to help one live one's entire life in happiness, the greatest by far is the possession of friendship.", "Epicurus"],
+                ["The art of being wise is the art of knowing what to overlook.", "William James"],
+                ["The reality of the other person lies not in what he reveals to you, but in what he cannot reveal to you.", "Kahlil Gibran"],
+                ["Say not, 'I have found the truth,' but rather, 'I have found a truth.'", "Kahlil Gibran"],
+                ["Words do not express thoughts very well. Everything immediately becomes a little different, a little distorted, a little foolish.", "Hermann Hesse"],
+                ["Nothing is so firmly believed as what we least know.", "Michel de Montaigne"],
+                ["Hypocrisy is the homage vice pays to virtue.", "François de La Rochefoucauld"],
+                ["Wishing to be friends is quick work, but friendship is a slow ripening fruit.", "Aristotle"],
+                ["A truth that's told with bad intent beats all the lies you can invent.", "William Blake"],
+                ["The heart has its reasons which reason knows nothing of.", "Blaise Pascal"]
             ].map(q);
 
             function interleaveQuotes(a, b) {
@@ -2878,11 +3119,45 @@
             let lastFabCount = 0;
             const ui = { tab: 'saved', filter: null, openRow: null, focusSel: null };
 
-            function updateFab() {
+            const navArchive = document.getElementById('navArchive');
+            const navBadge = document.getElementById('navBadge');
+
+            /* ---- floating heart: show while scrolling, hide shortly after it stops ---- */
+            const FAB_IDLE_MS = 2200;      // how long it stays after scrolling stops
+            let fabTimer = null, fabHold = false;
+
+            function hideFab() {
+                if (fabHold) return;
+                fab.classList.remove('show');
+            }
+
+            function showFab() {
+                if (drawerOpen) return;
+                fab.classList.add('show');
+                clearTimeout(fabTimer);
+                if (!fabHold) fabTimer = setTimeout(hideFab, FAB_IDLE_MS);
+            }
+
+            window.addEventListener('scroll', showFab, { passive: true });
+            window.addEventListener('wheel', showFab, { passive: true });
+            window.addEventListener('touchmove', showFab, { passive: true });
+            // keep it while the finger/mouse is on it, so it can't vanish mid-tap
+            fab.addEventListener('pointerenter', () => { fabHold = true; clearTimeout(fabTimer); });
+            fab.addEventListener('pointerdown', () => { fabHold = true; clearTimeout(fabTimer); });
+            fab.addEventListener('pointerleave', () => { fabHold = false; if (fab.classList.contains('show')) showFab(); });
+            fab.addEventListener('pointercancel', () => { fabHold = false; if (fab.classList.contains('show')) showFab(); });
+            fab.addEventListener('focus', () => { fabHold = true; clearTimeout(fabTimer); });
+            fab.addEventListener('blur', () => { fabHold = false; if (fab.classList.contains('show')) showFab(); });
+
+            function updateFab(silent) {
                 const n = Store.get().favs.length;
-                badge.textContent = n > 99 ? '99+' : n;
+                const label = n > 99 ? '99+' : n;
+                badge.textContent = label;
+                navBadge.textContent = label;
                 fab.classList.toggle('has-items', n > 0);
-                if (n > lastFabCount) {
+                navArchive.classList.toggle('has-items', n > 0);
+                if (!silent && n > lastFabCount) {
+                    showFab();
                     fab.classList.remove('bump');
                     void fab.offsetWidth;
                     fab.classList.add('bump');
@@ -2900,6 +3175,8 @@
                 drawer.setAttribute('aria-hidden', 'false');
                 document.body.classList.add('archive-open');
                 document.body.style.overflow = 'hidden';
+                clearTimeout(fabTimer);
+                fab.classList.remove('show');
                 setTimeout(() => document.getElementById('archiveClose').focus({ preventScroll: true }), 80);
             }
 
@@ -2911,7 +3188,7 @@
                 drawer.setAttribute('aria-hidden', 'true');
                 document.body.classList.remove('archive-open');
                 document.body.style.overflow = '';
-                fab.focus({ preventScroll: true });
+                navArchive.focus({ preventScroll: true });
             }
 
             function visibleFavs(s) {
@@ -3138,6 +3415,7 @@
             document.getElementById('archiveClose').addEventListener('click', closeDrawer);
             backdrop.addEventListener('click', closeDrawer);
             fab.addEventListener('click', () => openDrawer());
+            navArchive.addEventListener('click', () => openDrawer());
 
             document.addEventListener('keydown', (e) => {
                 if (e.key !== 'Escape') return;
@@ -3259,7 +3537,7 @@
 
             /* ---- boot the ritual ---- */
             renderDaily(false);
-            updateFab();
+            updateFab(true);
             refreshHearts();
             setInterval(tick, 1000);
             document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
