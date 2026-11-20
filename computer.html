@@ -3543,6 +3543,354 @@
             document.addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
         })();
     </script>
+    <!-- =====================================================================
+     THE HANGING ARCHIVE · LUXURY LAYER
+     Paste this ENTIRE block just before </body> (after your main </script>).
+     Touches nothing in your existing code. Remove the block to undo.
+     ===================================================================== -->
+<style id="lx-style">
+/* ---------- foundations ---------- */
+:root { --lx-ease: cubic-bezier(.16, 1, .3, 1); --dock-h: 72px; }
+* { -webkit-tap-highlight-color: transparent; }
+button, [role="button"], .pennant-photo-item { touch-action: manipulation; }
+.hero-title, .hero-tagline, .today-quote, .journey-text, .quote-modal-text { text-wrap: balance; }
+.quote-leaf .quote-text, .dream-card .quote-text { text-wrap: pretty; }
+
+/* film grain: the "printed on heavy paper" feel */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 3;
+  opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body[data-theme="daydream"]::after { opacity: .035; }
+
+/* scroll progress hairline */
+#lxProgress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 1800;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light));
+  box-shadow: 0 0 14px var(--glow); pointer-events: none;
+}
+
+/* ---------- hero: molten-gold title + staged entrance ---------- */
+body[data-theme] .hero-title {
+  background: linear-gradient(100deg, var(--gold) 0%, var(--gold-light) 28%, #fff7e0 50%, var(--gold-light) 72%, var(--gold) 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent; text-shadow: none;
+  filter: drop-shadow(0 0 26px var(--glow)) drop-shadow(0 4px 14px rgba(0, 0, 0, .45));
+  animation: lxShimmer 8s ease-in-out infinite, lxRise 1.3s .15s var(--lx-ease) both;
+}
+body[data-theme="daydream"] .hero-title {
+  background-image: linear-gradient(100deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  filter: drop-shadow(0 6px 18px rgba(182, 92, 140, .25));
+}
+@keyframes lxShimmer { 0% { background-position: 130% 0; } 100% { background-position: -130% 0; } }
+@keyframes lxRise { from { opacity: 0; translate: 0 22px; } to { opacity: 1; translate: 0 0; } }
+.hero-divider   { animation: lxRise 1.2s .45s var(--lx-ease) both; }
+.hero-tagline   { animation: lxRise 1.2s .6s var(--lx-ease) both; }
+.hero-world     { animation: lxRise 1.2s .8s var(--lx-ease) both; }
+.mood-indicator { animation: lxRise 1.2s .95s var(--lx-ease) both; }
+body.lx-intro .hero-title, body.lx-intro .hero-divider, body.lx-intro .hero-tagline,
+body.lx-intro .hero-world, body.lx-intro .mood-indicator { animation-play-state: paused; }
+
+/* ---------- cursor light (laptops / wide screens only) ---------- */
+#lxCursor { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  #lxCursor {
+    display: block; position: fixed; top: 0; left: 0; width: 460px; height: 460px; margin: -230px 0 0 -230px;
+    border-radius: 50%; pointer-events: none; z-index: 2; opacity: 0; transition: opacity .6s ease;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
+    mix-blend-mode: screen; will-change: transform;
+  }
+  #lxCursor.on { opacity: .55; }
+  body[data-theme="daydream"] #lxCursor { mix-blend-mode: multiply; opacity: .35; }
+  .quote-leaf:hover, .dream-card:hover { filter: brightness(1.06); }
+}
+
+/* ---------- tactile cards ---------- */
+.dream-card, .quote-leaf { box-shadow: 0 14px 30px var(--card-shadow), inset 0 1px 0 rgba(255, 255, 255, .07); }
+.dream-card:active { transform: scale(.985); transition-duration: .12s; }
+.quote-leaf:active { transform: rotate(var(--tilt, 0deg)) scale(.97); transition-duration: .12s; }
+.pennant-photo-item:active .photo-card { transform: scale(.97); }
+.lightbox-overlay { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.lightbox-overlay img { animation: lxRise .5s var(--lx-ease) both; }
+
+/* ---------- world-change curtain ---------- */
+#lxVeil {
+  position: fixed; inset: 0; z-index: 4000; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1.1rem;
+  opacity: 0; pointer-events: none; transition: opacity .28s ease;
+}
+#lxVeil.on { opacity: 1; pointer-events: auto; }
+#lxVeil .vg { font-size: 3rem; filter: drop-shadow(0 0 24px currentColor); transform: scale(.8); transition: transform .5s var(--lx-ease); }
+#lxVeil.on .vg { transform: scale(1); }
+#lxVeil .vn { font-family: 'Marcellus', serif; font-size: .78rem; letter-spacing: .4em; text-transform: uppercase; }
+
+/* ---------- intro doors ---------- */
+#lxIntro { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; }
+#lxIntro .door { position: absolute; top: 0; bottom: 0; width: 50.2%; background: radial-gradient(ellipse at 100% 50%, #2a1419 0%, #0d0607 70%); transition: transform 1.25s cubic-bezier(.76, 0, .18, 1); }
+#lxIntro .door.l { left: 0; border-right: 1px solid rgba(216, 174, 108, .5); }
+#lxIntro .door.r { right: 0; transform: scaleX(-1); border-right: 1px solid rgba(216, 174, 108, .5); }
+#lxIntro .door.r { transform: none; background: radial-gradient(ellipse at 0% 50%, #2a1419 0%, #0d0607 70%); border-right: 0; border-left: 1px solid rgba(216, 174, 108, .5); }
+#lxIntro.open .door.l { transform: translateX(-102%); }
+#lxIntro.open .door.r { transform: translateX(102%); }
+#lxIntro .core { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 1.6rem; text-align: center; padding: 0 1.5rem; transition: opacity .45s ease, transform .6s ease; }
+#lxIntro.open .core { opacity: 0; transform: scale(1.08); }
+#lxIntro svg { width: 128px; height: 128px; overflow: visible; filter: drop-shadow(0 0 26px rgba(216, 174, 108, .55)); }
+#lxIntro .ring { fill: none; stroke: #D8AE6C; stroke-width: 1.2; stroke-dasharray: 340; stroke-dashoffset: 340; animation: lxDraw 1.5s .15s var(--lx-ease) forwards; }
+#lxIntro .ring2 { stroke-width: .6; opacity: .6; animation-delay: .35s; }
+#lxIntro .dia { fill: #F2D796; transform-origin: 50% 50%; opacity: 0; animation: lxPop 1s .9s var(--lx-ease) forwards; }
+@keyframes lxDraw { to { stroke-dashoffset: 0; } }
+@keyframes lxPop { from { opacity: 0; transform: scale(.2) rotate(-90deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+#lxIntro .t1 { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.05rem, 5vw, 1.5rem); letter-spacing: .32em; color: #F2D796; opacity: 0; animation: lxRise 1.2s 1s var(--lx-ease) forwards; }
+#lxIntro .t2 { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: #b89d78; opacity: 0; animation: lxRise 1.2s 1.25s var(--lx-ease) forwards; margin-top: -.9rem; }
+
+/* ---------- performance on phones ---------- */
+@media (max-width: 820px) {
+  .arabian-night .star:nth-child(3n), .arabian-ember:nth-child(2n), .cloud:nth-child(n+5) { display: none; }
+  .bg-ambiance { animation: none; }
+}
+
+/* ===================== PHONE EXPERIENCE ===================== */
+.lx-dock { display: none; }
+@media (max-width: 820px) {
+  .nav, .archive-fab { display: none !important; }
+  .hero { min-height: 100vh; min-height: 100svh; padding-top: max(2rem, env(safe-area-inset-top)); }
+  body[data-theme] .hero-title { font-size: clamp(2.05rem, 9.4vw, 3.2rem); letter-spacing: .5px; }
+  .gallery-section { padding: 0 1rem; margin-top: 2.5rem; }
+  .pennant-photo-item { width: min(var(--pw, 180px), calc(50% - .6rem)) !important; }
+  footer { padding-bottom: calc(var(--dock-h) + 2.6rem + env(safe-area-inset-bottom)); }
+  .quote-toast { bottom: calc(var(--dock-h) + 22px + env(safe-area-inset-bottom)); }
+  .archive-drawer { padding-top: env(safe-area-inset-top); }
+  .ad-foot { padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)); }
+
+  /* floating glass dock */
+  .lx-dock {
+    position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 1400;
+    width: min(440px, calc(100vw - 24px)); transform: translate(-50%, 0);
+    display: grid; grid-template-columns: repeat(5, 1fr); padding: 6px; border-radius: 28px;
+    background: var(--nav-bg); backdrop-filter: blur(24px) saturate(1.5); -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border: 1px solid var(--card-border);
+    box-shadow: 0 20px 54px var(--card-shadow), 0 0 40px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .09);
+    transition: transform .6s var(--lx-ease), opacity .4s ease, background .6s ease, border-color .6s ease;
+  }
+  .lx-dock.lx-hide { transform: translate(-50%, 170%); }
+  body.archive-open .lx-dock, body.lx-modal .lx-dock { transform: translate(-50%, 170%); opacity: 0; pointer-events: none; }
+  .lx-ind {
+    position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 12px) / 5); border-radius: 22px;
+    background: linear-gradient(165deg, var(--gold-light), var(--gold)); opacity: .17;
+    box-shadow: inset 0 0 0 1px var(--gold);
+    transform: translateX(calc(var(--i, 0) * 100%)); transition: transform .65s var(--lx-ease);
+  }
+  .lx-d {
+    position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 9px 0 8px; background: none; border: 0; cursor: pointer; color: var(--text-secondary);
+    transition: color .35s ease, transform .2s ease;
+  }
+  .lx-d:active { transform: scale(.9); }
+  .lx-d .g { font-size: 1.2rem; line-height: 1; height: 1.2rem; display: flex; align-items: center; }
+  .lx-d .g svg { width: 19px; height: 19px; }
+  .lx-d .l { font-family: 'Marcellus', serif; font-size: .52rem; letter-spacing: .16em; text-transform: uppercase; }
+  .lx-d.on { color: var(--gold-light); }
+  .lx-d.on .g { filter: drop-shadow(0 0 8px var(--glow)); }
+  .lx-d.has-items .g svg { fill: currentColor; }
+  .lx-b {
+    position: absolute; top: 3px; left: calc(50% + 6px); min-width: 17px; height: 17px; padding: 0 5px;
+    display: none; align-items: center; justify-content: center; border-radius: 99px;
+    background: var(--gold); color: #1a1408; font: 700 .6rem 'Plus Jakarta Sans', sans-serif;
+  }
+  body[data-theme="daydream"] .lx-b { color: #fff; }
+  .lx-d.has-items .lx-b { display: flex; }
+
+  /* quote modal becomes a swipe-down bottom sheet */
+  .quote-modal { align-items: flex-end; padding: 0; }
+  .quote-modal-inner {
+    max-width: none; max-height: 88vh; max-height: 88dvh; border-radius: 30px 30px 0 0; border-bottom: 0;
+    padding: 2.2rem 1.5rem calc(1.8rem + env(safe-area-inset-bottom));
+    transform: translateY(105%); transition: transform .65s var(--lx-ease);
+  }
+  .quote-modal.active .quote-modal-inner { transform: translateY(0); }
+  .quote-modal-inner::before { content: ''; display: block; width: 46px; height: 4px; border-radius: 4px; background: var(--card-border); margin: -1.1rem auto 1.3rem; }
+  .quote-modal-close { top: .9rem; right: .9rem; width: 34px; height: 34px; }
+  .quote-modal-btn { flex: 1 1 auto; justify-content: center; }
+}
+</style>
+
+<script id="lx-script">
+(function () {
+  'use strict';
+  var d = document, B = d.body, mobile = function () { return window.innerWidth <= 820; };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- world data ---------- */
+  var W = {
+    gilded:   { g: '✦', n: 'The Gilded Carnival', l: 'Strength', bg: '#160b0d', c: '#D8AE6C' },
+    daydream: { g: '☁', n: 'Day Dreaming',        l: 'Gratitude', bg: '#F5F0FF', c: '#B65C8C' },
+    jungle:   { g: '❁', n: 'The Verdant Canopy',  l: 'Success',  bg: '#0a1a0a', c: '#A8D870' },
+    arabian:  { g: '☾', n: 'The Arabian Night',   l: 'Reverie',  bg: '#17120a', c: '#F5C842' }
+  };
+  var order = ['gilded', 'daydream', 'jungle', 'arabian'];
+
+  /* ---------- phone chrome colour follows the world ---------- */
+  var meta = d.querySelector('meta[name="theme-color"]');
+  if (!meta) { meta = d.createElement('meta'); meta.name = 'theme-color'; d.head.appendChild(meta); }
+  [['apple-mobile-web-app-capable', 'yes'], ['mobile-web-app-capable', 'yes'], ['apple-mobile-web-app-status-bar-style', 'black-translucent']]
+    .forEach(function (p) { if (!d.querySelector('meta[name="' + p[0] + '"]')) { var m = d.createElement('meta'); m.name = p[0]; m.content = p[1]; d.head.appendChild(m); } });
+
+  /* ---------- progress bar + cursor light ---------- */
+  var prog = d.createElement('div'); prog.id = 'lxProgress'; B.appendChild(prog);
+  var cur = d.createElement('div'); cur.id = 'lxCursor'; B.appendChild(cur);
+
+  /* ---------- veil ---------- */
+  var veil = d.createElement('div'); veil.id = 'lxVeil';
+  veil.innerHTML = '<div class="vg"></div><div class="vn"></div>'; B.appendChild(veil);
+
+  /* ---------- dock ---------- */
+  var dock = d.createElement('nav'); dock.className = 'lx-dock'; dock.setAttribute('aria-label', 'Worlds');
+  dock.innerHTML = '<span class="lx-ind"></span>' + order.map(function (k) {
+    return '<button type="button" class="lx-d" data-w="' + k + '" aria-label="' + W[k].n + '"><span class="g">' + W[k].g + '</span><span class="l">' + W[k].l + '</span></button>';
+  }).join('') +
+  '<button type="button" class="lx-d" data-arch aria-label="Your archive"><span class="g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg></span><span class="l">Archive</span><span class="lx-b">0</span></button>';
+  B.appendChild(dock);
+  var ind = dock.querySelector('.lx-ind'), archBtn = dock.querySelector('[data-arch]'), dockBadge = dock.querySelector('.lx-b');
+
+  function syncWorld() {
+    var k = B.getAttribute('data-theme') || 'gilded', i = Math.max(0, order.indexOf(k));
+    ind.style.setProperty('--i', i);
+    dock.querySelectorAll('[data-w]').forEach(function (b) { b.classList.toggle('on', b.dataset.w === k); });
+    meta.content = W[k].bg;
+  }
+  function syncArchive() {
+    var nb = d.getElementById('navBadge'), na = d.getElementById('navArchive');
+    if (nb) dockBadge.textContent = nb.textContent;
+    if (na) archBtn.classList.toggle('has-items', na.classList.contains('has-items'));
+  }
+  new MutationObserver(syncWorld).observe(B, { attributes: true, attributeFilter: ['data-theme'] });
+  var nb0 = d.getElementById('navBadge'), na0 = d.getElementById('navArchive');
+  if (nb0) new MutationObserver(syncArchive).observe(nb0, { childList: true, characterData: true, subtree: true });
+  if (na0) new MutationObserver(syncArchive).observe(na0, { attributes: true, attributeFilter: ['class'] });
+  var qm = d.getElementById('quoteModal');
+  if (qm) new MutationObserver(function () { B.classList.toggle('lx-modal', qm.classList.contains('active')); }).observe(qm, { attributes: true, attributeFilter: ['class'] });
+  syncWorld(); syncArchive();
+
+  /* ---------- world switching through a gold curtain ---------- */
+  var toggle = d.getElementById('themeToggle'), bypass = false, busy = false;
+  function swapTo(key) {                      // key = target world, or null = next in cycle
+    var n = 0;
+    bypass = true;
+    try {
+      if (key) { while (B.getAttribute('data-theme') !== key && n++ < 5) toggle.click(); }
+      else toggle.click();
+    } finally { bypass = false; }
+  }
+  function goWorld(key) {
+    if (busy) return;
+    var target = key || order[(order.indexOf(B.getAttribute('data-theme')) + 1) % order.length];
+    if (target === B.getAttribute('data-theme')) return;
+    busy = true;
+    var w = W[target];
+    veil.style.background = 'radial-gradient(ellipse at 50% 45%, ' + w.bg + ' 0%, ' + w.bg + ' 100%)';
+    veil.style.color = w.c;
+    veil.querySelector('.vg').textContent = w.g;
+    veil.querySelector('.vn').textContent = w.n;
+    veil.classList.add('on');
+    setTimeout(function () {
+      swapTo(target);
+      var g = d.querySelector('.gallery-section');
+      if (g && window.scrollY > g.offsetTop) window.scrollTo({ top: Math.max(0, g.offsetTop - 10), behavior: 'instant' });
+      setTimeout(function () { veil.classList.remove('on'); busy = false; }, 340);
+    }, reduce ? 0 : 300);
+  }
+  d.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('#themeToggle');
+    if (t && !bypass) { e.stopImmediatePropagation(); e.preventDefault(); goWorld(null); }
+  }, true);
+  dock.addEventListener('click', function (e) {
+    var b = e.target.closest('.lx-d'); if (!b) return;
+    if (b.hasAttribute('data-arch')) { var na = d.getElementById('navArchive'); if (na) na.click(); }
+    else goWorld(b.dataset.w);
+  });
+
+  /* ---------- haptics (Android) ---------- */
+  d.addEventListener('click', function (e) {
+    if (navigator.vibrate && e.target.closest && e.target.closest('button,.quote-leaf,.dream-card,.pennant-photo-item')) navigator.vibrate(7);
+  }, true);
+
+  /* ---------- scroll: progress + dock hide/show ---------- */
+  var lastY = window.scrollY, ticking = false;
+  function onScroll() {
+    var y = window.scrollY, h = d.documentElement.scrollHeight - window.innerHeight;
+    prog.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, y / h) : 0) + ')';
+    var dy = y - lastY;
+    if (Math.abs(dy) > 7) { dock.classList.toggle('lx-hide', dy > 0 && y > 240); lastY = y; }
+    if (y < 120) dock.classList.remove('lx-hide');
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  /* ---------- swipe-down to close the quote sheet ---------- */
+  if (qm) {
+    var inner = qm.querySelector('.quote-modal-inner'), closeBtn = d.getElementById('quoteModalClose');
+    var sy = 0, dy = 0, drag = false;
+    inner.addEventListener('touchstart', function (e) {
+      if (!mobile() || inner.scrollTop > 0) return;
+      sy = e.touches[0].clientY; dy = 0; drag = true; inner.style.transition = 'none';
+    }, { passive: true });
+    inner.addEventListener('touchmove', function (e) {
+      if (!drag) return;
+      dy = Math.max(0, e.touches[0].clientY - sy);
+      inner.style.transform = 'translateY(' + dy + 'px)';
+    }, { passive: true });
+    function endDrag() {
+      if (!drag) return; drag = false;
+      inner.style.transition = ''; inner.style.transform = '';
+      if (dy > 110 && closeBtn) closeBtn.click();
+    }
+    inner.addEventListener('touchend', endDrag);
+    inner.addEventListener('touchcancel', endDrag);
+  }
+
+  /* ---------- cursor light ---------- */
+  if (window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+    var mx = innerWidth / 2, my = innerHeight / 2, cx = mx, cy = my, raf = null;
+    window.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY; cur.classList.add('on');
+      if (!raf) raf = requestAnimationFrame(loop);
+    }, { passive: true });
+    d.addEventListener('mouseleave', function () { cur.classList.remove('on'); });
+    function loop() {
+      cx += (mx - cx) * .12; cy += (my - cy) * .12;
+      cur.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+      raf = (Math.abs(mx - cx) + Math.abs(my - cy) > .5) ? requestAnimationFrame(loop) : null;
+    }
+  }
+
+  /* ---------- opening doors (once per session) ---------- */
+  var seen = false;
+  try { seen = sessionStorage.getItem('lxSeen') === '1'; sessionStorage.setItem('lxSeen', '1'); } catch (e) {}
+  if (!seen && !reduce) {
+    var intro = d.createElement('div'); intro.id = 'lxIntro';
+    intro.innerHTML = '<div class="door l"></div><div class="door r"></div><div class="core">' +
+      '<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring" cx="60" cy="60" r="54"/><circle class="ring ring2" cx="60" cy="60" r="46"/><rect class="dia" x="52" y="52" width="16" height="16" transform="rotate(45 60 60)"/></svg>' +
+      '<div class="t1">THE HANGING ARCHIVE</div><div class="t2">a gallery of words worth keeping</div></div>';
+    B.appendChild(intro);
+    B.classList.add('lx-intro');
+    d.documentElement.style.overflow = 'hidden';
+    var opened = false;
+    function open() {
+      if (opened) return; opened = true;
+      intro.classList.add('open');
+      B.classList.remove('lx-intro');
+      setTimeout(function () { d.documentElement.style.overflow = ''; }, 500);
+      setTimeout(function () { intro.remove(); }, 1500);
+    }
+    intro.addEventListener('click', open);
+    setTimeout(open, 2600);
+  }
+})();
+</script>
 </body>
 
 </html>
